@@ -80,7 +80,7 @@ int main()
 	{
 		int i = 0;
 		cost += matr[start][p[i]];
-		while (i < n - 2)
+		while (i < n - 1)
 		{	
 			cost += matr[p[i]][p[i + 1]];
 			i++;
