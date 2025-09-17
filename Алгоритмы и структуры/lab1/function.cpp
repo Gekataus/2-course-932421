@@ -1,16 +1,20 @@
 #include "function.h"
 #include <random>
 #include <chrono>
-#include <time.h>
-#include <iostream>
+
+std::random_device randomDevice;
+std::mt19937_64 generator(randomDevice());
+int rangeStart = 1;
+int rangeEnd = 25;
+std::uniform_int_distribution<int> distribution(rangeStart, rangeEnd);
+
 
 void RandMatrAnyIntD(int** matr, int m, int n, int a, int b)
 {
-	srand(time(0));
 	for (int i = 0; i < m; i++)
 		for (int j = 0; j < n; j++)
 		{
-			if (i != j) matr[i][j] = rand() % (b - a + 1) + a;
+			if (i != j) matr[i][j] = distribution(generator);
 		}
 }
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "function.h"
+#include <chrono>
 
 int main()
 {
@@ -31,15 +32,23 @@ int main()
 		else p[i] = j;
 	}
 
+	std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
 	do
 	{
+		//std::cout << "\np = "; OutputMasPtr(p, n - 1);
 		cost = 0;
 		cost += matr[start][p[0]];
-		for (i = 0; i < n - 2; i++) cost += matr[p[i]][p[i + 1]];
-		cost += matr[p[i]][p[start]];
+		for (i = 0; i < n - 2; i++) cost += matr[p[i]][p[i+1]];
+		cost += matr[p[i]][start];
+		//std::cout << "    cost = " << cost;
 		if (cost < cost_min) cost_min = cost;
-		std::cout << "\np = "; OutputMasPtr(p, n - 1);
+		//std::cout << "    min cost = " << cost_min;
 	} while (Permutation(p, n - 1));
+
+	std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> duration = timeEnd - timeStart;
+	std::cout << "time: " << duration.count() << std::endl;
+
 	std::cout << "\nmin cost = " << cost_min;
 
 	
