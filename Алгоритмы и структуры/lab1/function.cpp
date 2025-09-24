@@ -58,3 +58,24 @@ void OutputMasPtr(int* a, int n)
 {
 	for (int* p = a; p < a + n; p++) printf("%4d", *p);
 }
+
+void FindMinElement(int** matr, int n, int* str, int* col_min)
+{
+	int col;
+	int min = 100000;
+	for (col = 0; col < n; col++)
+		if (matr[*str][col] < min && matr[*str][col] != 0) {*col_min = col; min = matr[*str][col];}
+}
+
+void CopyMas(int* a, int* b, int n)
+{
+	int i;
+	for (i = 0; i < n; i++) b[i] = a[i];
+}
+
+int Find(int* a, int n, int B)
+{
+	for (int i = 0; i < n; i++)
+		if (a[i] == B) return i;
+	return -1;
+}

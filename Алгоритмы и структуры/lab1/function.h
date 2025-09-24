@@ -5,3 +5,6 @@ void OutputMatrIntD(int** matr, int m, int n);
 void Swap(int* a, int* b);
 bool Permutation(int* p, int n);
 void OutputMasPtr(int* a, int n);
+void FindMinElement(int** matr, int n, int* str, int* col_min);
+void CopyMas(int* a, int* b, int n);
+int Find(int* a, int n, int B);
