@@ -58,7 +58,7 @@ int main()
 	std::cout << ";  Best Permutation: " << "[ " << start; OutputMasPtr(bestPermutation, n - 1); std::cout << " " << start << " ]" << std::endl;
 	std::cout << "max cost = " << cost_max;
 	std::cout << ";  Worst Permutation: " << "[ " << start; OutputMasPtr(worstPermutation, n - 1); std::cout << " " << start << " ]" << std::endl;
-	std::cout << "time: " << duration.count() << std::endl;
+	std::cout << "time: " << duration.count()  << std::endl;
 
 	//3d method
 	int step = 0, cost_min3d = 0, col_min = 0, itec = start, k = 0, f = -2;
