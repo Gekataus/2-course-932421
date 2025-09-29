@@ -4,10 +4,10 @@
 
 using namespace std;
 
-// 1. Ôóíêöèÿ ïîëó÷åíèÿ èíäåêñà ïåğâîãî âõîæäåíèÿ ïîäñòğîêè â òåêñòå
+// 1. Ğ¤ÑƒĞ½ĞºÑ†Ğ¸Ñ Ğ¿Ğ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ñ Ğ¸Ğ½Ğ´ĞµĞºÑĞ° Ğ¿ĞµÑ€Ğ²Ğ¾Ğ³Ğ¾ Ğ²Ñ…Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ñ Ğ¿Ğ¾Ğ´ÑÑ‚Ñ€Ğ¾ĞºĞ¸ Ğ² Ñ‚ĞµĞºÑÑ‚Ğµ
 int findFirst(const std::string& s, const std::string& p) {
     if (p.empty() || s.empty() || p.length() > s.length()) {
-        return -1;
+        return -100;
     }
 
     int n = s.length();
@@ -42,3 +42,16 @@ int findFirst(const std::string& s, const std::string& p) {
     else return -1;
 }
 
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int f;
+    string s, p;
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ñ‚ĞµĞºÑÑ‚ Ğ´Ğ»Ñ ÑÑ€Ğ°Ğ²Ğ½ĞµĞ½Ğ¸Ñ: ";
+    getline(cin, s);
+    cout << endl << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¿Ğ°Ñ‚Ñ‚ĞµÑ€Ğ½: ";
+    getline(cin, p);
+
+    f = findFirst(s, p);
+    cout << endl << f;
+}
