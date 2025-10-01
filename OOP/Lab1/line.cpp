@@ -1,11 +1,13 @@
-#include "line.h"
+Ôªø#include "line.h"
 #include <iostream>
 #include <math.h>
 
+// 1) –ö–æ–Ω—Å—Ç—Ä—É–∫—Ç–æ—Ä
 Line::Line() : a_(0), b_(1), c_(0) {}
+// 2) –í–≤–æ–¥ - –≤—ã–≤–æ–¥
 void Line::input()
 {
-	std::cout << "¬‚Â‰ËÚÂ ÍÓ˝ÙÙËˆËÂÌÚ˚ a, b, c ÔˇÏÓÈ ax + by + c = 0 " << std::endl;
+	std::cout << "–í–≤–µ–¥–∏—Ç–µ –∫–æ—ç—Ñ—Ñ–∏—Ü–∏–µ–Ω—Ç—ã a, b, c –ø—Ä—è–º–æ–π ax + by + c = 0 " << std::endl;
 	std::cin >> a_ >> b_ >> c_;
 }
 
@@ -13,47 +15,76 @@ void Line::output() const
 {
     std::cout << a_ << "x + " << b_ << "y + " << c_ << " = 0" << std::endl;
 }
+// 3) –ê–∫—Å–µ—Å—Å–æ—Ä—ã
+// –ì–µ—Ç—Ç–µ—Ä—ã
+double Line::getA() const { return a_; }
+double Line::getB() const { return b_; }
+double Line::getC() const { return c_; }
 
-// √ÂÚÚÂ˚
-double Line::geta() const { return a_; }
-double Line::getb() const { return b_; }
-double Line::getc() const { return c_; }
-
-// —ÂÚÚÂ˚
-void Line::seta(double a) {
+// –°–µ—Ç—Ç–µ—Ä—ã
+void Line::setA(double a) 
+{
     a_ = a;
-    if (a_ == 0 && b_ == 0) {
-        std::cout << "œÂ‰ÛÔÂÊ‰ÂÌËÂ: ÍÓ˝ÙÙËˆËÂÌÚ˚ a Ë b ÒÚ‡ÎË Ó‰ÌÓ‚ÂÏÂÌÌÓ ÌÛÎÂ‚˚ÏË, ÛÒÚ‡ÌÓ‚ÎÂÌ˚ ÁÌ‡˜ÂÌËÂ ÔÓ ÛÏÓÎ˜‡ÌË˛: a = 0, b = 1" << std::endl;
+    if (a_ == 0 && b_ == 0) 
+    {
+        std::cout << "–ü—Ä–µ–¥—É–ø—Ä–µ–∂–¥–µ–Ω–∏–µ: –∫–æ—ç—Ñ—Ñ–∏—Ü–∏–µ–Ω—Ç—ã a –∏ b —Å—Ç–∞–ª–∏ –æ–¥–Ω–æ–≤—Ä–µ–º–µ–Ω–Ω–æ –Ω—É–ª–µ–≤—ã–º–∏, —É—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω—ã –∑–Ω–∞—á–µ–Ω–∏–µ –ø–æ —É–º–æ–ª—á–∞–Ω–∏—é: a = 0, b = 1" << std::endl;
         b_ = 1;
     }
 }
 
-void Line::setb(double b) {
+void Line::setB(double b) 
+{
     b_ = b;
-    if (a_ == 0 && b_ == 0) {
-        std::cout << "œÂ‰ÛÔÂÊ‰ÂÌËÂ: ÍÓ˝ÙÙËˆËÂÌÚ˚ a Ë b ÒÚ‡ÎË Ó‰ÌÓ‚ÂÏÂÌÌÓ ÌÛÎÂ‚˚ÏË, ÛÒÚ‡ÌÓ‚ÎÂÌ˚ ÁÌ‡˜ÂÌËÂ ÔÓ ÛÏÓÎ˜‡ÌË˛: a = 0, b = 1" << std::endl;
+    if (a_ == 0 && b_ == 0) 
+    {
+        std::cout << "–ü—Ä–µ–¥—É–ø—Ä–µ–∂–¥–µ–Ω–∏–µ: –∫–æ—ç—Ñ—Ñ–∏—Ü–∏–µ–Ω—Ç—ã a –∏ b —Å—Ç–∞–ª–∏ –æ–¥–Ω–æ–≤—Ä–µ–º–µ–Ω–Ω–æ –Ω—É–ª–µ–≤—ã–º–∏, —É—Å—Ç–∞–Ω–æ–≤–ª–µ–Ω—ã –∑–Ω–∞—á–µ–Ω–∏–µ –ø–æ —É–º–æ–ª—á–∞–Ω–∏—é: a = 0, b = 1" << std::endl;
         b_ = 1;
     }
 }
 
-void Line::setc(double c) { c_ = c; }
+void Line::setC(double c) { c_ = c; }
 
-//œÓıÓ‰ËÚ Ì‡˜‡ÎÓ ÍÓÓ‰ËÌ‡Ú
-bool Line::PassingOrigins() const {
+// 4) –ü—Ä–æ—Ö–æ–¥–∏—Ç –Ω–∞—á–∞–ª–æ –∫–æ–æ—Ä–¥–∏–Ω–∞—Ç
+bool Line::PassingOrigins() const 
+{
     if (c_ == 0) return true;
     return false;
 }
 
-// Õ‡ıÓÊ‰ÂÌËÂ ÓÚÂÁÍÓ‚, ÓÚÒÂÍ‡ÂÏ˚ı ÔˇÏÓÈ Ì‡ ÍÓÓ‰ËÌ‡ÚÌ˚ı ÓÒˇı
+// 5) –ü—Ä–æ–≤–µ—Ä–∫–∞, –ø–∞—Ä–∞–ª–ª–µ–ª—å–Ω–∞ –ª–∏ –ø—Ä—è–º–∞—è –æ—Å–∏ Ox
+bool Line::isParallelToOX() const 
+{
+    // –ü—Ä—è–º–∞—è –ø–∞—Ä–∞–ª–ª–µ–ª—å–Ω–∞ Ox, –µ—Å–ª–∏ a = 0 –∏ b != 0
+    if (a_ == 0 && b_ != 0) return true;
+    return false;
+}
+
+// 6) –ù–∞—Ö–æ–∂–¥–µ–Ω–∏–µ –æ—Ç—Ä–µ–∑–∫–æ–≤, –æ—Ç—Å–µ–∫–∞–µ–º—ã—Ö –ø—Ä—è–º–æ–π –Ω–∞ –∫–æ–æ—Ä–¥–∏–Ω–∞—Ç–Ω—ã—Ö –æ—Å—è—Ö
 double Line::getIntercepsOX() const 
 {
-    if (a_ == 0) { std::cout << "œˇÏ‡ˇ ÌÂ ÓÚÒÂÍ‡ÂÚ Ì‡ OX ÓÚÂÁÍÓ‚"; return -1; }
-    else return ( - c_ / a_);
+    if (a_ == 0) { std::cout << "–ü—Ä—è–º–∞—è –Ω–µ –æ—Ç—Å–µ–∫–∞–µ—Ç –Ω–∞ OX –æ—Ç—Ä–µ–∑–∫–æ–≤"; return -1; }
+    else return - c_ / a_;
 }
 
 double Line::getIntercepsOY() const
 {
-    if (b_ == 0) { std::cout << "œˇÏ‡ˇ ÌÂ ÓÚÒÂÍ‡ÂÚ Ì‡ OX ÓÚÂÁÍÓ‚"; return -1; }
-    else return (-c_ / b_);
+    if (b_ == 0) { std::cout << "–ü—Ä—è–º–∞—è –Ω–µ –æ—Ç—Å–µ–∫–∞–µ—Ç –Ω–∞ OX –æ—Ç—Ä–µ–∑–∫–æ–≤"; return -1; }
+    else return -c_ / b_;
 }
 
+// 7) –ù–∞—Ö–æ–∂–¥–µ–Ω–∏–µ —É–≥–ª–æ–≤–æ–≥–æ –∫–æ—ç—Ñ—Ñ–∏—Ü–∏–µ–Ω—Ç–∞ –ø—Ä—è–º–æ–π
+double Line::getSlope() const 
+{
+    // –£–≥–ª–æ–≤–æ–π –∫–æ—ç—Ñ—Ñ–∏—Ü–∏–µ–Ω—Ç k = -a/b (–ø—Ä–∏ b != 0)
+    if (b_ == 0) 
+    {
+        return -1; // –í–µ—Ä—Ç–∏–∫–∞–ª—å–Ω–∞—è –ø—Ä—è–º–∞—è
+    }
+    return - a_ / b_;
+}
+
+// 8) –ü—Ä–æ–≤–µ—Ä–∫–∞ —Å–æ–≤–ø–∞–¥–µ–Ω–∏—è –¥–≤—É—Ö –ø—Ä—è–º—ã—Ö (—á–µ—Ä–µ–∑ ==)
+bool Line::operator==(const Line& other) const 
+{
+    return (a_ == other.a_) && (b_ == other.b_) && (c_ == other.c_);
+}
