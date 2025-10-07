@@ -10,7 +10,7 @@ private:
 
 public:
     // 1)  онструктор
-    Line(); // с аргументами по умолчанию
+    Line(); // по умолчанию
 
     // 2) ¬вод/вывод уравнени€ пр€мой
     void input();
@@ -40,5 +40,20 @@ public:
 
     // 8) ѕроверка совпадени€ двух пр€мых (через ==)
     bool operator==(const Line& other) const;
+
+    // 9) ѕроверка параллельности двух пр€мых
+    bool isParallelTo(const Line& other) const;
+
+    // 10) ѕроверка принадлежности точки пр€мой
+    bool containsPoint(double x, double y) const;
+
+    // 11) Ќахождение рассто€ни€ от точки до пр€мой
+    double distanceToPoint(double x, double y) const;
+
+    // 12) Ќахождение точки пересечени€ двух пр€мых
+    bool findIntersection(const Line& other, double& x, double& y) const;
+
+    // 13) Ќахождение рассто€ни€ между двум€ параллельными пр€мыми
+    double distanceToParallelLine(const Line& other) const;
 
 };
