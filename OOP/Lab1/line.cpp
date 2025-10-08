@@ -68,7 +68,7 @@ double Line::getIntercepsOX() const
 
 double Line::getIntercepsOY() const
 {
-    if (b_ == 0) { std::cout << "Прямая не отсекает на OX отрезков"; return -1; }
+    if (b_ == 0) { std::cout << "Прямая не отсекает на OY отрезков"; return -1; }
     else return -c_ / b_;
 }
 
