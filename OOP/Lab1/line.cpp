@@ -4,6 +4,8 @@
 
 // 1) Конструктор
 Line::Line() : a_(0), b_(1), c_(0) {}
+Line::Line(double a, double b, double c)
+    : a_(a), b_(b), c_(c) { if (a_ == 0 && b_ == 0) b_ = 1;}
 // 2) Ввод - вывод
 void Line::input()
 {

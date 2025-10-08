@@ -4,8 +4,8 @@
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	Line x1, x2, x3; // 1) Конструктор
-
+	Line x1(0,0,0), x2, x3; // 1) Конструктор
+	x1.output();
 	x1.input(); // 2) Ввод - вывод
 	std::cout << "Прямая x1: "; x1.output();
 
