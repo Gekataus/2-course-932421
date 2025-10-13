@@ -11,7 +11,7 @@ private:
 public:
     // 1) Конструктор
     Line(); // по умолчанию
-    Line(double, double, double); // с аргументами по умолчанию
+    Line(double, double, double); // с аргументами
     // 2) Ввод/вывод уравнения прямой
     void input();
     void output() const;
