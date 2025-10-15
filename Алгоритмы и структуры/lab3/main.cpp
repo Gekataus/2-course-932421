@@ -145,11 +145,10 @@ int main()
 	*/
 
 	//Чтение из файла
-	int fileCounter = 1;
 	int left = 0, right = 0, n = 0;
-	std::string filename = "array_" + std::to_string(fileCounter) + ".txt";
+	std::string filename;
 
-	for (;; fileCounter++)
+	for (;;)
 	{
 		std::cout << "Введите размер массива (10000 || 100000 || 1000000): "; std::cin >> n;
 		if (n == -1) break;
