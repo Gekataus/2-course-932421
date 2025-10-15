@@ -1,8 +1,10 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <vector>
 #include <random>
+#include <fstream>
 
-//создание массива случайных чисел (Библиотека random)
+
+//СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР» (Р‘РёР±Р»РёРѕС‚РµРєР° random)
 std::vector<int> generateRandomArray(int size, int min_val, int max_val) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -15,51 +17,51 @@ std::vector<int> generateRandomArray(int size, int min_val, int max_val) {
 	return arr;
 }
 
-// Просеивание
+// РџСЂРѕСЃРµРёРІР°РЅРёРµ
 void sift(std::vector<int>& arr, int n, int i) {
-	int max = i;// Инициализируем наибольший элемент как корень
-	int left = 2 * i + 1;   // Левый потомок
-	int right = 2 * i + 2;  // Правый потомок
+	int max = i;// СЃС‡РёС‚Р°РµРј СЌР»РµРјРµРЅС‚ РЅР°РёР±
+	int left = 2 * i + 1;   // Р›РµРІС‹Р№ РїРѕС‚РѕРјРѕРє
+	int right = 2 * i + 2;  // РџСЂР°РІС‹Р№ РїРѕС‚РѕРјРѕРє
 
-	// Если левый потомок существует и больше корня
+	// Р•СЃР»Рё Р»РµРІС‹Р№ РїРѕС‚РѕРјРѕРє СЃСѓС‰РµСЃС‚РІСѓРµС‚ Рё Р±РѕР»СЊС€Рµ max
 	if (left < n && arr[left] > arr[max])
 		max = left;
 
-	// Если правый потомок существует и больше наибольшего элемента
+	// Р•СЃР»Рё РїСЂР°РІС‹Р№ РїРѕС‚РѕРјРѕРє СЃСѓС‰РµСЃС‚РІСѓРµС‚ Рё Р±РѕР»СЊС€Рµ max
 	if (right < n && arr[right] > arr[max])
 		max = right;
 
-	// Если наибольший элемент не корень
+	// Р•СЃР»Рё max РЅРµ РєРѕСЂРµРЅСЊ
 	if (max != i) 
 	{
 		std::swap(arr[i], arr[max]);
 
-		// Рекурсивно просеиваем вниз для затронутой подпирамиды
+		//РџСЂРѕСЃРµРёРІР°РµРј
 		sift(arr, n, max);
 	}
 }
 
-// Пирамидальная сортировка
+// РџРёСЂР°РјРёРґР°Р»СЊРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР°
 void pyramidSort(std::vector<int>& arr) {
 	int n = arr.size();
 
-	// Построение пирамиды
-	// Для i от [n/2]-1 до 0 просеять элемент a[i] через пирамиду
-	// из элементов a[2i+1],..., a[n-1]
+	// РџРѕСЃС‚СЂРѕРµРЅРёРµ РїРёСЂР°РјРёРґС‹
+	// Р”Р»СЏ i РѕС‚ [n/2]-1 РґРѕ 0 РїСЂРѕСЃРµСЏС‚СЊ СЌР»РµРјРµРЅС‚ a[i] С‡РµСЂРµР· РїРёСЂР°РјРёРґСѓ
+	// РёР· СЌР»РµРјРµРЅС‚РѕРІ a[2i+1],..., a[n-1]
 	for (int i = n / 2 - 1; i >= 0; i--)
 		sift(arr, n, i);
 
-	// для i от до 1;
+	// РґР»СЏ i РѕС‚ РґРѕ 1;
 	for (int i = n - 1; i > 0; i--) {
 		// a[0] <-> a[i];
 		std::swap(arr[0], arr[i]);
 
-		// просеять a[0] через a[1],...a[i-1]
+		// РїСЂРѕСЃРµСЏС‚СЊ a[0] С‡РµСЂРµР· a[1],...a[i-1]
 		sift(arr, i, 0);
 	}
 }
 
-// Проверка на отсортированность
+// РџСЂРѕРІРµСЂРєР° РЅР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕСЃС‚СЊ
 bool isSorted(const std::vector<int>& arr) {
 	for (int i = 1; i < arr.size(); i++) {
 		if (arr[i] < arr[i - 1]) {
@@ -69,7 +71,7 @@ bool isSorted(const std::vector<int>& arr) {
 	return true;
 }
 
-// Вывод массива
+// Р’С‹РІРѕРґ РјР°СЃСЃРёРІР°
 void outputArray(const std::vector<int>& arr) {
 	for (int num : arr) {
 		std::cout << num << " ";
@@ -80,11 +82,20 @@ void outputArray(const std::vector<int>& arr) {
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	const int n = 10;
-	std::vector<int> arr = generateRandomArray(n, 0, 100);
-	outputArray(arr);
+	int n = 0, a = 0, b = 0;
+	std::vector<int> arr;
+	for( ; ; )
+	{
+		std::cout << "Р’РІРµРґРёС‚Рµ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ РјР°СЃСЃРёРІР°: "; std::cin >> n; std::cout << std::endl;
+		if (n == -1) break;
+		std::cout << "Р’РІРµРґРёС‚Рµ min РіСЂР°РЅРёС†Сѓ РґРёР°РїР°Р·РѕРЅР°: "; std::cin >> a; std::cout << std::endl;
+		std::cout << "Р’РІРµРґРёС‚Рµ max РіСЂР°РЅРёС†Сѓ РґРёР°РїР°Р·РѕРЅР°: "; std::cin >> b; std::cout << std::endl;
+		arr = generateRandomArray(n, a, b);
+		std::cout << "РЎРіРµРЅРµСЂРёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ: " << std::endl;
+		outputArray(arr);
+		pyramidSort(arr);
+		std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ: " << std::endl;
+		outputArray(arr);
+	}
 
-
-	pyramidSort(arr);
-	outputArray(arr);
 }
