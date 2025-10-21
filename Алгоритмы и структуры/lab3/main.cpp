@@ -57,49 +57,47 @@ std::vector<int> generateRandomArray(int size, int min_val, int max_val) {
 }
 
 // Просеивание
-void sift(std::vector<int>& arr, int start, int end) 
+void sift(std::vector<int>& arr, int n, int i)
 {
-	int root = start;
-	while (2 * root + 1 <= end) {  // Пока есть хотя бы левый потомок
-		int leftChild = 2 * root + 1;
-		int rightChild = 2 * root + 2;
-		int swapIndex = root;              // начинаем обменивать с корня
+	int max = i;// считаем элемент наиб
+	int left = 2 * i + 1;   // Левый потомок
+	int right = 2 * i + 2;  // Правый потомок
+	
+	// Если левый потомок существует и больше max
+	if (left < n && arr[left] > arr[max])
+		max = left;
 
-		// Сравниваем с левым потомком
-		if (arr[swapIndex] < arr[leftChild])
-			swapIndex = leftChild;
+	// Если правый потомок существует и больше max
+	if (right < n && arr[right] > arr[max])
+		max = right;
 
-		// Сравниваем с правым потомком (если он существует)
-		if (rightChild <= end && arr[swapIndex] < arr[rightChild])
-			swapIndex = rightChild;
+	// Если max не корень
+	if (max != i)
+	{
+		std::swap(arr[i], arr[max]);
+		
+		//Просеиваем
+		sift(arr, n, max);
+	}
 
-		if (swapIndex == root)
-			return;
-
-		std::swap(arr[root], arr[swapIndex]);
-		root = swapIndex;
+}
+// Пирамидальная сортировка
+void pyramidSort(std::vector<int>& arr) {
+	int n = arr.size();
+	// Построение пирамиды
+	// Для i от [n/2]-1 до 0 просеять элемент a[i] через пирамиду
+	// из элементов a[2i+1],..., a[n-1]
+	for (int i = n / 2 - 1; i >= 0; i--)
+		sift(arr, n, i);
+	// для i от до 1;
+	for (int i = n - 1; i > 0; i--) {
+		// a[0] <-> a[i];
+		std::swap(arr[0], arr[i]);
+		// просеять a[0] через a[1],...a[i-1]
+		sift(arr, i, 0);
 	}
 }
-	// Этап 1: построение пирамиды
-	void buildHeap(std::vector<int>&arr)
-	{
-		int n = arr.size();
-		// просеивание половины массива
-		for (int i = n / 2 - 1; i >= 0; i--) 
-		{
-			sift(arr, i, n - 1);
-		}
-	}
 
-	// Этап 2: сортировка 
-	void heapSort(std::vector<int>&arr) {
-		int n = arr.size();
-		buildHeap(arr);
-		for (int i = n - 1; i > 0; i--) {        // i - индекс последнего элемента в еще не отсортированной части массива 
-			std::swap(arr[0], arr[i]);
-			sift(arr, 0, i - 1);
-		}
-	}
 
 // Проверка на отсортированность
 bool isSorted(std::vector<int>& arr) {
@@ -158,8 +156,9 @@ int main()
 		std::vector<int> arr = loadArrayFromFile(filename);
 
 		std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
-		buildHeap(arr);
-		heapSort(arr);
+
+		pyramidSort(arr);
+
 		std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
 		std::chrono::duration<double> duration = timeEnd - timeStart;
 
