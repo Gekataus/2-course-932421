@@ -2,28 +2,24 @@
 #include <iostream>
 
 //Конструктор по умолчанию
-DynamicArray::DynamicArray() : arrayData_(nullptr), arrayLength_(0)
-{
-    std::cout << "DynamicArray::DynamicArray()" << std::endl;
-}
+DynamicArray::DynamicArray() 
+    : arrayData_(nullptr), arrayLength_(0) {}
 
 //Конструктор из обычного массива
 DynamicArray::DynamicArray(int initialLength) : arrayLength_(initialLength)
 {
-    std::cout << "DynamicArray::DynamicArray(int)" << std::endl;
 
     arrayData_ = new int[initialLength];
 
     for (int i = 0; i < arrayLength_; i++)
     {
-        arrayData_[0];
+        arrayData_[i] = 0;
     }
 }
 
 //Конструктор копирования
 DynamicArray::DynamicArray(const DynamicArray& otherArray)
 {
-    std::cout << "DynamicArray::DynamicArray(const DynamicArray&)" << std::endl;
 
     if (otherArray.arrayLength_ == 0)
     {
@@ -42,17 +38,6 @@ DynamicArray::DynamicArray(const DynamicArray& otherArray)
     }
 }
 
-//Конструктор перемещения
-DynamicArray::DynamicArray(DynamicArray&& otherArray)
-{
-    std::cout << "DynamicArray::DynamicArray(DynamicArray&&)" << std::endl;
-
-    arrayData_ = otherArray.arrayData_;
-    arrayLength_ = otherArray.arrayLength_;
-    otherArray.arrayData_ = nullptr;
-    otherArray.arrayLength_ = 0;
-}
-
 //Деструктор
 DynamicArray::~DynamicArray()
 {
@@ -61,6 +46,45 @@ DynamicArray::~DynamicArray()
     delete[] arrayData_;
 }
 
+//- обмен содержимого с другим массивом (swap)
+void DynamicArray::ArraysSwap(DynamicArray& other)
+{
+    std::swap(arrayData_, other.arrayData_);
+    std::swap(arrayLength_, other.arrayLength_);
+}
+
+// - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет); 
+int DynamicArray::findElement(const int a)
+{
+    for (int i = 0; i < arrayLength_; i++)
+    {
+        if (arrayData_[i] == a) return i;
+    }
+    
+    return -1;
+}
+
+std::istream& operator>>(std::istream& inputStream, DynamicArray& input)
+{
+    for (int i = 0; i < input.ArrayLenght(); ++i)
+    {
+
+    }
+
+
+    return inputStream;
+}
+
+std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output)
+{
+    for (int i = 0; i < output.ArrayLenght(); ++i)
+    {
+
+    }
+
+
+    return outputStream;
+}
 //Вставка элемента по индексу
 bool DynamicArray::insertAt(const int index, const int value)
 {
@@ -124,24 +148,6 @@ DynamicArray& DynamicArray::operator=(const DynamicArray& otherArray)
                 arrayData_[index] = otherArray.arrayData_[index];
             }
         }
-    }
-
-    return *this;
-}
-
-//Перегрузка операции присвоения перемещением
-DynamicArray& DynamicArray::operator=(DynamicArray&& otherArray)
-{
-    std::cout << "DynamicArray::operator=(DynamicArray&&)" << std::endl;
-
-    if (this != &otherArray)
-    {
-        delete[] arrayData_;
-
-        arrayData_ = otherArray.arrayData_;
-        arrayLength_ = otherArray.arrayLength_;
-        otherArray.arrayData_ = nullptr;
-        otherArray.arrayLength_ = 0;
     }
 
     return *this;

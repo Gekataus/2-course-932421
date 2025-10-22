@@ -3,29 +3,26 @@
 
 class DynamicArray
 {
+    public:
     //- конструкторы (по умолчанию, конструктор из обычного массива, конструктор копирования) +
     DynamicArray();
     DynamicArray(int);
     DynamicArray(const DynamicArray&);
 
-    //- конструктор перемещения +
-    DynamicArray(DynamicArray&&);
-
     //- деструктор +
     ~DynamicArray();
 
-    //- получение размера (количества хранимых элементов в настоящий момент);
-    int ArrayLen() const;
-    
-    //- обмен содержимого с другим массивом (swap);
-    void ArraySwap(DynamicArray&);
+    //Геттер
 
-    // - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет);
+    //- получение размера (количества хранимых элементов в настоящий момент) +
+    int ArrayLenght() const { return arrayLength_; }
+    
+    //- обмен содержимого с другим массивом (swap) +
+    void ArraysSwap(DynamicArray&);
+
+    // - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет) +
     int findElement(const int);
 
-    //- ввод/вывод в консоль (потоковый);
-    void input();
-    void output() const;
     //- сортировка элементов (любым алгоритмом);
     void ArraySort();
 
@@ -43,12 +40,6 @@ class DynamicArray
     //- поиск максимального/минимального элемента;
     int findMaxEl() const;
     int findMinEl() const;
-    //- получение итераторов на начало/конец массива (методы должны называться begin и end. Метод end должен возвращать итератор не на последний элемент, а за позицию после него);
-
-    //- вставка элемента перед итератором;
-    
-    //- удаление элемента или диапазона элементов с помощью итераторов.
-
 
     //Перегрузки:
     
@@ -67,12 +58,6 @@ class DynamicArray
 
     //-присваивание копированием(=) +
     DynamicArray& operator=(const DynamicArray&);
-
-    //-добавление элемента в конец массива(+и +=);
-
-
-    //-присваивание перемещением(=(DynamicArray && other)) +
-    DynamicArray& operator=(DynamicArray&&);
         
     //- сложение(конкатенация) с другим массивом(здесь имеется в виду другим объектом нашего класса, а не стандартные массивы) (+и += );
     //-сравнение(== и != ). 
@@ -83,3 +68,7 @@ class DynamicArray
     int* arrayData_;
     int arrayLength_;
 };
+
+//- ввод/вывод в консоль (потоковый);
+std::istream& operator>>(std::istream& inputStream, DynamicArray& input);
+std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output);
