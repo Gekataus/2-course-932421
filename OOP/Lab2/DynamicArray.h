@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <assert.h>
+#include <iostream>
 
 class DynamicArray
 {
@@ -12,34 +13,51 @@ class DynamicArray
     //- деструктор +
     ~DynamicArray();
 
-    //Геттер
+
+    //Геттеры
+    // Геттер для получения указателя на данные массива
+    const int* getArrayData() const {return arrayData_;}
 
     //- получение размера (количества хранимых элементов в настоящий момент) +
-    int ArrayLenght() const { return arrayLength_; }
+    int getArrayLength() const { return arrayLength_; }
     
+    // Геттер для получения элемента по индексу с проверкой границ
+    int getAt(int) const;
+
+
+    //Сеттеры
+    // Сеттер для установки длины массива
+    void setArrayLength(int);
+    // Сеттер для установки значения по индексу
+    void setAt(int, int);
+
+
     //- обмен содержимого с другим массивом (swap) +
     void ArraysSwap(DynamicArray&);
 
     // - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет) +
     int findElement(const int);
 
-    //- сортировка элементов (любым алгоритмом);
-    void ArraySort();
+    //- сортировка элементов (пирамидальная) +
+    void sift(int, int);
+    void sort();
 
     //- вставка элемента по индексу.Если индекс некорректный, вернуть false +
     bool insertAt(const int, const int);
 
-    //- удаление элемента по индексу. Если индекс некорректный, вернуть false;
-    bool removeAt(const int, const int);
+    //- удаление элемента по индексу. Если индекс некорректный, вернуть false +
+    bool removeAt(const int);
     
-    //- удаление элемента по значению (первое вхождение). Если элемент отсутствует в массиве, вернуть false;
-    bool removeFirstValue(const int, const int);
-    //- удаление всех элементов с заданным значением;
+    //-удаление элемента по значению(первое вхождение).Если элемент отсутствует в массиве, вернуть false +
+    bool removeFirstValue(const int);
+
+    //-удаление всех элементов с заданным значением +
     bool removeAllValue(const int);
 
-    //- поиск максимального/минимального элемента;
+    //поиск максимального / минимального элемента +
     int findMaxEl() const;
     int findMinEl() const;
+    
 
     //Перегрузки:
     
@@ -59,9 +77,13 @@ class DynamicArray
     //-присваивание копированием(=) +
     DynamicArray& operator=(const DynamicArray&);
         
-    //- сложение(конкатенация) с другим массивом(здесь имеется в виду другим объектом нашего класса, а не стандартные массивы) (+и += );
-    //-сравнение(== и != ). 
-
+    //- сложение(конкатенация) с другим массивом(здесь имеется в виду другим объектом нашего класса, а не стандартные массивы) (+ и +=) +
+    DynamicArray operator+(const DynamicArray&) const;
+    DynamicArray& operator+=(const DynamicArray&);
+    
+    //-сравнение(== и != ) +
+    bool operator==(const DynamicArray& other) const;
+    bool operator!=(const DynamicArray& other) const;
 
     private:
 
@@ -69,6 +91,6 @@ class DynamicArray
     int arrayLength_;
 };
 
-//- ввод/вывод в консоль (потоковый);
+//- ввод/вывод в консоль (потоковый) +
 std::istream& operator>>(std::istream& inputStream, DynamicArray& input);
 std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output);
