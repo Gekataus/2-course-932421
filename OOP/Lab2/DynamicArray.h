@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <assert.h>
 #include <iostream>
+using namespace std;
 
 class DynamicArray
 {
@@ -52,7 +53,7 @@ class DynamicArray
     bool removeFirstValue(const int);
 
     //-удаление всех элементов с заданным значением +
-    bool removeAllValue(const int);
+    void removeAllValue(const int);
 
     //поиск максимального / минимального элемента +
     int findMaxEl() const;
@@ -92,5 +93,5 @@ class DynamicArray
 };
 
 //- ввод/вывод в консоль (потоковый) +
-std::istream& operator>>(std::istream& inputStream, DynamicArray& input);
-std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output);
+istream& operator>>(istream& inputStream, DynamicArray& input);
+ostream& operator<<(ostream& outputStream, const DynamicArray& output);

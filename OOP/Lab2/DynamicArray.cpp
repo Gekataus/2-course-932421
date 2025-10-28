@@ -1,6 +1,7 @@
 ﻿#include "DynamicArray.h"
 #include <iostream>
 #include <vector>
+using namespace std;
 
 //Конструктор по умолчанию
 DynamicArray::DynamicArray() 
@@ -48,8 +49,8 @@ DynamicArray::~DynamicArray()
 //- обмен содержимого с другим массивом (swap)
 void DynamicArray::ArraysSwap(DynamicArray& other)
 {
-    std::swap(arrayData_, other.arrayData_);
-    std::swap(arrayLength_, other.arrayLength_);
+    swap(arrayData_, other.arrayData_);
+    swap(arrayLength_, other.arrayLength_);
 }
 
 // - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет); 
@@ -66,7 +67,7 @@ int DynamicArray::findElement(const int a)
 // Геттер для получения элемента по индексу с проверкой границ
 int DynamicArray::getAt(int index) const {
     if (index < 0 || index >= arrayLength_) {
-        throw std::out_of_range("Index out of range");
+        throw out_of_range("Index out of range");
     }
     return arrayData_[index];
 }
@@ -139,8 +140,8 @@ DynamicArray& DynamicArray::operator=(const DynamicArray& otherArray)
 // Сеттер для установки длины массива
 void DynamicArray::setArrayLength(int newLength) {
     if (newLength < 0) {
-        std::cout << "Длина не может быть отрицательной, установлена длина 1";
-        newLength = 0;
+        cout << "Длина не может быть отрицательной, установлена длина 1";
+        newLength = 1;
     }
 
     if (newLength == arrayLength_) {
@@ -155,9 +156,9 @@ void DynamicArray::setArrayLength(int newLength) {
     }
 
     int* newData = new int[newLength];
-    int elementsToCopy = std::min(arrayLength_, newLength);
+    int elementsToCopy = min(arrayLength_, newLength);
     if (elementsToCopy > 0 && arrayData_ != nullptr) {
-        std::copy(arrayData_, arrayData_ + elementsToCopy, newData);
+        copy(arrayData_, arrayData_ + elementsToCopy, newData);
     }
 
     for (int i = elementsToCopy; i < newLength; ++i) {
@@ -172,32 +173,42 @@ void DynamicArray::setArrayLength(int newLength) {
 // Сеттер для установки значения по индексу
 void DynamicArray::setAt(int index, int value) {
         if (index < 0 || index >= arrayLength_) {
-            throw std::out_of_range("Индекс выходит за границы массива");
+            throw out_of_range("Индекс выходит за границы массива");
         }
         arrayData_[index] = value;
     }
 
 // Перегрузка оператора ввода
-std::istream& operator>>(std::istream& inputStream, DynamicArray& input)
+istream& operator>>(istream& inputStream, DynamicArray& input)
 {
-    int length;
-    std::cout << "Введите длинну массива: ";
-    inputStream >> length;
+    if (input.getArrayLength() != 0) {
+        cout << "Введите данные для массива длинны " << input.getArrayLength() << ": ";
+        for (int i = 0; i < input.getArrayLength(); ++i) {
+            int value;
+            inputStream >> value;
+            input.setAt(i, value);
+        }
+    }
+    else {
+        int length;
+        cout << "Введите длинну массива: ";
+        inputStream >> length;
 
-    input.setArrayLength(length);
+        input.setArrayLength(length);
 
-    std::cout << "Введите данные: ";
-    for (int i = 0; i < length; ++i) {
-        int value;
-        inputStream >> value;
-        input.setAt(i, value);
+        cout << "Введите данные: ";
+        for (int i = 0; i < length; ++i) {
+            int value;
+            inputStream >> value;
+            input.setAt(i, value);
+        }
     }
 
     return inputStream;
 }
 
 // Перегрузка оператора вывода
-std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output)
+ostream& operator<<(ostream& outputStream, const DynamicArray& output)
 {
     int length = output.getArrayLength();
     outputStream << "[ ";
@@ -205,7 +216,6 @@ std::ostream& operator<<(std::ostream& outputStream, const DynamicArray& output)
         outputStream << output.getArrayData()[i] << " ";
     }
     outputStream << "]";
-    outputStream << "\n";
 
     return outputStream;
 }
@@ -223,7 +233,7 @@ void DynamicArray::sift(int n, int i) {
         max = right;
 
     if (max != i) {
-        std::swap(arrayData_[i], arrayData_[max]);
+        swap(arrayData_[i], arrayData_[max]);
         sift(n, max);
     }
 }
@@ -236,7 +246,7 @@ void DynamicArray::sort() {
         sift(n, i);
     // Извлечение элементов из пирамиды
     for (int i = n - 1; i > 0; i--) {
-        std::swap(arrayData_[0], arrayData_[i]);
+        swap(arrayData_[0], arrayData_[i]);
         sift(i, 0);
     }
 }
@@ -279,7 +289,7 @@ bool DynamicArray::removeFirstValue(const int value)
 }
 
 //-удаление всех элементов с заданным значением
-bool DynamicArray::removeAllValue(const int value)
+void DynamicArray::removeAllValue(const int value)
 {
     if (arrayLength_ == 0) return;
 
@@ -321,7 +331,7 @@ int DynamicArray::findMinEl() const {
     return minVal;
 }
 
-// Перегрузка сложение (конкатенация) с другим массивом (+)
+// Перегрузка сложения (конкатенация) с другим массивом (+)
 DynamicArray DynamicArray::operator+(const DynamicArray& other) const
 {
     DynamicArray result;
@@ -337,7 +347,7 @@ DynamicArray DynamicArray::operator+(const DynamicArray& other) const
     return result;
 }
 
-// Перегрузка сложение (конкатенация) с другим массивом (+=)
+// Перегрузка сложения (конкатенация) с другим массивом (+=)
 DynamicArray& DynamicArray::operator+=(const DynamicArray& other)
 {
     int* tempArrayData = new int[arrayLength_ + other.arrayLength_];
