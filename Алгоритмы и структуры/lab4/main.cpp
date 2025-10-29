@@ -3,6 +3,7 @@
 #include <random>
 #include <cmath>
 #include <fstream>
+#include <chrono>
 using namespace std;
 
 //создание массива случайных чисел (Библиотека random)
@@ -128,7 +129,7 @@ int main()
     setlocale(LC_ALL, "Russian");
     int x;
     vector<int> arr1;
-    cout << "Брать массив с файла или сгенерировать вручную с консоли?" << endl << "С консоли - 1" << endl << "С файла - 2" << endl;
+    cout << "Брать массив с файла или сгенерировать вручную с консоли? Введите:" << endl << "С консоли - 1" << endl << "С файла - 2" << endl;
     cin >> x;
     if (x == 1) {
         while (true) {
@@ -136,7 +137,7 @@ int main()
             int n, min, max;
             cout << "Введите длинну массива, минимальную и максимальную границу" << endl;
             cin >> n >> min >> max;
-            vector<int> arr1 = generateRandomArray(n, min, max);
+            arr1 = generateRandomArray(n, min, max);
             cout << "Ваш массив:" << endl;
             outputArray(arr1);
 
@@ -146,7 +147,10 @@ int main()
             if (x == 1) h = generateShell(n);
             if (x == 2) h = generateTwo(n);
             if (x == 3) h = generateKnuth(n);
+            std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
             shellSort(arr1, h);
+            std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> duration = timeEnd - timeStart;
 
             if (isSorted(arr1)) {
                 cout << "Массив отсортирован" << endl;
@@ -154,6 +158,7 @@ int main()
                     cout << "Отсортированный массив:" << endl;
                     outputArray(arr1);
                 }
+                cout << "\nВремя сортировки : " << duration.count() << " с." << std::endl;
             }
             cout << "Если хотите создать новый массив и отсортировать его, введите 1, если хотите завершить, введите -1" << endl;
             cin >> x;
@@ -162,19 +167,44 @@ int main()
     if (x == 2) {
         while (true) {
             int y;
-            cout << "Из какого файла брать массив?" << endl;
+            cout << "\nИз какого файла брать массив? Введите цифру" << endl;
             cout << "1. array_10000_-10_10.txt" << endl;
             cout << "2. array_10000_-1000_1000.txt" << endl;
-            cout << "3. array_10000_-100000_1000000.txt" << endl;
+            cout << "3. array_10000_-100000_100000.txt" << endl;
             cout << "4. array_100000_-10_10.txt" << endl;
             cout << "5. array_100000_-1000_1000.txt" << endl;
-            cout << "6. array_100000_-100000_1000000.txt" << endl;
+            cout << "6. array_100000_-100000_100000.txt" << endl;
             cout << "7. array_1000000_-10_10.txt" << endl;
             cout << "8. array_1000000_-1000_1000.txt" << endl;
-            cout << "9. array_1000000_-100000_1000000.txt" << endl;
+            cout << "9. array_1000000_-100000_100000.txt" << endl;
             cout << "Если хотите прекратить, введите -1" << endl;
             cin >> y;
             if (y == -1) break;
+            if (y == 1) arr1 = loadArrayFromFile("array_10000_-10_10.txt");
+            if (y == 2) arr1 = loadArrayFromFile("array_10000_-1000_1000.txt");
+            if (y == 3) arr1 = loadArrayFromFile("array_10000_-100000_100000.txt");
+            if (y == 4) arr1 = loadArrayFromFile("array_100000_-10_10.txt");
+            if (y == 5) arr1 = loadArrayFromFile("array_100000_-1000_1000.txt");
+            if (y == 6) arr1 = loadArrayFromFile("array_100000_-100000_100000.txt");
+            if (y == 7) arr1 = loadArrayFromFile("array_1000000_-10_10.txt");
+            if (y == 8) arr1 = loadArrayFromFile("array_1000000_-1000_1000.txt");
+            if (y == 9) arr1 = loadArrayFromFile(" array_1000000_-100000_100000.txt");
+
+            vector<int> h;
+            cout << "Как формировать шаги?" << endl << "1. Последовательность Шелла" << endl << "2. Возведение 2 в степень m" << endl << "3.Последовательность Кнута" << endl;
+            cin >> x;
+            if (x == 1) h = generateShell(arr1.size());
+            if (x == 2) h = generateTwo(arr1.size());
+            if (x == 3) h = generateKnuth(arr1.size());
+
+            std::chrono::high_resolution_clock::time_point timeStart = std::chrono::high_resolution_clock::now();
+            shellSort(arr1, h);
+            std::chrono::high_resolution_clock::time_point timeEnd = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> duration = timeEnd - timeStart;
+            if (isSorted(arr1)) {
+                cout << "Массив отсортирован" << endl << "Время сортировки: " << duration.count() << " с." << std::endl;
+            }
+
         }
 
     }
