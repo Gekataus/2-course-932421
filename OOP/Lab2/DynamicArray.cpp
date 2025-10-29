@@ -91,7 +91,7 @@ void DynamicArray::setArrayLength(int newLength) {
 }
 
 // Сеттер для установки значения по индексу
-void DynamicArray::setAt(int index, int value) {
+void DynamicArray::setAt(const int index,const int value) {
     if (index < 0 || index >= arrayLength_) {
         throw out_of_range("Индекс выходит за границы массива");
     }
@@ -117,7 +117,7 @@ int DynamicArray::findElement(const int a)
 }
 
 // Просеивание
-void DynamicArray::sift(int n, int i) {
+void DynamicArray::sift(const int n, const int i) {
     int max = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;

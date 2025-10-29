@@ -30,7 +30,7 @@ class DynamicArray
     // Сеттер для установки длины массива
     void setArrayLength(int);
     // Сеттер для установки значения по индексу
-    void setAt(int, int);
+    void setAt(const int,const int);
 
 
     //- обмен содержимого с другим массивом (swap) +
@@ -40,7 +40,6 @@ class DynamicArray
     int findElement(const int);
 
     //- сортировка элементов (пирамидальная) +
-    void sift(int, int);
     void sort();
 
     //- вставка элемента по индексу.Если индекс некорректный, вернуть false +
@@ -90,6 +89,7 @@ class DynamicArray
 
     int* arrayData_;
     int arrayLength_;
+    void sift(const int, const int);
 };
 
 //- ввод/вывод в консоль (потоковый) +
