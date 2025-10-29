@@ -1,74 +1,74 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include "DynamicArray.h"
 using namespace std;
 
 int main()
 {
     setlocale(LC_ALL, "Russian");
-    // Äëÿ int
-    cout << "Òåñò int" << endl << endl;
+    // Ğ”Ğ»Ñ int
+    cout << "Ğ¢ĞµÑÑ‚ int" << endl << endl;
 
-    // Òåñò êîíñòğóêòîğîâ
-    cout << "\n1. Òåñò êîíñòğóêòîğîâ:" << endl;
+    // Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n1. Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²:" << endl;
     DynamicArray<int> arr1;
-    cout << "Êîíñòğóêòîğ ïî óìîë÷àíèş - äëèíà: " << arr1.getArrayLength() << "  Îæèäàåì: 0" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¿Ğ¾ ÑƒĞ¼Ğ¾Ğ»Ñ‡Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr1.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 0" << endl;
 
     int testData[] = { 1, 2, 3, 4, 5 };
     DynamicArray<int> arr2(testData, 5);
-    cout << "Êîíñòğóêòîğ èç îáû÷íîãî ìàññèâà - äëèíà: " << arr2.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¸Ğ· Ğ¾Ğ±Ñ‹Ñ‡Ğ½Ğ¾Ğ³Ğ¾ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr2.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
     DynamicArray<int> arr3(arr2);
-    cout << "Êîíñòğóêòîğ êîïèğîâàíèÿ - äëèíà: " << arr3.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ ĞºĞ¾Ğ¿Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr3.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
-    // Òåñò âñòàâêè è óäàëåíèÿ
-    cout << "\n2. Òåñò âñòàâêè è óäàëåíèÿ:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ
+    cout << "\n2. Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ:" << endl;
     int initialData[] = { 10, 20, 30, 40, 50 };
     DynamicArray<int> arr5(initialData, 5);
     int x, y;
-    cout << "Èñõîäíûé ìàññèâ: " << arr5 << endl;
-    cout << "Ââåäèòå ıëåìåíò äëÿ âñòàâêè è èíäåêñ, êóäà âû ñîáèğàåòåñü åãî ïîñòàâèòü: ";
+    cout << "Ğ˜ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğ¹ Ğ¼Ğ°ÑÑĞ¸Ğ²: " << arr5 << endl;
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚ Ğ´Ğ»Ñ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ Ğ¸Ğ½Ğ´ĞµĞºÑ, ĞºÑƒĞ´Ğ° Ğ²Ñ‹ ÑĞ¾Ğ±Ğ¸Ñ€Ğ°ĞµÑ‚ĞµÑÑŒ ĞµĞ³Ğ¾ Ğ¿Ğ¾ÑÑ‚Ğ°Ğ²Ğ¸Ñ‚ÑŒ: ";
     cin >> x >> y;
-    if (!arr5.insertAt(y, x)) cout << "Íåêîğğåêòíûé èíäåêñ" << endl;
-    else cout << "Ìàññèâ ïîñëå âñòàâêè: " << arr5 << endl;
+    if (!arr5.insertAt(y, x)) cout << "ĞĞµĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ğ¸Ğ½Ğ´ĞµĞºÑ" << endl;
+    else cout << "ĞœĞ°ÑÑĞ¸Ğ² Ğ¿Ğ¾ÑĞ»Ğµ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸: " << arr5 << endl;
 
     arr5.removeAt(1);
-    cout << "Ïîñëå óäàëåíèÿ âòîğîãî ıëåìåíòà: " << arr5 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²Ñ‚Ğ¾Ñ€Ğ¾Ğ³Ğ¾ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ°: " << arr5 << endl;
 
-    cout << "Ââåäèòå çíà÷åíèå äëÿ óäàëåíèÿ ïåğâîãî âõîæäåíèÿ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ»Ñ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ¿ĞµÑ€Ğ²Ğ¾Ğ³Ğ¾ Ğ²Ñ…Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ñ: ";
     cin >> x;
-    if (!arr5.removeFirstValue(x)) cout << "İëåìåíò íå íàéäåí" << endl;
-    else cout << "Ïîñëå removeFirstValue(" << x << "): " << arr5 << endl;
+    if (!arr5.removeFirstValue(x)) cout << "Ğ­Ğ»ĞµĞ¼ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½" << endl;
+    else cout << "ĞŸĞ¾ÑĞ»Ğµ removeFirstValue(" << x << "): " << arr5 << endl;
 
-    // Òåñò ïîèñêà
-    cout << "\n3. Òåñò ïîèñêà:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°
+    cout << "\n3. Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°:" << endl;
     int searchData[] = { 5, 3, 8, 3, 1 };
     DynamicArray<int> arr6(searchData, 5);
 
-    cout << "Ìàññèâ: " << arr6 << endl;
-    cout << "findElement(3): " << arr6.findElement(3) << " (îæèäàëîñü: 1)" << endl;
-    cout << "findElement(10): " << arr6.findElement(10) << " (îæèäàëîñü: -1)" << endl;
-    cout << "findMaxEl(): " << arr6.findMaxEl() << " (îæèäàëîñü: 8)" << endl;
-    cout << "findMinEl(): " << arr6.findMinEl() << " (îæèäàëîñü: 1)" << endl;
+    cout << "ĞœĞ°ÑÑĞ¸Ğ²: " << arr6 << endl;
+    cout << "findElement(3): " << arr6.findElement(3) << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 1)" << endl;
+    cout << "findElement(10): " << arr6.findElement(10) << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: -1)" << endl;
+    cout << "findMaxEl(): " << arr6.findMaxEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 8)" << endl;
+    cout << "findMinEl(): " << arr6.findMinEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 1)" << endl;
 
-    // Òåñò ñîğòèğîâêè
-    cout << "\n4. Òåñò ñîğòèğîâêè:" << endl;
+    // Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸
+    cout << "\n4. Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸:" << endl;
     DynamicArray<int> arrsort;
-    cout << "Ââåäèòå äëèíó ìàññèâà äëÿ ñîğòèğîâêè: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ´Ğ»Ğ¸Ğ½Ñƒ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° Ğ´Ğ»Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: ";
     int len;
     cin >> len;
     arrsort.setArrayLength(len);
-    cout << "Ââåäèòå " << len << " ıëåìåíòîâ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ " << len << " ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ¾Ğ²: ";
     for (int i = 0; i < len; i++) {
         int val;
         cin >> val;
         arrsort.setAt(i, val);
     }
-    cout << "Äî ñîğòèğîâêè: " << arrsort << endl;
+    cout << "Ğ”Ğ¾ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort << endl;
     arrsort.sort();
-    cout << "Ïîñëå ñîğòèğîâêè: " << arrsort << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort << endl;
 
-    // Òåñò îïåğàòîğîâ
-    cout << "\n5. Òåñò ïåğåãğóçîê:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n5. Ğ¢ĞµÑÑ‚ Ğ¿ĞµÑ€ĞµĞ³Ñ€ÑƒĞ·Ğ¾Ğº:" << endl;
     int data7[] = { 10, 20 };
     DynamicArray<int> arr7(data7, 2);
 
@@ -81,127 +81,127 @@ int main()
     cout << "arr7 + arr8: " << arrsumm << endl;
 
     arr7 += arr8;
-    cout << "Ïîñëå arr7 += arr8: " << arr7 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ arr7 += arr8: " << arr7 << endl;
 
     cout << "arr7 == arr8: " << (arr7 == arr8) << endl;
     cout << "arr7 != arr8: " << (arr7 != arr8) << endl;
 
-    // Òåñò îïåğàòîğà []
-    cout << "\n6. Òåñò îïåğàòîğà []:" << endl;
-    cout << "arr7[0]: " << arr7[0] << " (îæèäàëîñü: 10)" << endl;
-    cout << "arr7[1]: " << arr7[1] << " (îæèäàëîñü: 20)" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ‚Ğ¾Ñ€Ğ° []
+    cout << "\n6. Ğ¢ĞµÑÑ‚ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ‚Ğ¾Ñ€Ğ° []:" << endl;
+    cout << "arr7[0]: " << arr7[0] << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 10)" << endl;
+    cout << "arr7[1]: " << arr7[1] << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 20)" << endl;
     arr7[0] = 100;
-    cout << "Ïîñëå arr7[0] = 100: " << arr7 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ arr7[0] = 100: " << arr7 << endl;
 
-    // Òåñò ïğèñâàèâàíèÿ
-    cout << "\n7. Ïğèñâàèâàíèå:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¿Ñ€Ğ¸ÑĞ²Ğ°Ğ¸Ğ²Ğ°Ğ½Ğ¸Ñ
+    cout << "\n7. ĞŸÑ€Ğ¸ÑĞ²Ğ°Ğ¸Ğ²Ğ°Ğ½Ğ¸Ğµ:" << endl;
     int data9[] = { 100, 200, 300 };
     DynamicArray<int> arr9(data9, 3);
-    cout << "Ìàññèâ arr9: " << arr9 << endl;
+    cout << "ĞœĞ°ÑÑĞ¸Ğ² arr9: " << arr9 << endl;
 
     DynamicArray<int> arr10;
     arr10 = arr9;
-    cout << "Ïîñëå arr10 = arr9, arr10: " << arr10 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ arr10 = arr9, arr10: " << arr10 << endl;
 
-    // Òåñò îáìåíà
-    cout << "\n8. Òåñò îáìåíà:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¾Ğ±Ğ¼ĞµĞ½Ğ°
+    cout << "\n8. Ğ¢ĞµÑÑ‚ Ğ¾Ğ±Ğ¼ĞµĞ½Ğ°:" << endl;
     int data11[] = { 1, 2 };
     DynamicArray<int> arr11(data11, 2);
 
     int data12[] = { 9, 8 };
     DynamicArray<int> arr12(data12, 2);
 
-    cout << "Äî îáìåíà - arr11: " << arr11 << ", arr12: " << arr12 << endl;
+    cout << "Ğ”Ğ¾ Ğ¾Ğ±Ğ¼ĞµĞ½Ğ° - arr11: " << arr11 << ", arr12: " << arr12 << endl;
     arr11.ArraysSwap(arr12);
-    cout << "Ïîñëå îáìåíà - arr11: " << arr11 << ", arr12: " << arr12 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ Ğ¾Ğ±Ğ¼ĞµĞ½Ğ° - arr11: " << arr11 << ", arr12: " << arr12 << endl;
 
-    // Òåñò óäàëåíèÿ âñåõ çíà÷åíèé
-    cout << "\n9. Òåñò óäàëåíèÿ âñåõ çíà÷åíèé:" << endl;
+    // Ğ¢ĞµÑÑ‚ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²ÑĞµÑ… Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹
+    cout << "\n9. Ğ¢ĞµÑÑ‚ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²ÑĞµÑ… Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹:" << endl;
     int data13[] = { 1, 2, 3, 2, 4, 2 };
     DynamicArray<int> arr13(data13, 6);
 
-    cout << "Äî removeAllValue(2): " << arr13 << endl;
+    cout << "Ğ”Ğ¾ removeAllValue(2): " << arr13 << endl;
     arr13.removeAllValue(2);
-    cout << "Ïîñëå removeAllValue(2): " << arr13 << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ removeAllValue(2): " << arr13 << endl;
 
-    // Òåñò ãåòòåğîâ è ñåòòåğîâ
-    cout << "\n10. Òåñò ãåòòåğîâ è ñåòòåğîâ:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ³ĞµÑ‚Ñ‚ĞµÑ€Ğ¾Ğ² Ğ¸ ÑĞµÑ‚Ñ‚ĞµÑ€Ğ¾Ğ²
+    cout << "\n10. Ğ¢ĞµÑÑ‚ Ğ³ĞµÑ‚Ñ‚ĞµÑ€Ğ¾Ğ² Ğ¸ ÑĞµÑ‚Ñ‚ĞµÑ€Ğ¾Ğ²:" << endl;
     DynamicArray<int> arr14;
     arr14.setArrayLength(3);
     arr14.setAt(0, 7);
     arr14.setAt(1, 8);
     arr14.setAt(2, 9);
-    cout << "Ìàññèâ ïîñëå set ìåòîäîâ: " << arr14 << endl;
-    cout << "getAt(1): " << arr14.getAt(1) << " (îæèäàëîñü: 8)" << endl;
+    cout << "ĞœĞ°ÑÑĞ¸Ğ² Ğ¿Ğ¾ÑĞ»Ğµ set Ğ¼ĞµÑ‚Ğ¾Ğ´Ğ¾Ğ²: " << arr14 << endl;
+    cout << "getAt(1): " << arr14.getAt(1) << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 8)" << endl;
 
     const int* rawData = arr14.getArrayData();
     cout << "getArrayData(): [" << rawData[0] << ", " << rawData[1] << ", " << rawData[2] << "]" << endl;
 
-    // Äëÿ float
-    cout << "\n\nÒèï float" << endl << endl;
+    // Ğ”Ğ»Ñ float
+    cout << "\n\nĞ¢Ğ¸Ğ¿ float" << endl << endl;
 
-    // Òåñò êîíñòğóêòîğîâ
-    cout << "\n1. Òåñò êîíñòğóêòîğîâ:" << endl;
+    // Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n1. Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²:" << endl;
     DynamicArray<float> arr1_float;
-    cout << "Êîíñòğóêòîğ ïî óìîë÷àíèş - äëèíà: " << arr1_float.getArrayLength() << "  Îæèäàåì: 0" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¿Ğ¾ ÑƒĞ¼Ğ¾Ğ»Ñ‡Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr1_float.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 0" << endl;
 
     float testData_float[] = { 1.1f, 2.2f, 3.3f, 4.4f, 5.5f };
     DynamicArray<float> arr2_float(testData_float, 5);
-    cout << "Êîíñòğóêòîğ èç îáû÷íîãî ìàññèâà - äëèíà: " << arr2_float.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¸Ğ· Ğ¾Ğ±Ñ‹Ñ‡Ğ½Ğ¾Ğ³Ğ¾ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr2_float.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
     DynamicArray<float> arr3_float(arr2_float);
-    cout << "Êîíñòğóêòîğ êîïèğîâàíèÿ - äëèíà: " << arr3_float.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ ĞºĞ¾Ğ¿Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr3_float.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
-    // Òåñò âñòàâêè è óäàëåíèÿ
-    cout << "\n2. Òåñò âñòàâêè è óäàëåíèÿ:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ
+    cout << "\n2. Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ:" << endl;
     float initialData_float[] = { 10.5f, 20.5f, 30.5f, 40.5f, 50.5f };
     DynamicArray<float> arr5_float(initialData_float, 5);
     float x_float;
     int y_float;
-    cout << "Èñõîäíûé ìàññèâ: " << arr5_float << endl;
-    cout << "Ââåäèòå ıëåìåíò äëÿ âñòàâêè è èíäåêñ, êóäà âû ñîáèğàåòåñü åãî ïîñòàâèòü: ";
+    cout << "Ğ˜ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğ¹ Ğ¼Ğ°ÑÑĞ¸Ğ²: " << arr5_float << endl;
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚ Ğ´Ğ»Ñ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ Ğ¸Ğ½Ğ´ĞµĞºÑ, ĞºÑƒĞ´Ğ° Ğ²Ñ‹ ÑĞ¾Ğ±Ğ¸Ñ€Ğ°ĞµÑ‚ĞµÑÑŒ ĞµĞ³Ğ¾ Ğ¿Ğ¾ÑÑ‚Ğ°Ğ²Ğ¸Ñ‚ÑŒ: ";
     cin >> x_float >> y_float;
-    if (!arr5_float.insertAt(y_float, x_float)) cout << "Íåêîğğåêòíûé èíäåêñ" << endl;
-    else cout << "Ìàññèâ ïîñëå âñòàâêè: " << arr5_float << endl;
+    if (!arr5_float.insertAt(y_float, x_float)) cout << "ĞĞµĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ğ¸Ğ½Ğ´ĞµĞºÑ" << endl;
+    else cout << "ĞœĞ°ÑÑĞ¸Ğ² Ğ¿Ğ¾ÑĞ»Ğµ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸: " << arr5_float << endl;
 
     arr5_float.removeAt(1);
-    cout << "Ïîñëå óäàëåíèÿ âòîğîãî ıëåìåíòà: " << arr5_float << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²Ñ‚Ğ¾Ñ€Ğ¾Ğ³Ğ¾ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ°: " << arr5_float << endl;
 
-    cout << "Ââåäèòå çíà÷åíèå äëÿ óäàëåíèÿ ïåğâîãî âõîæäåíèÿ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ»Ñ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ¿ĞµÑ€Ğ²Ğ¾Ğ³Ğ¾ Ğ²Ñ…Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ñ: ";
     cin >> x_float;
-    if (!arr5_float.removeFirstValue(x_float)) cout << "İëåìåíò íå íàéäåí" << endl;
-    else cout << "Ïîñëå removeFirstValue(" << x_float << "): " << arr5_float << endl;
+    if (!arr5_float.removeFirstValue(x_float)) cout << "Ğ­Ğ»ĞµĞ¼ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½" << endl;
+    else cout << "ĞŸĞ¾ÑĞ»Ğµ removeFirstValue(" << x_float << "): " << arr5_float << endl;
 
-    // Òåñò ïîèñêà
-    cout << "\n3. Òåñò ïîèñêà:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°
+    cout << "\n3. Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°:" << endl;
     float searchData_float[] = { 5.5f, 3.3f, 8.8f, 3.3f, 1.1f };
     DynamicArray<float> arr6_float(searchData_float, 5);
 
-    cout << "Ìàññèâ: " << arr6_float << endl;
-    cout << "findElement(3.3): " << arr6_float.findElement(3.3f) << " (îæèäàëîñü: 1)" << endl;
-    cout << "findElement(10.0): " << arr6_float.findElement(10.0f) << " (îæèäàëîñü: -1)" << endl;
-    cout << "findMaxEl(): " << arr6_float.findMaxEl() << " (îæèäàëîñü: 8.8)" << endl;
-    cout << "findMinEl(): " << arr6_float.findMinEl() << " (îæèäàëîñü: 1.1)" << endl;
+    cout << "ĞœĞ°ÑÑĞ¸Ğ²: " << arr6_float << endl;
+    cout << "findElement(3.3): " << arr6_float.findElement(3.3f) << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 1)" << endl;
+    cout << "findElement(10.0): " << arr6_float.findElement(10.0f) << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: -1)" << endl;
+    cout << "findMaxEl(): " << arr6_float.findMaxEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 8.8)" << endl;
+    cout << "findMinEl(): " << arr6_float.findMinEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 1.1)" << endl;
 
-    // Òåñò ñîğòèğîâêè
-    cout << "\n4. Òåñò ñîğòèğîâêè:" << endl;
+    // Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸
+    cout << "\n4. Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸:" << endl;
     DynamicArray<float> arrsort_float;
-    cout << "Ââåäèòå äëèíó ìàññèâà äëÿ ñîğòèğîâêè: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ´Ğ»Ğ¸Ğ½Ñƒ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° Ğ´Ğ»Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: ";
     int len_float;
     cin >> len_float;
     arrsort_float.setArrayLength(len_float);
-    cout << "Ââåäèòå " << len_float << " ıëåìåíòîâ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ " << len_float << " ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ¾Ğ²: ";
     for (int i = 0; i < len_float; i++) {
         float val;
         cin >> val;
         arrsort_float.setAt(i, val);
     }
-    cout << "Äî ñîğòèğîâêè: " << arrsort_float << endl;
+    cout << "Ğ”Ğ¾ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort_float << endl;
     arrsort_float.sort();
-    cout << "Ïîñëå ñîğòèğîâêè: " << arrsort_float << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort_float << endl;
 
-    // Òåñò îïåğàòîğîâ
-    cout << "\n5. Òåñò ïåğåãğóçîê:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n5. Ğ¢ĞµÑÑ‚ Ğ¿ĞµÑ€ĞµĞ³Ñ€ÑƒĞ·Ğ¾Ğº:" << endl;
     float data7_float[] = { 1.5f, 2.5f };
     DynamicArray<float> arr7_float(data7_float, 2);
 
@@ -214,76 +214,76 @@ int main()
     cout << "arr7 + arr8: " << arrsumm_float << endl;
 
     arr7_float += arr8_float;
-    cout << "Ïîñëå arr7 += arr8: " << arr7_float << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ arr7 += arr8: " << arr7_float << endl;
 
     cout << "arr7 == arr8: " << (arr7_float == arr8_float) << endl;
     cout << "arr7 != arr8: " << (arr7_float != arr8_float) << endl;
 
-    // Äëÿ Char
-    cout << "\n\nÒåñò char" << endl << endl;
+    // Ğ”Ğ»Ñ Char
+    cout << "\n\nĞ¢ĞµÑÑ‚ char" << endl << endl;
 
-    // Òåñò êîíñòğóêòîğîâ
-    cout << "\n1. Òåñò êîíñòğóêòîğîâ:" << endl;
+    // Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n1. Ğ¢ĞµÑÑ‚ ĞºĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ğ¾Ğ²:" << endl;
     DynamicArray<char> arr1_char;
-    cout << "Êîíñòğóêòîğ ïî óìîë÷àíèş - äëèíà: " << arr1_char.getArrayLength() << "  Îæèäàåì: 0" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¿Ğ¾ ÑƒĞ¼Ğ¾Ğ»Ñ‡Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr1_char.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 0" << endl;
 
     char testData_char[] = { 'A', 'B', 'C', 'D', 'E' };
     DynamicArray<char> arr2_char(testData_char, 5);
-    cout << "Êîíñòğóêòîğ èç îáû÷íîãî ìàññèâà - äëèíà: " << arr2_char.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ Ğ¸Ğ· Ğ¾Ğ±Ñ‹Ñ‡Ğ½Ğ¾Ğ³Ğ¾ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr2_char.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
     DynamicArray<char> arr3_char(arr2_char);
-    cout << "Êîíñòğóêòîğ êîïèğîâàíèÿ - äëèíà: " << arr3_char.getArrayLength() << "  Îæèäàåì: 5" << endl;
+    cout << "ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€ ĞºĞ¾Ğ¿Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ - Ğ´Ğ»Ğ¸Ğ½Ğ°: " << arr3_char.getArrayLength() << "  ĞĞ¶Ğ¸Ğ´Ğ°ĞµĞ¼: 5" << endl;
 
-    // Òåñò âñòàâêè è óäàëåíèÿ
-    cout << "\n2. Òåñò âñòàâêè è óäàëåíèÿ:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ
+    cout << "\n2. Ğ¢ĞµÑÑ‚ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ:" << endl;
     char initialData_char[] = { 'H', 'e', 'l', 'l', 'o' };
     DynamicArray<char> arr5_char(initialData_char, 5);
     char x_char;
     int y_char;
-    cout << "Èñõîäíûé ìàññèâ: " << arr5_char << endl;
-    cout << "Ââåäèòå ñèìâîë äëÿ âñòàâêè è èíäåêñ, êóäà âû ñîáèğàåòåñü åãî ïîñòàâèòü: ";
+    cout << "Ğ˜ÑÑ…Ğ¾Ğ´Ğ½Ñ‹Ğ¹ Ğ¼Ğ°ÑÑĞ¸Ğ²: " << arr5_char << endl;
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ÑĞ¸Ğ¼Ğ²Ğ¾Ğ» Ğ´Ğ»Ñ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸ Ğ¸ Ğ¸Ğ½Ğ´ĞµĞºÑ, ĞºÑƒĞ´Ğ° Ğ²Ñ‹ ÑĞ¾Ğ±Ğ¸Ñ€Ğ°ĞµÑ‚ĞµÑÑŒ ĞµĞ³Ğ¾ Ğ¿Ğ¾ÑÑ‚Ğ°Ğ²Ğ¸Ñ‚ÑŒ: ";
     cin >> x_char >> y_char;
-    if (!arr5_char.insertAt(y_char, x_char)) cout << "Íåêîğğåêòíûé èíäåêñ" << endl;
-    else cout << "Ìàññèâ ïîñëå âñòàâêè: " << arr5_char << endl;
+    if (!arr5_char.insertAt(y_char, x_char)) cout << "ĞĞµĞºĞ¾Ñ€Ñ€ĞµĞºÑ‚Ğ½Ñ‹Ğ¹ Ğ¸Ğ½Ğ´ĞµĞºÑ" << endl;
+    else cout << "ĞœĞ°ÑÑĞ¸Ğ² Ğ¿Ğ¾ÑĞ»Ğµ Ğ²ÑÑ‚Ğ°Ğ²ĞºĞ¸: " << arr5_char << endl;
 
     arr5_char.removeAt(1);
-    cout << "Ïîñëå óäàëåíèÿ âòîğîãî ıëåìåíòà: " << arr5_char << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²Ñ‚Ğ¾Ñ€Ğ¾Ğ³Ğ¾ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ°: " << arr5_char << endl;
 
-    cout << "Ââåäèòå ñèìâîë äëÿ óäàëåíèÿ ïåğâîãî âõîæäåíèÿ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ ÑĞ¸Ğ¼Ğ²Ğ¾Ğ» Ğ´Ğ»Ñ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ¿ĞµÑ€Ğ²Ğ¾Ğ³Ğ¾ Ğ²Ñ…Ğ¾Ğ¶Ğ´ĞµĞ½Ğ¸Ñ: ";
     cin >> x_char;
-    if (!arr5_char.removeFirstValue(x_char)) cout << "İëåìåíò íå íàéäåí" << endl;
-    else cout << "Ïîñëå removeFirstValue(" << x_char << "): " << arr5_char << endl;
+    if (!arr5_char.removeFirstValue(x_char)) cout << "Ğ­Ğ»ĞµĞ¼ĞµĞ½Ñ‚ Ğ½Ğµ Ğ½Ğ°Ğ¹Ğ´ĞµĞ½" << endl;
+    else cout << "ĞŸĞ¾ÑĞ»Ğµ removeFirstValue(" << x_char << "): " << arr5_char << endl;
 
-    // Òåñò ïîèñêà
-    cout << "\n3. Òåñò ïîèñêà:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°
+    cout << "\n3. Ğ¢ĞµÑÑ‚ Ğ¿Ğ¾Ğ¸ÑĞºĞ°:" << endl;
     char searchData_char[] = { 'A', 'B', 'C', 'D', 'E' };
     DynamicArray<char> arr6_char(searchData_char, 5);
 
-    cout << "Ìàññèâ: " << arr6_char << endl;
-    cout << "findElement('A'): " << arr6_char.findElement('A') << " (îæèäàëîñü: 0)" << endl;
-    cout << "findElement('Q'): " << arr6_char.findElement('Q') << " (îæèäàëîñü: -1)" << endl;
-    cout << "findMaxEl(): " << arr6_char.findMaxEl() << " (îæèäàëîñü: E)" << endl;
-    cout << "findMinEl(): " << arr6_char.findMinEl() << " (îæèäàëîñü: A)" << endl;
+    cout << "ĞœĞ°ÑÑĞ¸Ğ²: " << arr6_char << endl;
+    cout << "findElement('A'): " << arr6_char.findElement('A') << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: 0)" << endl;
+    cout << "findElement('Q'): " << arr6_char.findElement('Q') << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: -1)" << endl;
+    cout << "findMaxEl(): " << arr6_char.findMaxEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: E)" << endl;
+    cout << "findMinEl(): " << arr6_char.findMinEl() << " (Ğ¾Ğ¶Ğ¸Ğ´Ğ°Ğ»Ğ¾ÑÑŒ: A)" << endl;
 
-    // Òåñò ñîğòèğîâêè
-    cout << "\n4. Òåñò ñîğòèğîâêè:" << endl;
+    // Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸
+    cout << "\n4. Ğ¢ĞµÑÑ‚ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸:" << endl;
     DynamicArray<char> arrsort_char;
-    cout << "Ââåäèòå äëèíó ìàññèâà äëÿ ñîğòèğîâêè: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ´Ğ»Ğ¸Ğ½Ñƒ Ğ¼Ğ°ÑÑĞ¸Ğ²Ğ° Ğ´Ğ»Ñ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: ";
     int len_char;
     cin >> len_char;
     arrsort_char.setArrayLength(len_char);
-    cout << "Ââåäèòå " << len_char << " ñèìâîëîâ: ";
+    cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ " << len_char << " ÑĞ¸Ğ¼Ğ²Ğ¾Ğ»Ğ¾Ğ²: ";
     for (int i = 0; i < len_char; i++) {
         char val;
         cin >> val;
         arrsort_char.setAt(i, val);
     }
-    cout << "Äî ñîğòèğîâêè: " << arrsort_char << endl;
+    cout << "Ğ”Ğ¾ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort_char << endl;
     arrsort_char.sort();
-    cout << "Ïîñëå ñîğòèğîâêè: " << arrsort_char << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ ÑĞ¾Ñ€Ñ‚Ğ¸Ñ€Ğ¾Ğ²ĞºĞ¸: " << arrsort_char << endl;
 
-    // Òåñò îïåğàòîğîâ
-    cout << "\n5. Òåñò ïåğåãğóçîê:" << endl;
+    // Ğ¢ĞµÑÑ‚ Ğ¾Ğ¿ĞµÑ€Ğ°Ñ‚Ğ¾Ñ€Ğ¾Ğ²
+    cout << "\n5. Ğ¢ĞµÑÑ‚ Ğ¿ĞµÑ€ĞµĞ³Ñ€ÑƒĞ·Ğ¾Ğº:" << endl;
     char data7_char[] = { '+', '+' };
     DynamicArray<char> arr7_char(data7_char, 2);
 
@@ -296,19 +296,19 @@ int main()
     cout << "arr7 + arr8: " << arrsumm_char << endl;
 
     arr7_char += arr8_char;
-    cout << "Ïîñëå arr7 += arr8: " << arr7_char << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ arr7 += arr8: " << arr7_char << endl;
 
     cout << "arr7 == arr8: " << (arr7_char == arr8_char) << endl;
     cout << "arr7 != arr8: " << (arr7_char != arr8_char) << endl;
 
-    // Òåñò óäàëåíèÿ âñåõ çíà÷åíèé
-    cout << "\n6. Òåñò óäàëåíèÿ âñåõ çíà÷åíèé:" << endl;
+    // Ğ¢ĞµÑÑ‚ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²ÑĞµÑ… Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹
+    cout << "\n6. Ğ¢ĞµÑÑ‚ ÑƒĞ´Ğ°Ğ»ĞµĞ½Ğ¸Ñ Ğ²ÑĞµÑ… Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğ¹:" << endl;
     char data13_char[] = { 'a', 'b', 'a', 'c', 'a', 'd' };
     DynamicArray<char> arr13_char(data13_char, 6);
 
-    cout << "Äî removeAllValue('a'): " << arr13_char << endl;
+    cout << "Ğ”Ğ¾ removeAllValue('a'): " << arr13_char << endl;
     arr13_char.removeAllValue('a');
-    cout << "Ïîñëå removeAllValue('a'): " << arr13_char << endl;
+    cout << "ĞŸĞ¾ÑĞ»Ğµ removeAllValue('a'): " << arr13_char << endl;
 
     return 0;
 }
