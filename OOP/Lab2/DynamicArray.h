@@ -8,7 +8,7 @@ class DynamicArray
     public:
     //- конструкторы (по умолчанию, конструктор из обычного массива, конструктор копирования) +
     DynamicArray();
-    DynamicArray(int);
+    DynamicArray(const int* data, int initialLength);
     DynamicArray(const DynamicArray&);
 
     //- деструктор +
