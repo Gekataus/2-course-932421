@@ -2,6 +2,7 @@
 #include <vector>
 #include <random>
 #include <cmath>
+#include <fstream>
 using namespace std;
 
 //создание массива случайных чисел (Библиотека random)
@@ -106,6 +107,22 @@ void shellSort(vector<int>& arr, const vector<int>& gaps) {
         }
     }
 }
+
+// Загрузка массива из файла
+std::vector<int> loadArrayFromFile(const std::string& filename) {
+    std::vector<int> arr;
+    std::ifstream file(filename);
+    int value;
+
+    if (file.is_open()) {
+        while (file >> value) {
+            arr.push_back(value);
+        }
+        file.close();
+    }
+
+    return arr;
+}
 int main()
 {
     setlocale(LC_ALL, "Russian");
@@ -113,30 +130,52 @@ int main()
     vector<int> arr1;
     cout << "Брать массив с файла или сгенерировать вручную с консоли?" << endl << "С консоли - 1" << endl << "С файла - 2" << endl;
     cin >> x;
-    if (x == 1)
-    {
-        int n, min, max;
-        cout << "Введите длинну массива, минимальную и максимальную границу" << endl;
-        cin >> n >> min >> max;
-        vector<int> arr1 = generateRandomArray(n, min, max);
-        cout << "Ваш массив:" << endl;
-        outputArray(arr1);
+    if (x == 1) {
+        while (true) {
+            if (x == -1) break;
+            int n, min, max;
+            cout << "Введите длинну массива, минимальную и максимальную границу" << endl;
+            cin >> n >> min >> max;
+            vector<int> arr1 = generateRandomArray(n, min, max);
+            cout << "Ваш массив:" << endl;
+            outputArray(arr1);
 
-        vector<int> h;
-        cout << "Как формировать шаги?" << endl << "1. Последовательность Шелла" << endl << "2. Возведение 2 в степень m" << endl << "3.Последовательность Кнута" << endl;
-        cin >> x;
-        if (x == 1) h = generateShell(n);
-        if (x == 2) h = generateTwo(n);
-        if (x == 3) h = generateKnuth(n);
-        shellSort(arr1, h);
+            vector<int> h;
+            cout << "Как формировать шаги?" << endl << "1. Последовательность Шелла" << endl << "2. Возведение 2 в степень m" << endl << "3.Последовательность Кнута" << endl;
+            cin >> x;
+            if (x == 1) h = generateShell(n);
+            if (x == 2) h = generateTwo(n);
+            if (x == 3) h = generateKnuth(n);
+            shellSort(arr1, h);
 
-        if (isSorted(arr1))
-        {
-            cout << "Массив отсортирован" << endl;
-            if (n < 100) {
-                cout << "Отсортированный массив:" << endl;
-                outputArray(arr1);
+            if (isSorted(arr1)) {
+                cout << "Массив отсортирован" << endl;
+                if (n < 100) {
+                    cout << "Отсортированный массив:" << endl;
+                    outputArray(arr1);
+                }
             }
+            cout << "Если хотите создать новый массив и отсортировать его, введите 1, если хотите завершить, введите -1" << endl;
+            cin >> x;
         }
+    }
+    if (x == 2) {
+        while (true) {
+            int y;
+            cout << "Из какого файла брать массив?" << endl;
+            cout << "1. array_10000_-10_10.txt" << endl;
+            cout << "2. array_10000_-1000_1000.txt" << endl;
+            cout << "3. array_10000_-100000_1000000.txt" << endl;
+            cout << "4. array_100000_-10_10.txt" << endl;
+            cout << "5. array_100000_-1000_1000.txt" << endl;
+            cout << "6. array_100000_-100000_1000000.txt" << endl;
+            cout << "7. array_1000000_-10_10.txt" << endl;
+            cout << "8. array_1000000_-1000_1000.txt" << endl;
+            cout << "9. array_1000000_-100000_1000000.txt" << endl;
+            cout << "Если хотите прекратить, введите -1" << endl;
+            cin >> y;
+            if (y == -1) break;
+        }
+
     }
 }
