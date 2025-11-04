@@ -1,47 +1,65 @@
 ﻿#pragma once
+
 #include <stdint.h>
 #include <iostream>
-#include <cstring>
-#include <stdexcept>
 
 class BooleanVector
 {
 public:
-    //- конструкторы (по умолчанию, с параметрами (размер и значение - одно и то же для всех разрядов),
-    // конструктор из массива const char *, конструктор копирования);
-    BooleanVector() = default; 
-    BooleanVector(uint32_t size, bool value = false);
-    BooleanVector(const char* bitString);
-    BooleanVector(const BooleanVector& other);
-    ~BooleanVector(); //- деструктор;
+    BooleanVector() = default; //Конструктор по умолчанию
+    BooleanVector(const uint32_t, const bool); //Конструктор с параметрами
+    BooleanVector(const char*); //конструктор из массива const char*
+    ~BooleanVector(); //Декструктор
 
-    uint32_t length() const; //- длина (количество бит) вектора;
-    void swap(BooleanVector& other); //- обмен содержимого с другим вектором (swap);
+    BooleanVector(const BooleanVector&); //Конструктор копирования
 
-    void invert();
-    void setBit(uint32_t index, bool value);
-    void setZero(uint32_t index);
-    void setOne(uint32_t index);
+    BooleanVector& operator=(const BooleanVector&); //Операторы присваивания
+    BooleanVector& operator=(BooleanVector&&);
 
+    // Для чтения бита
+    bool operator[](const uint32_t) const;
 
-    // Операторы
-    bool operator[](uint32_t index) const;
-    BooleanVector operator&(const BooleanVector& other) const;
-    BooleanVector operator|(const BooleanVector& other) const;
-    BooleanVector operator^(const BooleanVector& other) const;
-    BooleanVector operator~() const;
-    BooleanVector& operator=(const BooleanVector& other);
+    uint32_t getLength() const { return numBits_; } //Длина вектора
+    uint32_t getWeight() const; //Вес вектора
+    void swap(BooleanVector& other); // обмен с другим вектором
+    void invert(); //инверсия всех компонент вектора
+    void setBit(const uint32_t index, const bool value); //установка в 0/1 i-ой компоненты
+    void setZero(const uint32_t index); //Установка в 0 i-ой компоненты
+    void setOne(const uint32_t index); //Установка в 1 i-ой компоненты
+    void invertBit(const uint32_t index);  // Инверсия i-ой компоненты
+
+    // Побитовые операции
+    BooleanVector operator&(const BooleanVector& other) const; //Побитовое умножение
+    BooleanVector operator|(const BooleanVector& other) const; //Побитовое сложение
+    BooleanVector operator^(const BooleanVector& other) const; //Побитовое исключающее ИЛИ
+    BooleanVector operator~() const; //Побитовая инверсия
+
+    // Побитовые сдвиги
+    BooleanVector operator<<(const uint32_t shift) const; //Сдвиг влево
+    BooleanVector operator>>(const uint32_t shift) const; //Сдвиг вправо
+
+    // Потоковый ввод/вывод
+    friend std::ostream& operator<<(std::ostream& os, const BooleanVector& bv);
+    friend std::istream& operator>>(std::istream& is, BooleanVector& bv);
 
 private:
-    uint8_t* data_ = nullptr;
-    uint32_t size_ = 0;
-    uint32_t arraySize_ = 0;
+    uint8_t* vectorData_ = nullptr;
+    uint32_t numBits_ = 0;
+    uint32_t numBytes_ = 0;
 
-    uint32_t calculateArraySize(uint32_t bitCount) const;
-    void clearBit(uint32_t index);
-    void setBitValue(uint32_t index);
-    bool getBit(uint32_t index) const;
+    void allocateMemory(const uint32_t numBits); //Выделяет память под вектор (частая операция в методах)
+    void clearMemory(); // освобождает память (частая операция в методах)
 };
 
-std::ostream& operator<<(std::ostream& os, const BooleanVector& vec);
-std::istream& operator>>(std::istream& is, BooleanVector& vec);
+/*
+class BooleanVector::BitReference
+{
+public:
+    BitReference(uint8_t* const, const uint8_t);
+    operator bool();
+    BitReference& operator=(const bool NewValue);
+
+private:
+    uint8_t* bytePtr_;
+    uint8_t bitIndex_;
+};*/

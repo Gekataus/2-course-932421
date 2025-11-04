@@ -1,176 +1,225 @@
-﻿#include "booleanvector.h"
+﻿#include <stdexcept>
+#include <cstring>
+#include <iostream>
+#include "booleanvector.h"
 
-BooleanVector::BooleanVector(uint32_t size, bool value) : size_(size)
+BooleanVector::BooleanVector(const uint32_t numBits, const bool initialValue)
+    : numBits_(numBits)
 {
-    if (size == 0) return;
+    allocateMemory(numBits);
 
-    arraySize_ = calculateArraySize(size);
-    data_ = new uint8_t[arraySize_];
-
-    uint8_t pattern = value ? 0xFF : 0x00;
-    for (uint32_t i = 0; i < arraySize_; ++i) {
-        data_[i] = pattern;
+    uint8_t initialByteValue = initialValue ? 255 : 0;
+    for (uint32_t i = 0; i < numBytes_; i++) {
+        vectorData_[i] = initialByteValue;
     }
 
     // Обнуляем лишние биты в последнем байте
-    if (size % 8 != 0) {
-        uint8_t mask = (1 << (size % 8)) - 1;
-        data_[arraySize_ - 1] &= mask;
+    if (numBits_ % 8 != 0) {
+        uint8_t mask = (1 << (numBits_ % 8)) - 1;
+        vectorData_[numBytes_ - 1] &= mask;
     }
 }
 
-BooleanVector::BooleanVector(const char* bitString)
+BooleanVector::BooleanVector(const char* str)
 {
-    if (bitString == nullptr) {
-        throw std::invalid_argument("Null pointer passed to constructor");
+    if (str == nullptr) {
+        numBits_ = 0;
+        vectorData_ = nullptr;
+        numBytes_ = 0;
+        return;
     }
 
-    size_ = strlen(bitString);
-    if (size_ == 0) return;
+    // Определяем длину строки
+    uint32_t length = 0;
+    while (str[length] != '\0') length++;
+    numBits_ = length;
+    allocateMemory(numBits_);
 
-    arraySize_ = calculateArraySize(size_);
-    data_ = new uint8_t[arraySize_]();
-
-    for (uint32_t i = 0; i < size_; ++i) {
-        if (bitString[i] == '1') {
-            setBitValue(i);
-        }
-        else if (bitString[i] != '0') {
-            delete[] data_;
-            data_ = nullptr;
-            size_ = 0;
-            arraySize_ = 0;
-            throw std::invalid_argument("String must contain only '0' and '1'");
+    // Заполняем вектор из строки
+    for (uint32_t i = 0; i < numBits_; i++) {
+        if (str[i] == '1') {
+            uint32_t byteIndex = i / 8;
+            uint32_t bitIndex = i % 8;
+            vectorData_[byteIndex] |= (1 << bitIndex);
         }
     }
 }
 
-BooleanVector::BooleanVector(const BooleanVector& other) :
-    size_(other.size_), arraySize_(other.arraySize_)
+BooleanVector::BooleanVector(const BooleanVector& other)
+    : numBits_(other.numBits_), numBytes_(other.numBytes_)
 {
-    if (other.data_ != nullptr && arraySize_ > 0) {
-        data_ = new uint8_t[arraySize_];
-        memcpy(data_, other.data_, arraySize_);
+    if (other.vectorData_ != nullptr) {
+        vectorData_ = new uint8_t[numBytes_];
+        std::memcpy(vectorData_, other.vectorData_, numBytes_);
+    }
+}
+void BooleanVector::clearMemory()
+{
+    delete[] vectorData_;
+    vectorData_ = nullptr;
+    numBits_ = 0;
+    numBytes_ = 0;
+}
+
+void BooleanVector::allocateMemory(const uint32_t numBits)
+{
+    numBytes_ = (numBits + 7) / 8;
+    if (numBytes_ > 0) {
+        vectorData_ = new uint8_t[numBytes_];
+        // Инициализируем нулями
+        for (uint32_t i = 0; i < numBytes_; i++) {
+            vectorData_[i] = 0;
+        }
     }
 }
 
 BooleanVector::~BooleanVector()
 {
-    delete[] data_;
+    clearMemory();
 }
 
-uint32_t BooleanVector::length() const
+BooleanVector& BooleanVector::operator=(const BooleanVector& other)
 {
-    return size_;
+    if (this != &other) {
+        clearMemory();
+        numBits_ = other.numBits_;
+        numBytes_ = other.numBytes_;
+        if (other.vectorData_ != nullptr) {
+            vectorData_ = new uint8_t[numBytes_];
+            std::memcpy(vectorData_, other.vectorData_, numBytes_);
+        }
+    }
+    return *this;
 }
 
-uint32_t BooleanVector::calculateArraySize(uint32_t bitCount) const
+BooleanVector& BooleanVector::operator=(BooleanVector&& other)
 {
-    return (bitCount + 7) / 8;
+    if (this != &other) {
+        clearMemory();
+        vectorData_ = other.vectorData_;
+        numBits_ = other.numBits_;
+        numBytes_ = other.numBytes_;
+        other.vectorData_ = nullptr;
+        other.numBits_ = 0;
+        other.numBytes_ = 0;
+    }
+    return *this;
 }
 
-void BooleanVector::clearBit(uint32_t index)
-{
-    data_[index / 8] &= ~(1 << (index % 8));
+bool BooleanVector::operator[](const uint32_t index) const {
+    if (index >= numBits_)
+        throw std::runtime_error("Индекс выходит за границы.");
+
+    uint32_t byteIndex = index / 8;
+    uint32_t bitIndex = index % 8;
+
+    return (vectorData_[byteIndex] >> bitIndex) & 1;
 }
 
-void BooleanVector::setBitValue(uint32_t index)
+uint32_t BooleanVector::getWeight() const
 {
-    data_[index / 8] |= (1 << (index % 8));
-}
-
-bool BooleanVector::getBit(uint32_t index) const
-{
-    return (data_[index / 8] >> (index % 8)) & 1;
+    uint32_t weight = 0;
+    for (uint32_t i = 0; i < numBits_; i++) {
+        if ((*this)[i]) {
+            weight++;
+        }
+    }
+    return weight;
 }
 
 void BooleanVector::swap(BooleanVector& other)
 {
-    std::swap(data_, other.data_);
-    std::swap(size_, other.size_);
-    std::swap(arraySize_, other.arraySize_);
+    std::swap(vectorData_, other.vectorData_);
+    std::swap(numBits_, other.numBits_);
+    std::swap(numBytes_, other.numBytes_);
 }
 
 void BooleanVector::invert()
 {
-    for (uint32_t i = 0; i < arraySize_; ++i) {
-        data_[i] = ~data_[i];
+    for (uint32_t i = 0; i < numBytes_; i++) {
+        vectorData_[i] = ~vectorData_[i];
     }
 
     // Корректируем последний байт, если нужно
-    if (size_ % 8 != 0) {
-        uint8_t mask = (1 << (size_ % 8)) - 1;
-        data_[arraySize_ - 1] &= mask;
+    if (numBits_ % 8 != 0) {
+        uint8_t mask = (1 << (numBits_ % 8)) - 1;
+        vectorData_[numBytes_ - 1] &= mask;
     }
 }
 
-void BooleanVector::setBit(uint32_t index, bool value)
+void BooleanVector::setBit(const uint32_t index, const bool value)
 {
-    if (index >= size_) {
-        throw std::out_of_range("Index out of range");
-    }
+    if (index >= numBits_)
+        throw std::runtime_error("Индекс выходит за границы.");
+
+    uint32_t byteIndex = index / 8;
+    uint32_t bitIndex = index % 8;
 
     if (value) {
-        setBitValue(index);
+        vectorData_[byteIndex] |= (1 << bitIndex);
     }
     else {
-        clearBit(index);
+        vectorData_[byteIndex] &= ~(1 << bitIndex);
     }
 }
 
-void BooleanVector::setZero(uint32_t index)
+void BooleanVector::setZero(const uint32_t index)
 {
     setBit(index, false);
 }
 
-void BooleanVector::setOne(uint32_t index)
+void BooleanVector::setOne(const uint32_t index)
 {
     setBit(index, true);
 }
 
-bool BooleanVector::operator[](uint32_t index) const
+void BooleanVector::invertBit(const uint32_t index)
 {
-    if (index >= size_) {
-        throw std::out_of_range("Index out of range");
-    }
-    return getBit(index);
+    if (index >= numBits_)
+        throw std::runtime_error("Индекс выходит за границы");
+
+    uint32_t byteIndex = index / 8;
+    uint32_t bitIndex = index % 8;
+
+    // Инвертируем бит с помощью XOR
+    vectorData_[byteIndex] ^= (1 << bitIndex);
 }
 
 BooleanVector BooleanVector::operator&(const BooleanVector& other) const
 {
-    if (size_ != other.size_) {
-        throw std::invalid_argument("Vectors must have the same size");
+    if (numBits_ != other.numBits_) {
+        throw std::runtime_error("Векторы имеют разную длину");
     }
 
-    BooleanVector result(size_);
-    for (uint32_t i = 0; i < arraySize_; ++i) {
-        result.data_[i] = data_[i] & other.data_[i];
+    BooleanVector result(numBits_, false);
+    for (uint32_t i = 0; i < numBytes_; i++) {
+        result.vectorData_[i] = vectorData_[i] & other.vectorData_[i];
     }
     return result;
 }
 
 BooleanVector BooleanVector::operator|(const BooleanVector& other) const
 {
-    if (size_ != other.size_) {
-        throw std::invalid_argument("Vectors must have the same size");
+    if (numBits_ != other.numBits_) {
+        throw std::runtime_error("Векторы имеют разную длниу!");
     }
 
-    BooleanVector result(size_);
-    for (uint32_t i = 0; i < arraySize_; ++i) {
-        result.data_[i] = data_[i] | other.data_[i];
+    BooleanVector result(numBits_, false);
+    for (uint32_t i = 0; i < numBytes_; i++) {
+        result.vectorData_[i] = vectorData_[i] | other.vectorData_[i];
     }
     return result;
 }
 
 BooleanVector BooleanVector::operator^(const BooleanVector& other) const
 {
-    if (size_ != other.size_) {
-        throw std::invalid_argument("Vectors must have the same size");
+    if (numBits_ != other.numBits_) {
+        throw std::runtime_error("Векторы имеют разную длину!");
     }
 
-    BooleanVector result(size_);
-    for (uint32_t i = 0; i < arraySize_; ++i) {
-        result.data_[i] = data_[i] ^ other.data_[i];
+    BooleanVector result(numBits_, false);
+    for (uint32_t i = 0; i < numBytes_; i++) {
+        result.vectorData_[i] = vectorData_[i] ^ other.vectorData_[i];
     }
     return result;
 }
@@ -182,39 +231,105 @@ BooleanVector BooleanVector::operator~() const
     return result;
 }
 
-BooleanVector& BooleanVector::operator=(const BooleanVector& other)
+BooleanVector BooleanVector::operator<<(const uint32_t shift) const
 {
-    if (this != &other) {
-        delete[] data_;
+    if (shift == 0) {
+        return BooleanVector(*this);  // Возвращаем копию
+    }
 
-        size_ = other.size_;
-        arraySize_ = other.arraySize_;
+    if (shift >= numBits_) {
+        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
+        return BooleanVector(numBits_, false);
+    }
 
-        if (other.data_ != nullptr && arraySize_ > 0) {
-            data_ = new uint8_t[arraySize_];
-            memcpy(data_, other.data_, arraySize_);
-        }
-        else {
-            data_ = nullptr;
+    BooleanVector result(numBits_, false);
+
+    // Выполняем сдвиг
+    for (uint32_t i = shift; i < numBits_; i++) {
+        if ((*this)[i - shift]) {
+            result.setOne(i);
         }
     }
-    return *this;
+
+    return result;
 }
 
-std::ostream& operator<<(std::ostream& os, const BooleanVector& vec)
+BooleanVector BooleanVector::operator>>(const uint32_t shift) const
 {
-    for (uint32_t i = 0; i < vec.length(); ++i) {
-        os << (vec[i] ? '1' : '0');
+    if (shift == 0) {
+        return BooleanVector(*this);  // Возвращаем копию
+    }
+
+    if (shift >= numBits_) {
+        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
+        return BooleanVector(numBits_, false);
+    }
+
+    BooleanVector result(numBits_, false);
+
+    // Выполняем сдвиг
+    for (uint32_t i = 0; i < numBits_ - shift; i++) {
+        if ((*this)[i + shift]) {
+            result.setOne(i);
+        }
+    }
+
+    return result;
+}
+
+
+// ввод/вывод
+std::ostream& operator<<(std::ostream& os, const BooleanVector& bv)
+{
+    for (uint32_t i = 0; i < bv.numBits_; i++) {
+        os << (bv[i] ? '1' : '0');
     }
     return os;
 }
 
-std::istream& operator>>(std::istream& is, BooleanVector& vec)
+std::istream& operator>>(std::istream& is, BooleanVector& bv)
 {
     std::string input;
     is >> input;
 
-    BooleanVector temp(input.c_str());
-    vec = temp;
+    bv.clearMemory();
+    bv.numBits_ = input.length();
+    bv.allocateMemory(bv.numBits_);
+
+    for (uint32_t i = 0; i < bv.numBits_; i++) {
+        if (input[i] == '1') {
+            bv.setOne(i);
+        }
+        else if (input[i] == '0') {
+            bv.setZero(i);
+        }
+        else {
+            throw std::runtime_error("Введён неверный символ (не 0 или 1)!");
+        }
+    }
+
     return is;
 }
+
+/* BitReference
+BooleanVector::BitReference::BitReference(uint8_t* const bytePtr, const uint8_t bitIndex)
+    : bytePtr_(bytePtr), bitIndex_(bitIndex) {
+}
+
+BooleanVector::BitReference::operator bool()
+{
+    return (*bytePtr_ >> bitIndex_) & 1;
+}
+
+BooleanVector::BitReference& BooleanVector::BitReference::operator=(const bool NewValue)
+{
+    if (NewValue) {
+        *bytePtr_ |= (1 << bitIndex_);
+    }
+    else {
+        *bytePtr_ &= ~(1 << bitIndex_);
+    }
+    return *this;
+}
+
+*/
