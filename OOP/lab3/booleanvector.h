@@ -24,8 +24,6 @@ public:
     void swap(BooleanVector& other); // обмен с другим вектором
     void invert(); //инверсия всех компонент вектора
     void setBit(const uint32_t index, const bool value); //установка в 0/1 i-ой компоненты
-    void setZero(const uint32_t index); //Установка в 0 i-ой компоненты
-    void setOne(const uint32_t index); //Установка в 1 i-ой компоненты
     void invertBit(const uint32_t index);  // Инверсия i-ой компоненты
 
     // Побитовые операции
@@ -50,16 +48,3 @@ private:
     void allocateMemory(const uint32_t numBits); //Выделяет память под вектор (частая операция в методах)
     void clearMemory(); // освобождает память (частая операция в методах)
 };
-
-/*
-class BooleanVector::BitReference
-{
-public:
-    BitReference(uint8_t* const, const uint8_t);
-    operator bool();
-    BitReference& operator=(const bool NewValue);
-
-private:
-    uint8_t* bytePtr_;
-    uint8_t bitIndex_;
-};*/

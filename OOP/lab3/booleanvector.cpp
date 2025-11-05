@@ -163,16 +163,6 @@ void BooleanVector::setBit(const uint32_t index, const bool value)
     }
 }
 
-void BooleanVector::setZero(const uint32_t index)
-{
-    setBit(index, false);
-}
-
-void BooleanVector::setOne(const uint32_t index)
-{
-    setBit(index, true);
-}
-
 void BooleanVector::invertBit(const uint32_t index)
 {
     if (index >= numBits_)
@@ -247,7 +237,7 @@ BooleanVector BooleanVector::operator<<(const uint32_t shift) const
     // Выполняем сдвиг
     for (uint32_t i = shift; i < numBits_; i++) {
         if ((*this)[i - shift]) {
-            result.setOne(i);
+            result.setBit(i, 1);
         }
     }
 
@@ -270,7 +260,7 @@ BooleanVector BooleanVector::operator>>(const uint32_t shift) const
     // Выполняем сдвиг
     for (uint32_t i = 0; i < numBits_ - shift; i++) {
         if ((*this)[i + shift]) {
-            result.setOne(i);
+            result.setBit(i, 1);
         }
     }
 
@@ -298,10 +288,10 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
 
     for (uint32_t i = 0; i < bv.numBits_; i++) {
         if (input[i] == '1') {
-            bv.setOne(i);
+            bv.setBit(i, 1);
         }
         else if (input[i] == '0') {
-            bv.setZero(i);
+            bv.setBit(i, 0);
         }
         else {
             throw std::runtime_error("Введён неверный символ (не 0 или 1)!");
@@ -310,26 +300,3 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
 
     return is;
 }
-
-/* BitReference
-BooleanVector::BitReference::BitReference(uint8_t* const bytePtr, const uint8_t bitIndex)
-    : bytePtr_(bytePtr), bitIndex_(bitIndex) {
-}
-
-BooleanVector::BitReference::operator bool()
-{
-    return (*bytePtr_ >> bitIndex_) & 1;
-}
-
-BooleanVector::BitReference& BooleanVector::BitReference::operator=(const bool NewValue)
-{
-    if (NewValue) {
-        *bytePtr_ |= (1 << bitIndex_);
-    }
-    else {
-        *bytePtr_ &= ~(1 << bitIndex_);
-    }
-    return *this;
-}
-
-*/

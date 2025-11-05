@@ -37,7 +37,7 @@ bool isSorted(vector<int>& arr) {
 	return true;
 }
 
-// 1. Последовательность Шелла (h[0]0 = n/2, h[i] = h[i-1]/2, ..., h[t] = 1)
+// 1. Последовательность Шелла (h[0] = n/2, h[i] = h[i-1]/2, ..., h[t] = 1)
 vector<int> generateShell(int n) {
     vector<int> gaps;
     int h = n / 2;
