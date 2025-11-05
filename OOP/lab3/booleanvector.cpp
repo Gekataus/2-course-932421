@@ -4,19 +4,23 @@
 #include "booleanvector.h"
 
 BooleanVector::BooleanVector(const uint32_t numBits, const bool initialValue)
-    : numBits_(numBits)
+    : numBits_(numBits), numBytes_((numBits + 7) / 8)
 {
-    allocateMemory(numBits);
+    if (numBytes_ > 0) {
+        vectorData_ = new uint8_t[numBytes_];
+        uint8_t initialByteValue = initialValue ? 255 : 0;
+        for (uint32_t i = 0; i < numBytes_; i++) {
+            vectorData_[i] = initialByteValue;
+        }
 
-    uint8_t initialByteValue = initialValue ? 255 : 0;
-    for (uint32_t i = 0; i < numBytes_; i++) {
-        vectorData_[i] = initialByteValue;
+        // Обнуляем лишние биты в последнем байте
+        if (numBits_ % 8 != 0) {
+            uint8_t mask = (1 << (numBits_ % 8)) - 1;
+            vectorData_[numBytes_ - 1] &= mask;
+        }
     }
-
-    // Обнуляем лишние биты в последнем байте
-    if (numBits_ % 8 != 0) {
-        uint8_t mask = (1 << (numBits_ % 8)) - 1;
-        vectorData_[numBytes_ - 1] &= mask;
+    else {
+        vectorData_ = nullptr;
     }
 }
 
@@ -33,27 +37,42 @@ BooleanVector::BooleanVector(const char* str)
     uint32_t length = 0;
     while (str[length] != '\0') length++;
     numBits_ = length;
-    allocateMemory(numBits_);
+    numBytes_ = (numBits_ + 7) / 8;
 
-    // Заполняем вектор из строки
-    for (uint32_t i = 0; i < numBits_; i++) {
-        if (str[i] == '1') {
-            uint32_t byteIndex = i / 8;
-            uint32_t bitIndex = i % 8;
-            vectorData_[byteIndex] |= (1 << bitIndex);
+    if (numBytes_ > 0) {
+        vectorData_ = new uint8_t[numBytes_];
+        // Инициализируем нулями
+        for (uint32_t i = 0; i < numBytes_; i++) {
+            vectorData_[i] = 0;
         }
+
+        // Заполняем вектор из строки
+        for (uint32_t i = 0; i < numBits_; i++) {
+            if (str[i] == '1') {
+                uint32_t byteIndex = i / 8;
+                uint32_t bitIndex = i % 8;
+                vectorData_[byteIndex] |= (1 << bitIndex);
+            }
+        }
+    }
+    else {
+        vectorData_ = nullptr;
     }
 }
 
 BooleanVector::BooleanVector(const BooleanVector& other)
     : numBits_(other.numBits_), numBytes_(other.numBytes_)
 {
-    if (other.vectorData_ != nullptr) {
+    if (other.vectorData_ != nullptr && numBytes_ > 0) {
         vectorData_ = new uint8_t[numBytes_];
         std::memcpy(vectorData_, other.vectorData_, numBytes_);
     }
+    else {
+        vectorData_ = nullptr;
+    }
 }
-void BooleanVector::clearMemory()
+
+BooleanVector::~BooleanVector()
 {
     delete[] vectorData_;
     vectorData_ = nullptr;
@@ -61,32 +80,20 @@ void BooleanVector::clearMemory()
     numBytes_ = 0;
 }
 
-void BooleanVector::allocateMemory(const uint32_t numBits)
-{
-    numBytes_ = (numBits + 7) / 8;
-    if (numBytes_ > 0) {
-        vectorData_ = new uint8_t[numBytes_];
-        // Инициализируем нулями
-        for (uint32_t i = 0; i < numBytes_; i++) {
-            vectorData_[i] = 0;
-        }
-    }
-}
-
-BooleanVector::~BooleanVector()
-{
-    clearMemory();
-}
-
 BooleanVector& BooleanVector::operator=(const BooleanVector& other)
 {
     if (this != &other) {
-        clearMemory();
+        delete[] vectorData_;
+
         numBits_ = other.numBits_;
         numBytes_ = other.numBytes_;
-        if (other.vectorData_ != nullptr) {
+
+        if (other.vectorData_ != nullptr && numBytes_ > 0) {
             vectorData_ = new uint8_t[numBytes_];
             std::memcpy(vectorData_, other.vectorData_, numBytes_);
+        }
+        else {
+            vectorData_ = nullptr;
         }
     }
     return *this;
@@ -95,10 +102,12 @@ BooleanVector& BooleanVector::operator=(const BooleanVector& other)
 BooleanVector& BooleanVector::operator=(BooleanVector&& other)
 {
     if (this != &other) {
-        clearMemory();
+        delete[] vectorData_;
+
         vectorData_ = other.vectorData_;
         numBits_ = other.numBits_;
         numBytes_ = other.numBytes_;
+
         other.vectorData_ = nullptr;
         other.numBits_ = 0;
         other.numBytes_ = 0;
@@ -191,7 +200,7 @@ BooleanVector BooleanVector::operator&(const BooleanVector& other) const
 BooleanVector BooleanVector::operator|(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) {
-        throw std::runtime_error("Векторы имеют разную длниу!");
+        throw std::runtime_error("Векторы имеют разную длниу");
     }
 
     BooleanVector result(numBits_, false);
@@ -204,7 +213,7 @@ BooleanVector BooleanVector::operator|(const BooleanVector& other) const
 BooleanVector BooleanVector::operator^(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) {
-        throw std::runtime_error("Векторы имеют разную длину!");
+        throw std::runtime_error("Векторы имеют разную длину");
     }
 
     BooleanVector result(numBits_, false);
@@ -221,30 +230,8 @@ BooleanVector BooleanVector::operator~() const
     return result;
 }
 
+//Побитовые сдвиги
 BooleanVector BooleanVector::operator<<(const uint32_t shift) const
-{
-    if (shift == 0) {
-        return BooleanVector(*this);  // Возвращаем копию
-    }
-
-    if (shift >= numBits_) {
-        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
-        return BooleanVector(numBits_, false);
-    }
-
-    BooleanVector result(numBits_, false);
-
-    // Выполняем сдвиг
-    for (uint32_t i = shift; i < numBits_; i++) {
-        if ((*this)[i - shift]) {
-            result.setBit(i, 1);
-        }
-    }
-
-    return result;
-}
-
-BooleanVector BooleanVector::operator>>(const uint32_t shift) const
 {
     if (shift == 0) {
         return BooleanVector(*this);  // Возвращаем копию
@@ -267,6 +254,28 @@ BooleanVector BooleanVector::operator>>(const uint32_t shift) const
     return result;
 }
 
+BooleanVector BooleanVector::operator>>(const uint32_t shift) const
+{
+    if (shift == 0) {
+        return BooleanVector(*this);  // Возвращаем копию
+    }
+
+    if (shift >= numBits_) {
+        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
+        return BooleanVector(numBits_, false);
+    }
+
+    BooleanVector result(numBits_, false);
+
+    // Выполняем сдвиг
+    for (uint32_t i = shift; i < numBits_; i++) {
+        if ((*this)[i - shift]) {
+            result.setBit(i, 1);
+        }
+    }
+
+    return result;
+}
 
 // ввод/вывод
 std::ostream& operator<<(std::ostream& os, const BooleanVector& bv)
@@ -282,20 +291,33 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
     std::string input;
     is >> input;
 
-    bv.clearMemory();
-    bv.numBits_ = input.length();
-    bv.allocateMemory(bv.numBits_);
+    // Очищаем текущие данные
+    delete[] bv.vectorData_;
 
-    for (uint32_t i = 0; i < bv.numBits_; i++) {
-        if (input[i] == '1') {
-            bv.setBit(i, 1);
+    bv.numBits_ = input.length();
+    bv.numBytes_ = (bv.numBits_ + 7) / 8;
+
+    if (bv.numBytes_ > 0) {
+        bv.vectorData_ = new uint8_t[bv.numBytes_];
+        // Инициализируем нулями
+        for (uint32_t i = 0; i < bv.numBytes_; i++) {
+            bv.vectorData_[i] = 0;
         }
-        else if (input[i] == '0') {
-            bv.setBit(i, 0);
+
+        for (uint32_t i = 0; i < bv.numBits_; i++) {
+            if (input[i] == '1') {
+                bv.setBit(i, 1);
+            }
+            else if (input[i] == '0') {
+                bv.setBit(i, 0);
+            }
+            else {
+                throw std::runtime_error("Введён неверный символ (не 0 или 1)");
+            }
         }
-        else {
-            throw std::runtime_error("Введён неверный символ (не 0 или 1)!");
-        }
+    }
+    else {
+        bv.vectorData_ = nullptr;
     }
 
     return is;

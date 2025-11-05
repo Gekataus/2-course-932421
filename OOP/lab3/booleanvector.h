@@ -16,9 +16,6 @@ public:
     BooleanVector& operator=(const BooleanVector&); //Операторы присваивания
     BooleanVector& operator=(BooleanVector&&);
 
-    // Для чтения бита
-    bool operator[](const uint32_t) const;
-
     uint32_t getLength() const { return numBits_; } //Длина вектора
     uint32_t getWeight() const; //Вес вектора
     void swap(BooleanVector& other); // обмен с другим вектором
@@ -27,6 +24,7 @@ public:
     void invertBit(const uint32_t index);  // Инверсия i-ой компоненты
 
     // Побитовые операции
+    bool operator[](const uint32_t) const;
     BooleanVector operator&(const BooleanVector& other) const; //Побитовое умножение
     BooleanVector operator|(const BooleanVector& other) const; //Побитовое сложение
     BooleanVector operator^(const BooleanVector& other) const; //Побитовое исключающее ИЛИ
@@ -44,7 +42,4 @@ private:
     uint8_t* vectorData_ = nullptr;
     uint32_t numBits_ = 0;
     uint32_t numBytes_ = 0;
-
-    void allocateMemory(const uint32_t numBits); //Выделяет память под вектор (частая операция в методах)
-    void clearMemory(); // освобождает память (частая операция в методах)
 };
