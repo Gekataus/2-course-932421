@@ -12,12 +12,6 @@ BooleanVector::BooleanVector(const uint32_t numBits, const bool initialValue)
         for (uint32_t i = 0; i < numBytes_; i++) {
             vectorData_[i] = initialByteValue;
         }
-
-        // Обнуляем лишние биты в последнем байте
-        if (numBits_ % 8 != 0) {
-            uint8_t mask = (1 << (numBits_ % 8)) - 1;
-            vectorData_[numBytes_ - 1] &= mask;
-        }
     }
     else {
         vectorData_ = nullptr;
