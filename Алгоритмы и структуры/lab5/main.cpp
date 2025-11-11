@@ -52,24 +52,30 @@ std::vector<int> loadArrayFromFile(const std::string& filename) {
 	return arr;
 }
 
-void HoarSort(vector<int>& arr, int n, int min, int max)
-{	
-	int i = 0, j = n - 1;
-	if (i >= j || min == max) exit;
-	float xm = (min + max) / 2;
-	while (i <= j)
-	{
+void HoarSort(vector<int>& arr, int l, int r, int xl, int xr) {
+	if (l >= r || xl == xr) return;
+	int i = l, j = r;
+	float xm = (xl + xr) / 2.0f;
+	while (i <= j) {
+		// Ищем элемент слева, который >= xm
 		while (i <= j && arr[i] < xm) i++;
+		// Ищем элемент справа, который < xm
 		while (j >= i && arr[j] >= xm) j--;
-		if (i < j)
-		{
+		// Если нашли пару для обмена
+		if (i < j) {
 			swap(arr[i], arr[j]);
 			i++;
 			j--;
 		}
 	}
-	HoarSort(arr, n, min, xm-0.5);
-	HoarSort(arr, n, xm+0.5, max);
+	// от xl до xm
+	if (l <= j) {
+		HoarSort(arr, l, j, xl, (int)xm);
+	}
+	// от xm до xr
+	if (i <= r) {
+		HoarSort(arr, i, r, (int)(xm + 0.5), xr);
+	}
 }
 
 
@@ -79,8 +85,21 @@ int main()
 	int n, min, max;
 	cin >> n >> min >> max;
 	vector<int> arr1 = generateRandomArray(n, min, max);
-	outputArray(arr1);
-	HoarSort(arr1, n, min, max);
-	outputArray(arr1);
+	
+	vector<string> filenames = {
+		"array_10000_-10_10",
+		"array_10000_-1000_1000",
+		"array_10000_-100000_100000",
+		"array_100000_-10_10",
+		"array_100000_-1000_1000",
+		"array_100000_-100000_100000",
+		"array_1000000_-10_10",
+		"array_1000000_-1000_1000",
+		"array_1000000_-100000_100000"
+	};
+	for (int i = 0; i < filenames.size(); i++) {
+		string filename = filenames[i];
 
+	}
+	return 0;
 }
