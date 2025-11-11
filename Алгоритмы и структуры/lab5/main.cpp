@@ -52,9 +52,35 @@ std::vector<int> loadArrayFromFile(const std::string& filename) {
 	return arr;
 }
 
+void HoarSort(vector<int>& arr, int n, int min, int max)
+{	
+	int i = 0, j = n - 1;
+	if (i >= j || min == max) exit;
+	float xm = (min + max) / 2;
+	while (i <= j)
+	{
+		while (i <= j && arr[i] < xm) i++;
+		while (j >= i && arr[j] >= xm) j--;
+		if (i < j)
+		{
+			swap(arr[i], arr[j]);
+			i++;
+			j--;
+		}
+	}
+	HoarSort(arr, n, min, xm-0.5);
+	HoarSort(arr, n, xm+0.5, max);
+}
+
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-
+	int n, min, max;
+	cin >> n >> min >> max;
+	vector<int> arr1 = generateRandomArray(n, min, max);
+	outputArray(arr1);
+	HoarSort(arr1, n, min, max);
+	outputArray(arr1);
 
 }
