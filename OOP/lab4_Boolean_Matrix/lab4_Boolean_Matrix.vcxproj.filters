@@ -16,13 +16,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="booleanmatrix.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="booleanvector.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="dynamicarray.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

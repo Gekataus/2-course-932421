@@ -1,4 +1,4 @@
-п»ї#include <stdexcept>
+#include <stdexcept>
 #include <cstring>
 #include <iostream>
 #include "booleanvector.h"
@@ -27,7 +27,7 @@ BooleanVector::BooleanVector(const char* str)
         return;
     }
 
-    // РћРїСЂРµРґРµР»СЏРµРј РґР»РёРЅСѓ СЃС‚СЂРѕРєРё
+    // Определяем длину строки
     uint32_t length = 0;
     while (str[length] != '\0') length++;
     numBits_ = length;
@@ -35,12 +35,12 @@ BooleanVector::BooleanVector(const char* str)
 
     if (numBytes_ > 0) {
         vectorData_ = new uint8_t[numBytes_];
-        // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РЅСѓР»СЏРјРё
+        // Инициализируем нулями
         for (uint32_t i = 0; i < numBytes_; i++) {
             vectorData_[i] = 0;
         }
 
-        // Р—Р°РїРѕР»РЅСЏРµРј РІРµРєС‚РѕСЂ РёР· СЃС‚СЂРѕРєРё
+        // Заполняем вектор из строки
         for (uint32_t i = 0; i < numBits_; i++) {
             if (str[i] == '1') {
                 uint32_t byteIndex = i / 8;
@@ -111,7 +111,7 @@ BooleanVector& BooleanVector::operator=(BooleanVector&& other)
 
 bool BooleanVector::operator[](const uint32_t index) const {
     if (index >= numBits_)
-        throw std::runtime_error("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹.");
+        throw std::runtime_error("Индекс выходит за границы.");
 
     uint32_t byteIndex = index / 8;
     uint32_t bitIndex = index % 8;
@@ -143,7 +143,7 @@ void BooleanVector::invert()
         vectorData_[i] = ~vectorData_[i];
     }
 
-    // РљРѕСЂСЂРµРєС‚РёСЂСѓРµРј РїРѕСЃР»РµРґРЅРёР№ Р±Р°Р№С‚, РµСЃР»Рё РЅСѓР¶РЅРѕ
+    // Корректируем последний байт, если нужно
     if (numBits_ % 8 != 0) {
         uint8_t mask = (1 << (numBits_ % 8)) - 1;
         vectorData_[numBytes_ - 1] &= mask;
@@ -153,7 +153,7 @@ void BooleanVector::invert()
 void BooleanVector::setBit(const uint32_t index, const bool value)
 {
     if (index >= numBits_)
-        throw std::runtime_error("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹.");
+        throw std::runtime_error("Индекс выходит за границы.");
 
     uint32_t byteIndex = index / 8;
     uint32_t bitIndex = index % 8;
@@ -169,19 +169,19 @@ void BooleanVector::setBit(const uint32_t index, const bool value)
 void BooleanVector::invertBit(const uint32_t index)
 {
     if (index >= numBits_)
-        throw std::runtime_error("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
+        throw std::runtime_error("Индекс выходит за границы");
 
     uint32_t byteIndex = index / 8;
     uint32_t bitIndex = index % 8;
 
-    // РРЅРІРµСЂС‚РёСЂСѓРµРј Р±РёС‚ СЃ РїРѕРјРѕС‰СЊСЋ XOR
+    // Инвертируем бит с помощью XOR
     vectorData_[byteIndex] ^= (1 << bitIndex);
 }
 
 BooleanVector BooleanVector::operator&(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) {
-        throw std::runtime_error("Р’РµРєС‚РѕСЂС‹ РёРјРµСЋС‚ СЂР°Р·РЅСѓСЋ РґР»РёРЅСѓ");
+        throw std::runtime_error("Векторы имеют разную длину");
     }
 
     BooleanVector result(numBits_, false);
@@ -194,7 +194,7 @@ BooleanVector BooleanVector::operator&(const BooleanVector& other) const
 BooleanVector BooleanVector::operator|(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) {
-        throw std::runtime_error("Р’РµРєС‚РѕСЂС‹ РёРјРµСЋС‚ СЂР°Р·РЅСѓСЋ РґР»РЅРёСѓ");
+        throw std::runtime_error("Векторы имеют разную длниу");
     }
 
     BooleanVector result(numBits_, false);
@@ -207,7 +207,7 @@ BooleanVector BooleanVector::operator|(const BooleanVector& other) const
 BooleanVector BooleanVector::operator^(const BooleanVector& other) const
 {
     if (numBits_ != other.numBits_) {
-        throw std::runtime_error("Р’РµРєС‚РѕСЂС‹ РёРјРµСЋС‚ СЂР°Р·РЅСѓСЋ РґР»РёРЅСѓ");
+        throw std::runtime_error("Векторы имеют разную длину");
     }
 
     BooleanVector result(numBits_, false);
@@ -224,21 +224,21 @@ BooleanVector BooleanVector::operator~() const
     return result;
 }
 
-//РџРѕР±РёС‚РѕРІС‹Рµ СЃРґРІРёРіРё
+//Побитовые сдвиги
 BooleanVector BooleanVector::operator<<(const uint32_t shift) const
 {
     if (shift == 0) {
-        return BooleanVector(*this);  // Р’РѕР·РІСЂР°С‰Р°РµРј РєРѕРїРёСЋ
+        return BooleanVector(*this);  // Возвращаем копию
     }
 
     if (shift >= numBits_) {
-        // Р•СЃР»Рё СЃРґРІРёРі Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРµРЅ РґР»РёРЅРµ - РІРѕР·РІСЂР°С‰Р°РµРј РЅСѓР»РµРІРѕР№ РІРµРєС‚РѕСЂ
+        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
         return BooleanVector(numBits_, false);
     }
 
     BooleanVector result(numBits_, false);
 
-    // Р’С‹РїРѕР»РЅСЏРµРј СЃРґРІРёРі
+    // Выполняем сдвиг
     for (uint32_t i = 0; i < numBits_ - shift; i++) {
         if ((*this)[i + shift]) {
             result.setBit(i, 1);
@@ -251,17 +251,17 @@ BooleanVector BooleanVector::operator<<(const uint32_t shift) const
 BooleanVector BooleanVector::operator>>(const uint32_t shift) const
 {
     if (shift == 0) {
-        return BooleanVector(*this);  // Р’РѕР·РІСЂР°С‰Р°РµРј РєРѕРїРёСЋ
+        return BooleanVector(*this);  // Возвращаем копию
     }
 
     if (shift >= numBits_) {
-        // Р•СЃР»Рё СЃРґРІРёРі Р±РѕР»СЊС€Рµ РёР»Рё СЂР°РІРµРЅ РґР»РёРЅРµ - РІРѕР·РІСЂР°С‰Р°РµРј РЅСѓР»РµРІРѕР№ РІРµРєС‚РѕСЂ
+        // Если сдвиг больше или равен длине - возвращаем нулевой вектор
         return BooleanVector(numBits_, false);
     }
 
     BooleanVector result(numBits_, false);
 
-    // Р’С‹РїРѕР»РЅСЏРµРј СЃРґРІРёРі
+    // Выполняем сдвиг
     for (uint32_t i = shift; i < numBits_; i++) {
         if ((*this)[i - shift]) {
             result.setBit(i, 1);
@@ -271,7 +271,7 @@ BooleanVector BooleanVector::operator>>(const uint32_t shift) const
     return result;
 }
 
-// РІРІРѕРґ/РІС‹РІРѕРґ
+// ввод/вывод
 std::ostream& operator<<(std::ostream& os, const BooleanVector& bv)
 {
     for (uint32_t i = 0; i < bv.numBits_; i++) {
@@ -285,7 +285,7 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
     std::string input;
     is >> input;
 
-    // РћС‡РёС‰Р°РµРј С‚РµРєСѓС‰РёРµ РґР°РЅРЅС‹Рµ
+    // Очищаем текущие данные
     delete[] bv.vectorData_;
 
     bv.numBits_ = input.length();
@@ -293,7 +293,7 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
 
     if (bv.numBytes_ > 0) {
         bv.vectorData_ = new uint8_t[bv.numBytes_];
-        // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РЅСѓР»СЏРјРё
+        // Инициализируем нулями
         for (uint32_t i = 0; i < bv.numBytes_; i++) {
             bv.vectorData_[i] = 0;
         }
@@ -306,7 +306,7 @@ std::istream& operator>>(std::istream& is, BooleanVector& bv)
                 bv.setBit(i, 0);
             }
             else {
-                throw std::runtime_error("Р’РІРµРґС‘РЅ РЅРµРІРµСЂРЅС‹Р№ СЃРёРјРІРѕР» (РЅРµ 0 РёР»Рё 1)");
+                throw std::runtime_error("Введён неверный символ (не 0 или 1)");
             }
         }
     }
