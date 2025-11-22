@@ -17,6 +17,9 @@ public:
     BooleanMatrix(const char** charMatrix, const uint32_t numRows);
     BooleanMatrix(const BooleanMatrix& other);
 
+    // Присваивание
+    BooleanMatrix& operator=(const BooleanMatrix& other);
+
     // Получение числа строк и столбцов
     uint32_t getRows() const;
     uint32_t getCols() const;

@@ -74,7 +74,7 @@ BooleanVector BooleanMatrix::disjunctionAllRows() const {
 // Установка в 0/1 i-ой компоненты j-ой строки
 void BooleanMatrix::setBit(uint32_t row, uint32_t col, bool value) {
     if (row >= getRows() || col >= getCols()) {
-        throw out_of_range("Index out of range");
+        throw out_of_range("Индекс выходит за границы");
     }
     matrixData_[row].setBit(col, value);
 }
