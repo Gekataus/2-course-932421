@@ -14,8 +14,8 @@ public:
     // Конструкторы
     BooleanMatrix();
     BooleanMatrix(uint32_t rows, uint32_t cols, bool defaultValue = false);
-    BooleanMatrix(const char** charMatrix, const uint32_t numRows);
-    BooleanMatrix(const BooleanMatrix& other);
+    BooleanMatrix(const char**, const uint32_t);
+    BooleanMatrix(const BooleanMatrix&);
 
     // Деструктор
     ~BooleanMatrix() = default;
@@ -25,7 +25,7 @@ public:
     uint32_t getCols() const;
 
     // Обмен содержимого с другой матрицей (swap)
-    void swap(BooleanMatrix& other);
+    void swap(BooleanMatrix&);
 
     // Вес матрицы (количество единичных компонент)
     uint32_t getWeight() const;
@@ -37,42 +37,49 @@ public:
     BooleanVector disjunctionAllRows() const;
 
     // Вес j-ой строки
-    uint32_t getRowWeight(uint32_t row) const;
+    uint32_t getRowWeight(uint32_t) const;
 
     // Инверсия в i-ой компоненты j-ой строки
-    void invertBit(uint32_t row, uint32_t col);
+    void invertBit(uint32_t, uint32_t);
+
+    //инверсия k компонент j - ой строки, начиная с i - ой компоненты
+    void invertBits(uint32_t, uint32_t, uint32_t);
 
     // Установка в 0/1 i-ой компоненты j-ой строки
-    void setBit(uint32_t row, uint32_t col, bool value);
+    void setBit(uint32_t, uint32_t, bool);
+
+    //установка в 0/1 k компонент j-ой строки, начиная с i-ой компоненты
+    void setBits(uint32_t, uint32_t, uint32_t, bool);
 
     // Присваивание
-    BooleanMatrix& operator=(const BooleanMatrix& other);
+    BooleanMatrix& operator=(const BooleanMatrix&);
 
     // Получение строки
-    BooleanVector& operator[](uint32_t row);
-    const BooleanVector& operator[](uint32_t row) const;
+    BooleanVector& operator[](uint32_t);
+    const BooleanVector& operator[](uint32_t) const;
 
-    // Построчное побитовое умножение (&)
-    BooleanMatrix operator&(const BooleanMatrix& other) const;
-    BooleanMatrix& operator&=(const BooleanMatrix& other);
+    // Построчное побитовое умножение (&,&=)
+    BooleanMatrix operator&(const BooleanMatrix&) const;
+    BooleanMatrix& operator&=(const BooleanMatrix&);
 
-    // Построчное побитовое сложение (|)
-    BooleanMatrix operator|(const BooleanMatrix& other) const;
-    BooleanMatrix& operator|=(const BooleanMatrix& other);
 
-    // Построчное побитовое исключающее ИЛИ (^)
-    BooleanMatrix operator^(const BooleanMatrix& other) const;
-    BooleanMatrix& operator^=(const BooleanMatrix& other);
+    // Построчное побитовое сложение (|,|=)
+    BooleanMatrix operator|(const BooleanMatrix&) const;
+    BooleanMatrix& operator|=(const BooleanMatrix&);
+
+    // Построчное побитовое исключающее ИЛИ (^,^=)
+    BooleanMatrix operator^(const BooleanMatrix&) const;
+    BooleanMatrix& operator^=(const BooleanMatrix&);
 
     // Построчная побитовая инверсия (~)
     BooleanMatrix operator~() const;
 
     // Сравнение матриц
-    bool operator==(const BooleanMatrix& other) const;
-    bool operator!=(const BooleanMatrix& other) const;
+    bool operator==(const BooleanMatrix&) const;
+    bool operator!=(const BooleanMatrix&) const;
     
-
-    // Потоковый ввод/вывод
-    friend std::istream& operator>>(std::istream& is, BooleanMatrix& bm);
-    friend std::ostream& operator<<(std::ostream& os, const BooleanMatrix& bm);
 };
+
+// Потоковый ввод/вывод
+std::istream& operator>>(std::istream& is, BooleanMatrix& bm);
+std::ostream& operator<<(std::ostream& os, const BooleanMatrix& bm);
