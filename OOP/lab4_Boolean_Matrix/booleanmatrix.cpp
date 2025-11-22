@@ -87,7 +87,123 @@ BooleanMatrix& BooleanMatrix::operator=(const BooleanMatrix& other) {
     return *this;
 }
 
+// Вес j-ой строки
+uint32_t BooleanMatrix::getRowWeight(uint32_t row) const {
+    if (row >= getRows()) {
+        throw out_of_range("Row index out of range");
+    }
+    return matrixData_[row].getWeight();
+}
 
+// Инверсия в i-ой компоненты j-ой строки
+void BooleanMatrix::invertBit(uint32_t row, uint32_t col) {
+    if (row >= getRows() || col >= getCols()) {
+        throw out_of_range("Index out of range");
+    }
+    matrixData_[row].invertBit(col);
+}
+
+
+// Получение строки
+BooleanVector& BooleanMatrix::operator[](uint32_t row) {
+    if (row >= getRows()) {
+        throw out_of_range("Row index out of range");
+    }
+    return matrixData_[row];
+}
+
+const BooleanVector& BooleanMatrix::operator[](uint32_t row) const {
+    if (row >= getRows()) {
+        throw out_of_range("Row index out of range");
+    }
+    return matrixData_[row];
+}
+
+// Построчное побитовое умножение (&)
+BooleanMatrix BooleanMatrix::operator&(const BooleanMatrix& other) const {
+    if (getRows() != other.getRows() || getCols() != other.getCols()) {
+        throw invalid_argument("Matrices must have same dimensions");
+    }
+
+    BooleanMatrix result(getRows(), getCols());
+    for (uint32_t i = 0; i < getRows(); ++i) {
+        result[i] = matrixData_[i] & other.matrixData_[i];
+    }
+    return result;
+}
+
+BooleanMatrix& BooleanMatrix::operator&=(const BooleanMatrix& other) {
+    *this = *this & other;
+    return *this;
+}
+
+// Построчное побитовое сложение (|)
+BooleanMatrix BooleanMatrix::operator|(const BooleanMatrix& other) const {
+    if (getRows() != other.getRows() || getCols() != other.getCols()) {
+        throw invalid_argument("Matrices must have same dimensions");
+    }
+
+    BooleanMatrix result(getRows(), getCols());
+    for (uint32_t i = 0; i < getRows(); ++i) {
+        result[i] = matrixData_[i] | other.matrixData_[i];
+    }
+    return result;
+}
+
+BooleanMatrix& BooleanMatrix::operator|=(const BooleanMatrix& other) {
+    *this = *this | other;
+    return *this;
+}
+
+// Построчное побитовое исключающее ИЛИ (^)
+BooleanMatrix BooleanMatrix::operator^(const BooleanMatrix& other) const {
+    if (getRows() != other.getRows() || getCols() != other.getCols()) {
+        throw invalid_argument("Matrices must have same dimensions");
+    }
+
+    BooleanMatrix result(getRows(), getCols());
+    for (uint32_t i = 0; i < getRows(); ++i) {
+        result[i] = matrixData_[i] ^ other.matrixData_[i];
+    }
+    return result;
+}
+
+BooleanMatrix& BooleanMatrix::operator^=(const BooleanMatrix& other) {
+    *this = *this ^ other;
+    return *this;
+}
+
+// Построчная побитовая инверсия (~)
+BooleanMatrix BooleanMatrix::operator~() const {
+    BooleanMatrix result(getRows(), getCols());
+    for (uint32_t i = 0; i < getRows(); ++i) {
+        result[i] = ~matrixData_[i];
+    }
+    return result;
+}
+
+// Сравнение матриц
+bool BooleanMatrix::operator==(const BooleanMatrix& other) const {
+    if (getRows() != other.getRows() || getCols() != other.getCols()) {
+        return false;
+    }
+
+    for (uint32_t i = 0; i < getRows(); ++i) {
+        if (matrixData_[i].getLength() != other.matrixData_[i].getLength()) {
+            return false;
+        }
+        for (uint32_t j = 0; j < getCols(); ++j) {
+            if (matrixData_[i][j] != other.matrixData_[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool BooleanMatrix::operator!=(const BooleanMatrix& other) const {
+    return !(*this == other);
+}
 
 // Потоковый ввод
 std::istream& operator>>(std::istream& is, BooleanMatrix& bm) {

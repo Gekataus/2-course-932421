@@ -20,6 +20,12 @@ public:
     // Присваивание
     BooleanMatrix& operator=(const BooleanMatrix& other);
 
+    // Вес j-ой строки
+    uint32_t getRowWeight(uint32_t row) const;
+
+    // Инверсия в i-ой компоненты j-ой строки
+    void invertBit(uint32_t row, uint32_t col);
+
     // Получение числа строк и столбцов
     uint32_t getRows() const;
     uint32_t getCols() const;
@@ -38,6 +44,30 @@ public:
 
     // Дизъюнкция всех строк (возвращает булев вектор)
     BooleanVector disjunctionAllRows() const;
+
+    // Получение строки
+    BooleanVector& operator[](uint32_t row);
+    const BooleanVector& operator[](uint32_t row) const;
+
+    // Построчное побитовое умножение (&)
+    BooleanMatrix operator&(const BooleanMatrix& other) const;
+    BooleanMatrix& operator&=(const BooleanMatrix& other);
+
+    // Построчное побитовое сложение (|)
+    BooleanMatrix operator|(const BooleanMatrix& other) const;
+    BooleanMatrix& operator|=(const BooleanMatrix& other);
+
+    // Построчное побитовое исключающее ИЛИ (^)
+    BooleanMatrix operator^(const BooleanMatrix& other) const;
+    BooleanMatrix& operator^=(const BooleanMatrix& other);
+
+    // Построчная побитовая инверсия (~)
+    BooleanMatrix operator~() const;
+
+    // Сравнение матриц
+    bool operator==(const BooleanMatrix& other) const;
+    bool operator!=(const BooleanMatrix& other) const;
+    
 
 
     // Потоковый ввод/вывод
