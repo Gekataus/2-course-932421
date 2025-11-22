@@ -1,4 +1,4 @@
-#include "booleanmatrix.h"
+п»ї#include "booleanmatrix.h"
 
 int main()
 {
@@ -6,8 +6,8 @@ int main()
     setlocale(LC_ALL, "Russian");
 
     try {
-        // Тест конструкторов
-        cout << "1. Тест конструкторов BooleanMatrix" << endl;
+        // РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ
+        cout << "1. РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ BooleanMatrix" << endl;
         BooleanMatrix defaultMatrix;
         BooleanMatrix sizedMatrix(3, 4, true);
 
@@ -20,71 +20,71 @@ int main()
         BooleanMatrix charBasedMatrix(charMatrix, 4);
         BooleanMatrix copiedMatrix(charBasedMatrix);
 
-        cout << "Конструктор с параметрами (3x4, true):" << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё (3x4, true):" << endl;
         cout << sizedMatrix << endl;
 
-        cout << "Конструктор из массива char:" << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР° char:" << endl;
         cout << charBasedMatrix << endl;
 
-        cout << "Конструктор копирования:" << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ:" << endl;
         cout << copiedMatrix << endl;
 
-        // Тест получения размеров и веса
-        cout << "2. Тест методов получения размеров и веса матрицы" << endl;
-        cout << "Матрица из char: " << charBasedMatrix.getRows() << "x" << charBasedMatrix.getCols() << endl;
-        cout << "Вес матрицы: " << charBasedMatrix.getWeight() << endl << endl;
+        // РўРµСЃС‚ РїРѕР»СѓС‡РµРЅРёСЏ СЂР°Р·РјРµСЂРѕРІ Рё РІРµСЃР°
+        cout << "2. РўРµСЃС‚ РјРµС‚РѕРґРѕРІ РїРѕР»СѓС‡РµРЅРёСЏ СЂР°Р·РјРµСЂРѕРІ Рё РІРµСЃР° РјР°С‚СЂРёС†С‹" << endl;
+        cout << "РњР°С‚СЂРёС†Р° РёР· char: " << charBasedMatrix.getRows() << "x" << charBasedMatrix.getCols() << endl;
+        cout << "Р’РµСЃ РјР°С‚СЂРёС†С‹: " << charBasedMatrix.getWeight() << endl << endl;
 
-        // Обмен содержимого с другой матрицей (swap)
-        cout << "3. Тест обмена с другой матрицей (swap)" << endl;
+        // РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРѕР№ РјР°С‚СЂРёС†РµР№ (swap)
+        cout << "3. РўРµСЃС‚ РѕР±РјРµРЅР° СЃ РґСЂСѓРіРѕР№ РјР°С‚СЂРёС†РµР№ (swap)" << endl;
         BooleanMatrix swap1(2, 3, true);
         BooleanMatrix swap2(3, 2, false);
 
-        cout << "Матрица 1 (2x3):" << endl << swap1;
-        cout << "Матрица 2 (3x2):" << endl << swap2;
+        cout << "РњР°С‚СЂРёС†Р° 1 (2x3):" << endl << swap1;
+        cout << "РњР°С‚СЂРёС†Р° 2 (3x2):" << endl << swap2;
 
         swap1.swap(swap2);
 
-        cout << "После обмена матриц:" << endl;
-        cout << "Матрица 1:" << endl << swap1;
-        cout << "Матрица 2:" << endl << swap2 << endl;
+        cout << "РџРѕСЃР»Рµ РѕР±РјРµРЅР° РјР°С‚СЂРёС†:" << endl;
+        cout << "РњР°С‚СЂРёС†Р° 1:" << endl << swap1;
+        cout << "РњР°С‚СЂРёС†Р° 2:" << endl << swap2 << endl;
 
-        // Установка битов
-        cout << "4. Тест установки битов" << endl;
+        // РЈСЃС‚Р°РЅРѕРІРєР° Р±РёС‚РѕРІ
+        cout << "4. РўРµСЃС‚ СѓСЃС‚Р°РЅРѕРІРєРё Р±РёС‚РѕРІ" << endl;
         BooleanMatrix testSetBit;
-        cout << "Введите матрицу:" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ:" << endl;
         try {
             cin >> testSetBit;
         }
         catch (const runtime_error& e) {
-            cout << "Ошибка ввода: " << e.what() << endl;
-            cout << "Введите матрицу заново:" << endl;
+            cout << "РћС€РёР±РєР° РІРІРѕРґР°: " << e.what() << endl;
+            cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ Р·Р°РЅРѕРІРѕ:" << endl;
             cin.clear();
             cin.ignore(10000, '\n');
             cin >> testSetBit;
         }
 
         int row, col, value;
-        cout << "Введите строку, столбец и значение (0/1) для установки: ";
+        cout << "Р’РІРµРґРёС‚Рµ СЃС‚СЂРѕРєСѓ, СЃС‚РѕР»Р±РµС† Рё Р·РЅР°С‡РµРЅРёРµ (0/1) РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё: ";
         cin >> row >> col >> value;
 
         try {
             testSetBit.setBit(row, col, value);
-            cout << "Матрица после установки бита:" << endl << testSetBit << endl;
+            cout << "РњР°С‚СЂРёС†Р° РїРѕСЃР»Рµ СѓСЃС‚Р°РЅРѕРІРєРё Р±РёС‚Р°:" << endl << testSetBit << endl;
         }
         catch (const out_of_range& e) {
-            cout << "Ошибка установки бита: " << e.what() << endl << endl;
+            cout << "РћС€РёР±РєР° СѓСЃС‚Р°РЅРѕРІРєРё Р±РёС‚Р°: " << e.what() << endl << endl;
         }
 
-        // Конъюнкция всех строк
-        cout << "5. Тест конъюнкции всех строк" << endl;
+        // РљРѕРЅСЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє
+        cout << "5. РўРµСЃС‚ РєРѕРЅСЉСЋРЅРєС†РёРё РІСЃРµС… СЃС‚СЂРѕРє" << endl;
         BooleanMatrix testConj;
-        cout << "Введите матрицу для конъюнкции:" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ РґР»СЏ РєРѕРЅСЉСЋРЅРєС†РёРё:" << endl;
         try {
             cin >> testConj;
         }
         catch (const runtime_error& e) {
-            cout << "Ошибка ввода: " << e.what() << endl;
-            cout << "Введите матрицу заново:" << endl;
+            cout << "РћС€РёР±РєР° РІРІРѕРґР°: " << e.what() << endl;
+            cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ Р·Р°РЅРѕРІРѕ:" << endl;
             cin.clear();
             cin.ignore(10000, '\n');
             cin >> testConj;
@@ -92,23 +92,23 @@ int main()
 
         try {
             BooleanVector conjResult = testConj.conjunctionAllRows();
-            cout << "Матрица:" << endl << testConj;
-            cout << "Конъюнкция всех строк: " << conjResult << endl << endl;
+            cout << "РњР°С‚СЂРёС†Р°:" << endl << testConj;
+            cout << "РљРѕРЅСЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє: " << conjResult << endl << endl;
         }
         catch (const exception& e) {
-            cout << "Ошибка конъюнкции: " << e.what() << endl << endl;
+            cout << "РћС€РёР±РєР° РєРѕРЅСЉСЋРЅРєС†РёРё: " << e.what() << endl << endl;
         }
 
-        // Дизъюнкция всех строк
-        cout << "6. Тест дизъюнкции всех строк" << endl;
+        // Р”РёР·СЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє
+        cout << "6. РўРµСЃС‚ РґРёР·СЉСЋРЅРєС†РёРё РІСЃРµС… СЃС‚СЂРѕРє" << endl;
         BooleanMatrix testDisj;
-        cout << "Введите матрицу для дизъюнкции:" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ РґР»СЏ РґРёР·СЉСЋРЅРєС†РёРё:" << endl;
         try {
             cin >> testDisj;
         }
         catch (const runtime_error& e) {
-            cout << "Ошибка ввода: " << e.what() << endl;
-            cout << "Введите матрицу заново:" << endl;
+            cout << "РћС€РёР±РєР° РІРІРѕРґР°: " << e.what() << endl;
+            cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ Р·Р°РЅРѕРІРѕ:" << endl;
             cin.clear();
             cin.ignore(10000, '\n');
             cin >> testDisj;
@@ -116,73 +116,73 @@ int main()
 
         try {
             BooleanVector disjResult = testDisj.disjunctionAllRows();
-            cout << "Матрица:" << endl << testDisj;
-            cout << "Дизъюнкция всех строк: " << disjResult << endl << endl;
+            cout << "РњР°С‚СЂРёС†Р°:" << endl << testDisj;
+            cout << "Р”РёР·СЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє: " << disjResult << endl << endl;
         }
         catch (const exception& e) {
-            cout << "Ошибка дизъюнкции: " << e.what() << endl << endl;
+            cout << "РћС€РёР±РєР° РґРёР·СЉСЋРЅРєС†РёРё: " << e.what() << endl << endl;
         }
 
-        // Тест операций с несколькими матрицами
-        cout << "7. Тест операций с несколькими матрицами" << endl;
+        // РўРµСЃС‚ РѕРїРµСЂР°С†РёР№ СЃ РЅРµСЃРєРѕР»СЊРєРёРјРё РјР°С‚СЂРёС†Р°РјРё
+        cout << "7. РўРµСЃС‚ РѕРїРµСЂР°С†РёР№ СЃ РЅРµСЃРєРѕР»СЊРєРёРјРё РјР°С‚СЂРёС†Р°РјРё" << endl;
         BooleanMatrix matrixA, matrixB;
 
-        cout << "Введите матрицу A:" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ A:" << endl;
         try {
             cin >> matrixA;
         }
         catch (const runtime_error& e) {
-            cout << "Ошибка ввода матрицы A: " << e.what() << endl;
-            cout << "Введите матрицу A заново:" << endl;
+            cout << "РћС€РёР±РєР° РІРІРѕРґР° РјР°С‚СЂРёС†С‹ A: " << e.what() << endl;
+            cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ A Р·Р°РЅРѕРІРѕ:" << endl;
             cin.clear();
             cin.ignore(10000, '\n');
             cin >> matrixA;
         }
 
-        cout << "Введите матрицу B:" << endl;
+        cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ B:" << endl;
         try {
             cin >> matrixB;
         }
         catch (const runtime_error& e) {
-            cout << "Ошибка ввода матрицы B: " << e.what() << endl;
-            cout << "Введите матрицу B заново:" << endl;
+            cout << "РћС€РёР±РєР° РІРІРѕРґР° РјР°С‚СЂРёС†С‹ B: " << e.what() << endl;
+            cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ B Р·Р°РЅРѕРІРѕ:" << endl;
             cin.clear();
             cin.ignore(10000, '\n');
             cin >> matrixB;
         }
 
-        // Сравнение размеров и весов
-        cout << "Матрица A (" << matrixA.getRows() << "x" << matrixA.getCols()
-            << "), вес: " << matrixA.getWeight() << endl;
-        cout << "Матрица B (" << matrixB.getRows() << "x" << matrixB.getCols()
-            << "), вес: " << matrixB.getWeight() << endl;
+        // РЎСЂР°РІРЅРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ Рё РІРµСЃРѕРІ
+        cout << "РњР°С‚СЂРёС†Р° A (" << matrixA.getRows() << "x" << matrixA.getCols()
+            << "), РІРµСЃ: " << matrixA.getWeight() << endl;
+        cout << "РњР°С‚СЂРёС†Р° B (" << matrixB.getRows() << "x" << matrixB.getCols()
+            << "), РІРµСЃ: " << matrixB.getWeight() << endl;
 
-        // Конъюнкция и дизъюнкция для обеих матриц
+        // РљРѕРЅСЉСЋРЅРєС†РёСЏ Рё РґРёР·СЉСЋРЅРєС†РёСЏ РґР»СЏ РѕР±РµРёС… РјР°С‚СЂРёС†
         try {
             BooleanVector conjA = matrixA.conjunctionAllRows();
             BooleanVector disjA = matrixA.disjunctionAllRows();
-            cout << "Конъюнкция A: " << conjA << endl;
-            cout << "Дизъюнкция A: " << disjA << endl;
+            cout << "РљРѕРЅСЉСЋРЅРєС†РёСЏ A: " << conjA << endl;
+            cout << "Р”РёР·СЉСЋРЅРєС†РёСЏ A: " << disjA << endl;
         }
         catch (const exception& e) {
-            cout << "Ошибка операций с матрицей A: " << e.what() << endl;
+            cout << "РћС€РёР±РєР° РѕРїРµСЂР°С†РёР№ СЃ РјР°С‚СЂРёС†РµР№ A: " << e.what() << endl;
         }
 
         try {
             BooleanVector conjB = matrixB.conjunctionAllRows();
             BooleanVector disjB = matrixB.disjunctionAllRows();
-            cout << "Конъюнкция B: " << conjB << endl;
-            cout << "Дизъюнкция B: " << disjB << endl << endl;
+            cout << "РљРѕРЅСЉСЋРЅРєС†РёСЏ B: " << conjB << endl;
+            cout << "Р”РёР·СЉСЋРЅРєС†РёСЏ B: " << disjB << endl << endl;
         }
         catch (const exception& e) {
-            cout << "Ошибка операций с матрицей B: " << e.what() << endl << endl;
+            cout << "РћС€РёР±РєР° РѕРїРµСЂР°С†РёР№ СЃ РјР°С‚СЂРёС†РµР№ B: " << e.what() << endl << endl;
         }
 
         return 0;
     }
 
     catch (const std::exception& e) {
-        cout << "Ошибка в программе: " << e.what() << endl;
+        cout << "РћС€РёР±РєР° РІ РїСЂРѕРіСЂР°РјРјРµ: " << e.what() << endl;
         return 1;
     }
 }

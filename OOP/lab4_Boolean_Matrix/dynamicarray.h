@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <assert.h>
 #include <iostream>
 #include <algorithm>
@@ -9,59 +9,59 @@ template <typename T>
 class DynamicArray
 {
 public:
-    //- конструкторы (по умолчанию, конструктор из обычного массива, конструктор копирования) +
+    //- РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ (РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РѕР±С‹С‡РЅРѕРіРѕ РјР°СЃСЃРёРІР°, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ) +
     DynamicArray();
     DynamicArray(const T* data, int initialLength);
     DynamicArray(const DynamicArray<T>&);
 
-    //- деструктор +
+    //- РґРµСЃС‚СЂСѓРєС‚РѕСЂ +
     ~DynamicArray();
 
-    //Геттеры
-    // Геттер для получения указателя на данные массива
+    //Р“РµС‚С‚РµСЂС‹
+    // Р“РµС‚С‚РµСЂ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РґР°РЅРЅС‹Рµ РјР°СЃСЃРёРІР°
     const T* getArrayData() const { return arrayData_; }
 
-    //- получение размера (количества хранимых элементов в настоящий момент) +
+    //- РїРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° (РєРѕР»РёС‡РµСЃС‚РІР° С…СЂР°РЅРёРјС‹С… СЌР»РµРјРµРЅС‚РѕРІ РІ РЅР°СЃС‚РѕСЏС‰РёР№ РјРѕРјРµРЅС‚) +
     int getArrayLength() const { return arrayLength_; }
 
-    // Геттер для получения элемента по индексу
+    // Р“РµС‚С‚РµСЂ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ
     T getAt(int) const;
 
-    //Сеттеры
-    // Сеттер для установки длины массива
+    //РЎРµС‚С‚РµСЂС‹
+    // РЎРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РґР»РёРЅС‹ РјР°СЃСЃРёРІР°
     void setArrayLength(int);
-    // Сеттер для установки значения по индексу
+    // РЎРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РїРѕ РёРЅРґРµРєСЃСѓ
     void setAt(const int, const T&);
 
-    //- обмен содержимого с другим массивом (swap) +
+    //- РѕР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј РјР°СЃСЃРёРІРѕРј (swap) +
     void ArraysSwap(DynamicArray<T>&);
 
-    // - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет) +
+    // - РїРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° (РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ СЃРѕРІРїР°РІС€РµРіРѕ СЌР»РµРјРµРЅС‚Р°, Р»РёР±Рѕ -1, РµСЃР»Рё СЃРѕРІРїР°РґРµРЅРёР№ РЅРµС‚) +
     int findElement(const T&) const;
 
-    //- сортировка элементов (пирамидальная) +
+    //- СЃРѕСЂС‚РёСЂРѕРІРєР° СЌР»РµРјРµРЅС‚РѕРІ (РїРёСЂР°РјРёРґР°Р»СЊРЅР°СЏ) +
     void sort();
 
-    //- вставка элемента по индексу.Если индекс некорректный, вернуть false +
+    //- РІСЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ.Р•СЃР»Рё РёРЅРґРµРєСЃ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Р№, РІРµСЂРЅСѓС‚СЊ false +
     bool insertAt(const int, const T&);
     void insert(const T&);
-    //- удаление элемента по индексу. Если индекс некорректный, вернуть false +
+    //- СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ. Р•СЃР»Рё РёРЅРґРµРєСЃ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Р№, РІРµСЂРЅСѓС‚СЊ false +
     bool removeAt(const int);
 
-    //-удаление элемента по значению(первое вхождение).Если элемент отсутствует в массиве, вернуть false +
+    //-СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ Р·РЅР°С‡РµРЅРёСЋ(РїРµСЂРІРѕРµ РІС…РѕР¶РґРµРЅРёРµ).Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІ РјР°СЃСЃРёРІРµ, РІРµСЂРЅСѓС‚СЊ false +
     bool removeFirstValue(const T&);
 
-    //-удаление всех элементов с заданным значением +
+    //-СѓРґР°Р»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ СЃ Р·Р°РґР°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј +
     void removeAllValue(const T&);
 
-    //поиск максимального / минимального элемента +
+    //РїРѕРёСЃРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ / РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° +
     T findMaxEl() const;
     T findMinEl() const;
 
 
-    //Перегрузки:
+    //РџРµСЂРµРіСЂСѓР·РєРё:
 
-    //- получение ссылки на элемент по индексу ([]) +
+    //- РїРѕР»СѓС‡РµРЅРёРµ СЃСЃС‹Р»РєРё РЅР° СЌР»РµРјРµРЅС‚ РїРѕ РёРЅРґРµРєСЃСѓ ([]) +
     T& operator[](const int index)
     {
         assert((index >= 0 && index < arrayLength_) && "Index is out of range.");
@@ -74,14 +74,14 @@ public:
         return arrayData_[index];
     }
 
-    //-присваивание копированием(=) +
+    //-РїСЂРёСЃРІР°РёРІР°РЅРёРµ РєРѕРїРёСЂРѕРІР°РЅРёРµРј(=) +
     DynamicArray<T>& operator=(const DynamicArray<T>&);
 
-    //- сложение(конкатенация) с другим массивом(здесь имеется в виду другим объектом нашего класса, а не стандартные массивы) (+ и +=) +
+    //- СЃР»РѕР¶РµРЅРёРµ(РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ) СЃ РґСЂСѓРіРёРј РјР°СЃСЃРёРІРѕРј(Р·РґРµСЃСЊ РёРјРµРµС‚СЃСЏ РІ РІРёРґСѓ РґСЂСѓРіРёРј РѕР±СЉРµРєС‚РѕРј РЅР°С€РµРіРѕ РєР»Р°СЃСЃР°, Р° РЅРµ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ РјР°СЃСЃРёРІС‹) (+ Рё +=) +
     DynamicArray<T> operator+(const DynamicArray<T>&) const;
     DynamicArray<T>& operator+=(const DynamicArray<T>&);
 
-    //-сравнение(== и != ) +
+    //-СЃСЂР°РІРЅРµРЅРёРµ(== Рё != ) +
     bool operator==(const DynamicArray<T>& other) const;
     bool operator!=(const DynamicArray<T>& other) const;
 
@@ -91,22 +91,22 @@ private:
     void sift(const int, const int);
 };
 
-//- ввод/вывод в консоль (потоковый) +
+//- РІРІРѕРґ/РІС‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ (РїРѕС‚РѕРєРѕРІС‹Р№) +
 template <typename T>
 istream& operator>>(istream& inputStream, DynamicArray<T>& input);
 
 template <typename T>
 ostream& operator<<(ostream& outputStream, const DynamicArray<T>& output);
 
-// Реализация методов шаблонного класса
+// Р РµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґРѕРІ С€Р°Р±Р»РѕРЅРЅРѕРіРѕ РєР»Р°СЃСЃР°
 
-//Конструктор по умолчанию
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 template <typename T>
 DynamicArray<T>::DynamicArray()
     : arrayData_(nullptr), arrayLength_(0) {
 }
 
-//Конструктор из обычного массива
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РѕР±С‹С‡РЅРѕРіРѕ РјР°СЃСЃРёРІР°
 template <typename T>
 DynamicArray<T>::DynamicArray(const T* data, int initialLength) : arrayLength_(initialLength)
 {
@@ -122,7 +122,7 @@ DynamicArray<T>::DynamicArray(const T* data, int initialLength) : arrayLength_(i
     }
 }
 
-//Конструктор копирования
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 template <typename T>
 DynamicArray<T>::DynamicArray(const DynamicArray<T>& otherArray)
 {
@@ -142,14 +142,14 @@ DynamicArray<T>::DynamicArray(const DynamicArray<T>& otherArray)
     }
 }
 
-//Деструктор
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 template <typename T>
 DynamicArray<T>::~DynamicArray()
 {
     delete[] arrayData_;
 }
 
-// Геттер для получения элемента по индексу
+// Р“РµС‚С‚РµСЂ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ
 template <typename T>
 T DynamicArray<T>::getAt(int index) const {
     if (index < 0 || index >= arrayLength_) {
@@ -158,11 +158,11 @@ T DynamicArray<T>::getAt(int index) const {
     return arrayData_[index];
 }
 
-// Сеттер для установки длины массива
+// РЎРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РґР»РёРЅС‹ РјР°СЃСЃРёРІР°
 template <typename T>
 void DynamicArray<T>::setArrayLength(int newLength) {
     if (newLength < 0) {
-        cout << "Длина не может быть отрицательной, установлена длина 1";
+        cout << "Р”Р»РёРЅР° РЅРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РѕС‚СЂРёС†Р°С‚РµР»СЊРЅРѕР№, СѓСЃС‚Р°РЅРѕРІР»РµРЅР° РґР»РёРЅР° 1";
         newLength = 1;
     }
 
@@ -183,7 +183,7 @@ void DynamicArray<T>::setArrayLength(int newLength) {
         copy(arrayData_, arrayData_ + elementsToCopy, newData);
     }
 
-    // Инициализация новых элементов значением по умолчанию
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅРѕРІС‹С… СЌР»РµРјРµРЅС‚РѕРІ Р·РЅР°С‡РµРЅРёРµРј РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
     for (int i = elementsToCopy; i < newLength; ++i) {
         newData[i] = T();
     }
@@ -193,16 +193,16 @@ void DynamicArray<T>::setArrayLength(int newLength) {
     arrayLength_ = newLength;
 }
 
-// Сеттер для установки значения по индексу
+// РЎРµС‚С‚РµСЂ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё Р·РЅР°С‡РµРЅРёСЏ РїРѕ РёРЅРґРµРєСЃСѓ
 template <typename T>
 void DynamicArray<T>::setAt(const int index, const T& value) {
     if (index < 0 || index >= arrayLength_) {
-        throw out_of_range("Индекс выходит за границы массива");
+        throw out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹ РјР°СЃСЃРёРІР°");
     }
     arrayData_[index] = value;
 }
 
-//- обмен содержимого с другим массивом (swap)
+//- РѕР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј РјР°СЃСЃРёРІРѕРј (swap)
 template <typename T>
 void DynamicArray<T>::ArraysSwap(DynamicArray<T>& other)
 {
@@ -210,7 +210,7 @@ void DynamicArray<T>::ArraysSwap(DynamicArray<T>& other)
     swap(arrayLength_, other.arrayLength_);
 }
 
-// - поиск элемента (возвращает индекс первого совпавшего элемента, либо -1, если совпадений нет); 
+// - РїРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° (РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ СЃРѕРІРїР°РІС€РµРіРѕ СЌР»РµРјРµРЅС‚Р°, Р»РёР±Рѕ -1, РµСЃР»Рё СЃРѕРІРїР°РґРµРЅРёР№ РЅРµС‚); 
 template <typename T>
 int DynamicArray<T>::findElement(const T& a) const
 {
@@ -222,7 +222,7 @@ int DynamicArray<T>::findElement(const T& a) const
     return -1;
 }
 
-// Просеивание
+// РџСЂРѕСЃРµРёРІР°РЅРёРµ
 template <typename T>
 void DynamicArray<T>::sift(const int n, const int i) {
     int max = i;
@@ -241,28 +241,28 @@ void DynamicArray<T>::sift(const int n, const int i) {
     }
 }
 
-//Сортировка
+//РЎРѕСЂС‚РёСЂРѕРІРєР°
 template <typename T>
 void DynamicArray<T>::sort() {
     int n = arrayLength_;
 
-    // Построение пирамиды
+    // РџРѕСЃС‚СЂРѕРµРЅРёРµ РїРёСЂР°РјРёРґС‹
     for (int i = n / 2 - 1; i >= 0; i--)
         sift(n, i);
-    // Извлечение элементов из пирамиды
+    // РР·РІР»РµС‡РµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ РёР· РїРёСЂР°РјРёРґС‹
     for (int i = n - 1; i > 0; i--) {
         swap(arrayData_[0], arrayData_[i]);
         sift(i, 0);
     }
 }
 
-//Вставка элемента по индексу
+//Р’СЃС‚Р°РІРєР° СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ
 template <typename T>
 bool DynamicArray<T>::insertAt(const int index, const T& value)
 {
     if (index < 0 || index > arrayLength_) return false;
 
-    //Если массив пустой
+    //Р•СЃР»Рё РјР°СЃСЃРёРІ РїСѓСЃС‚РѕР№
     if (arrayLength_ == 0 && index == 0) {
         arrayData_ = new T[1];
         arrayData_[0] = value;
@@ -303,10 +303,10 @@ void DynamicArray<T>::insert(const T& value)
     arrayData_ = tempArrayData;
 }
 
-//- удаление элемента по индексу. Если индекс некорректный, вернуть false
+//- СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ РёРЅРґРµРєСЃСѓ. Р•СЃР»Рё РёРЅРґРµРєСЃ РЅРµРєРѕСЂСЂРµРєС‚РЅС‹Р№, РІРµСЂРЅСѓС‚СЊ false
 template <typename T>
 bool DynamicArray<T>::removeAt(const int index) {
-    // Проверка корректности индекса
+    // РџСЂРѕРІРµСЂРєР° РєРѕСЂСЂРµРєС‚РЅРѕСЃС‚Рё РёРЅРґРµРєСЃР°
     if (index < 0 || index >= arrayLength_) {
         return false;
     }
@@ -317,19 +317,19 @@ bool DynamicArray<T>::removeAt(const int index) {
         arrayLength_ = 0;
         return true;
     }
-    // Создаем новый массив на 1 элемент меньше
+    // РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ РјР°СЃСЃРёРІ РЅР° 1 СЌР»РµРјРµРЅС‚ РјРµРЅСЊС€Рµ
     T* newData = new T[arrayLength_ - 1];
 
-    // Копируем элементы до удаляемого индекса
+    // РљРѕРїРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹ РґРѕ СѓРґР°Р»СЏРµРјРѕРіРѕ РёРЅРґРµРєСЃР°
     for (int i = 0; i < index; ++i) {
         newData[i] = arrayData_[i];
     }
-    // Копируем элементы после удаляемого индекса
+    // РљРѕРїРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹ РїРѕСЃР»Рµ СѓРґР°Р»СЏРµРјРѕРіРѕ РёРЅРґРµРєСЃР°
     for (int i = index + 1; i < arrayLength_; ++i) {
         newData[i - 1] = arrayData_[i];
     }
 
-    // Освобождаем старую память и обновляем указатель
+    // РћСЃРІРѕР±РѕР¶РґР°РµРј СЃС‚Р°СЂСѓСЋ РїР°РјСЏС‚СЊ Рё РѕР±РЅРѕРІР»СЏРµРј СѓРєР°Р·Р°С‚РµР»СЊ
     delete[] arrayData_;
     arrayData_ = newData;
     arrayLength_--;
@@ -337,7 +337,7 @@ bool DynamicArray<T>::removeAt(const int index) {
     return true;
 }
 
-//- Удаление элемента по значению (первое вхождение). Если элемент отсутствует в массиве, вернуть false
+//- РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕ Р·РЅР°С‡РµРЅРёСЋ (РїРµСЂРІРѕРµ РІС…РѕР¶РґРµРЅРёРµ). Р•СЃР»Рё СЌР»РµРјРµРЅС‚ РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РІ РјР°СЃСЃРёРІРµ, РІРµСЂРЅСѓС‚СЊ false
 template <typename T>
 bool DynamicArray<T>::removeFirstValue(const T& value)
 {
@@ -347,19 +347,19 @@ bool DynamicArray<T>::removeFirstValue(const T& value)
     return removeAt(index);
 }
 
-//-удаление всех элементов с заданным значением
+//-СѓРґР°Р»РµРЅРёРµ РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ СЃ Р·Р°РґР°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј
 template <typename T>
 void DynamicArray<T>::removeAllValue(const T& value)
 {
     if (arrayLength_ == 0) return;
-    // Считаем количество элементов, которые нужно сохранить
+    // РЎС‡РёС‚Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ
     int countToKeep = 0;
     for (int i = 0; i < arrayLength_; ++i) {
         if (arrayData_[i] != value) {
             countToKeep++;
         }
     }
-    // Если все элементы нужно сохранить или массив пуст, выходим
+    // Р•СЃР»Рё РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РЅСѓР¶РЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ РёР»Рё РјР°СЃСЃРёРІ РїСѓСЃС‚, РІС‹С…РѕРґРёРј
     if (countToKeep == arrayLength_ || countToKeep == 0) {
         if (countToKeep == 0) {
             delete[] arrayData_;
@@ -369,25 +369,25 @@ void DynamicArray<T>::removeAllValue(const T& value)
         return;
     }
 
-    // Создаем новый массив
+    // РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ РјР°СЃСЃРёРІ
     T* tempArrayData = new T[countToKeep];
-    // Копируем элементы, которые нужно сохранить
+    // РљРѕРїРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ СЃРѕС…СЂР°РЅРёС‚СЊ
     int j = 0;
     for (int i = 0; i < arrayLength_; ++i) {
         if (arrayData_[i] != value) {
             tempArrayData[j++] = arrayData_[i];
         }
     }
-    // Заменяем старый массив новым
+    // Р—Р°РјРµРЅСЏРµРј СЃС‚Р°СЂС‹Р№ РјР°СЃСЃРёРІ РЅРѕРІС‹Рј
     delete[] arrayData_;
     arrayData_ = tempArrayData;
     arrayLength_ = countToKeep;
 }
 
-//поиск максимального элемента
+//РїРѕРёСЃРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 template <typename T>
 T DynamicArray<T>::findMaxEl() const {
-    assert(arrayLength_ > 0 && "Массив пуст");
+    assert(arrayLength_ > 0 && "РњР°СЃСЃРёРІ РїСѓСЃС‚");
     T maxVal = arrayData_[0];
     for (int i = 1; i < arrayLength_; ++i)
         if (arrayData_[i] > maxVal)
@@ -395,10 +395,10 @@ T DynamicArray<T>::findMaxEl() const {
     return maxVal;
 }
 
-//поиск минимального элемента
+//РїРѕРёСЃРє РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 template <typename T>
 T DynamicArray<T>::findMinEl() const {
-    assert(arrayLength_ > 0 && "Массив пуст");
+    assert(arrayLength_ > 0 && "РњР°СЃСЃРёРІ РїСѓСЃС‚");
     T minVal = arrayData_[0];
     for (int i = 1; i < arrayLength_; ++i)
         if (arrayData_[i] < minVal)
@@ -406,7 +406,7 @@ T DynamicArray<T>::findMinEl() const {
     return minVal;
 }
 
-//Перегрузка операции присвоения копированием
+//РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С†РёРё РїСЂРёСЃРІРѕРµРЅРёСЏ РєРѕРїРёСЂРѕРІР°РЅРёРµРј
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray<T>& otherArray)
 {
@@ -434,7 +434,7 @@ DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray<T>& otherArray)
     return *this;
 }
 
-// Перегрузка сложения (конкатенация) с другим массивом (+)
+// РџРµСЂРµРіСЂСѓР·РєР° СЃР»РѕР¶РµРЅРёСЏ (РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ) СЃ РґСЂСѓРіРёРј РјР°СЃСЃРёРІРѕРј (+)
 template <typename T>
 DynamicArray<T> DynamicArray<T>::operator+(const DynamicArray<T>& other) const
 {
@@ -451,7 +451,7 @@ DynamicArray<T> DynamicArray<T>::operator+(const DynamicArray<T>& other) const
     return result;
 }
 
-// Перегрузка сложения (конкатенация) с другим массивом (+=)
+// РџРµСЂРµРіСЂСѓР·РєР° СЃР»РѕР¶РµРЅРёСЏ (РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ) СЃ РґСЂСѓРіРёРј РјР°СЃСЃРёРІРѕРј (+=)
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator+=(const DynamicArray<T>& other)
 {
@@ -470,7 +470,7 @@ DynamicArray<T>& DynamicArray<T>::operator+=(const DynamicArray<T>& other)
     return *this;
 }
 
-//  Перегрузка сравнение (==)
+//  РџРµСЂРµРіСЂСѓР·РєР° СЃСЂР°РІРЅРµРЅРёРµ (==)
 template <typename T>
 bool DynamicArray<T>::operator==(const DynamicArray<T>& other) const
 {
@@ -481,19 +481,19 @@ bool DynamicArray<T>::operator==(const DynamicArray<T>& other) const
     return true;
 }
 
-// Перегрузка сравнение (!=)
+// РџРµСЂРµРіСЂСѓР·РєР° СЃСЂР°РІРЅРµРЅРёРµ (!=)
 template <typename T>
 bool DynamicArray<T>::operator!=(const DynamicArray<T>& other) const
 {
     return !(*this == other);
 }
 
-// Перегрузка оператора ввода
+// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РІРІРѕРґР°
 template <typename T>
 istream& operator>>(istream& inputStream, DynamicArray<T>& input)
 {
     if (input.getArrayLength() != 0) {
-        cout << "Введите данные для массива длинны " << input.getArrayLength() << ": ";
+        cout << "Р’РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ РґР»СЏ РјР°СЃСЃРёРІР° РґР»РёРЅРЅС‹ " << input.getArrayLength() << ": ";
         for (int i = 0; i < input.getArrayLength(); ++i) {
             T value;
             inputStream >> value;
@@ -502,12 +502,12 @@ istream& operator>>(istream& inputStream, DynamicArray<T>& input)
     }
     else {
         int length;
-        cout << "Введите длинну массива: ";
+        cout << "Р’РІРµРґРёС‚Рµ РґР»РёРЅРЅСѓ РјР°СЃСЃРёРІР°: ";
         inputStream >> length;
 
         input.setArrayLength(length);
 
-        cout << "Введите данные: ";
+        cout << "Р’РІРµРґРёС‚Рµ РґР°РЅРЅС‹Рµ: ";
         for (int i = 0; i < length; ++i) {
             T value;
             inputStream >> value;
@@ -518,7 +518,7 @@ istream& operator>>(istream& inputStream, DynamicArray<T>& input)
     return inputStream;
 }
 
-// Перегрузка оператора вывода
+// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° РІС‹РІРѕРґР°
 template <typename T>
 ostream& operator<<(ostream& outputStream, const DynamicArray<T>& output)
 {

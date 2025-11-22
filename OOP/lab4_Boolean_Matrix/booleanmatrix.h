@@ -1,4 +1,4 @@
-#include "dynamicarray.h"
+ï»¿#include "dynamicarray.h"
 #include "booleanvector.h"
 #include <iostream>
 #include <fstream>
@@ -11,36 +11,36 @@ private:
     DynamicArray<BooleanVector> matrixData_;
 
 public:
-    // Êîíñòðóêòîðû
+    // ÐšÐ¾Ð½ÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ñ‹
     BooleanMatrix();
     BooleanMatrix(uint32_t rows, uint32_t cols, bool defaultValue = false);
     BooleanMatrix(const char** charMatrix, const uint32_t numRows);
     BooleanMatrix(const BooleanMatrix& other);
 
-    // Ïðèñâàèâàíèå
+    // ÐŸÑ€Ð¸ÑÐ²Ð°Ð¸Ð²Ð°Ð½Ð¸Ðµ
     BooleanMatrix& operator=(const BooleanMatrix& other);
 
-    // Ïîëó÷åíèå ÷èñëà ñòðîê è ñòîëáöîâ
+    // ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ðµ Ñ‡Ð¸ÑÐ»Ð° ÑÑ‚Ñ€Ð¾Ðº Ð¸ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð²
     uint32_t getRows() const;
     uint32_t getCols() const;
 
-    // Óñòàíîâêà â 0/1 i-îé êîìïîíåíòû j-îé ñòðîêè
+    // Ð£ÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð² 0/1 i-Ð¾Ð¹ ÐºÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚Ñ‹ j-Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸
     void setBit(uint32_t row, uint32_t col, bool value);
 
-    // Îáìåí ñîäåðæèìîãî ñ äðóãîé ìàòðèöåé (swap)
+    // ÐžÐ±Ð¼ÐµÐ½ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ð³Ð¾ Ñ Ð´Ñ€ÑƒÐ³Ð¾Ð¹ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†ÐµÐ¹ (swap)
     void swap(BooleanMatrix& other);
 
-    // Âåñ ìàòðèöû (êîëè÷åñòâî åäèíè÷íûõ êîìïîíåíò)
+    // Ð’ÐµÑ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ (ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÐµÐ´Ð¸Ð½Ð¸Ñ‡Ð½Ñ‹Ñ… ÐºÐ¾Ð¼Ð¿Ð¾Ð½ÐµÐ½Ñ‚)
     uint32_t getWeight() const;
 
-    // Êîíúþíêöèÿ âñåõ ñòðîê (âîçâðàùàåò áóëåâ âåêòîð)
+    // ÐšÐ¾Ð½ÑŠÑŽÐ½ÐºÑ†Ð¸Ñ Ð²ÑÐµÑ… ÑÑ‚Ñ€Ð¾Ðº (Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð±ÑƒÐ»ÐµÐ² Ð²ÐµÐºÑ‚Ð¾Ñ€)
     BooleanVector conjunctionAllRows() const;
 
-    // Äèçúþíêöèÿ âñåõ ñòðîê (âîçâðàùàåò áóëåâ âåêòîð)
+    // Ð”Ð¸Ð·ÑŠÑŽÐ½ÐºÑ†Ð¸Ñ Ð²ÑÐµÑ… ÑÑ‚Ñ€Ð¾Ðº (Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÑ‚ Ð±ÑƒÐ»ÐµÐ² Ð²ÐµÐºÑ‚Ð¾Ñ€)
     BooleanVector disjunctionAllRows() const;
 
 
-    // Ïîòîêîâûé ââîä/âûâîä
+    // ÐŸÐ¾Ñ‚Ð¾ÐºÐ¾Ð²Ñ‹Ð¹ Ð²Ð²Ð¾Ð´/Ð²Ñ‹Ð²Ð¾Ð´
     friend std::istream& operator>>(std::istream& is, BooleanMatrix& bm);
     friend std::ostream& operator<<(std::ostream& os, const BooleanMatrix& bm);
 };
