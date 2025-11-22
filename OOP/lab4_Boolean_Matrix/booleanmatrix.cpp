@@ -89,10 +89,10 @@ void BooleanMatrix::invertBit(uint32_t row, uint32_t col) {
 // Инверсия k компонент j-ой строки, начиная с i-ой компоненты
 void BooleanMatrix::invertBits(uint32_t row, uint32_t startCol, uint32_t k) {
     if (row >= getRows() || startCol >= getCols()) {
-        throw out_of_range("Index out of range");
+        throw out_of_range("Индекс выходит за границы");
     }
     if (startCol + k > getCols()) {
-        throw out_of_range("Too many bits to invert");
+        throw out_of_range("Слишком много битов для установки");
     }
 
     for (uint32_t i = 0; i < k; ++i) {
@@ -111,10 +111,10 @@ void BooleanMatrix::setBit(uint32_t row, uint32_t col, bool value) {
 // Установка в 0/1 k компонент j-ой строки, начиная с i-ой компоненты
 void BooleanMatrix::setBits(uint32_t row, uint32_t startCol, uint32_t k, bool value) {
     if (row >= getRows() || startCol >= getCols()) {
-        throw out_of_range("Index out of range");
+        throw out_of_range("Индекс выходит за границы");
     }
     if (startCol + k > getCols()) {
-        throw out_of_range("Too many bits to set");
+        throw out_of_range("Слишком много битов для установки");
     }
     
     for (uint32_t i = 0; i < k; ++i) {
@@ -134,7 +134,7 @@ BooleanMatrix& BooleanMatrix::operator=(const BooleanMatrix& other) {
 // Получение строки
 BooleanVector& BooleanMatrix::operator[](uint32_t row) {
     if (row >= getRows()) {
-        throw out_of_range("Row index out of range");
+        throw out_of_range("Индекс столбца выходит за границы");
     }
     return matrixData_[row];
 }

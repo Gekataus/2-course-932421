@@ -86,8 +86,34 @@ int main() {
             cout << "Ошибка инверсии бита: " << e.what() << endl << endl;
         }
 
+        // Инверсия k компонент
+        cout << "7. Тест инверсии k компонент" << endl;
+        BooleanMatrix testInvertK(2, 5, true);
+        cout << "Исходная матрица:" << endl << testInvertK;
+
+        try {
+            testInvertK.invertBits(0, 1, 3); // Инвертировать 3 бита в строке 0, начиная с позиции 1
+            cout << "После инверсии 3 битов в строке 0:" << endl << testInvertK;
+        }
+        catch (const out_of_range& e) {
+            cout << "Ошибка инверсии k битов: " << e.what() << endl;
+        }
+
+        // Установка k компонент
+        cout << "8. Тест установки k компонент" << endl;
+        BooleanMatrix testSetK(2, 5, false);
+        cout << "Исходная матрица:" << endl << testSetK;
+
+        try {
+            testSetK.setBits(1, 0, 4, true); // Установить 4 бита в строке 1 в true
+            cout << "После установки 4 битов в строке 1:" << endl << testSetK;
+        }
+        catch (const out_of_range& e) {
+            cout << "Ошибка установки k битов: " << e.what() << endl;
+        }
+
         // Тест оператора []
-        cout << "7. Тест оператора []" << endl;
+        cout << "9. Тест оператора []" << endl;
         try {
             cout << "Строка 0: " << charBasedMatrix[0] << endl;
             cout << "Строка 1: " << charBasedMatrix[1] << endl;
@@ -103,7 +129,7 @@ int main() {
         }
 
         // Конъюнкция всех строк
-        cout << "8. Тест конъюнкции всех строк" << endl;
+        cout << "10. Тест конъюнкции всех строк" << endl;
         try {
             BooleanVector conjResult = charBasedMatrix.conjunctionAllRows();
             cout << "Матрица:" << endl << charBasedMatrix;
@@ -114,7 +140,7 @@ int main() {
         }
 
         // Дизъюнкция всех строк
-        cout << "9. Тест дизъюнкции всех строк" << endl;
+        cout << "11. Тест дизъюнкции всех строк" << endl;
         try {
             BooleanVector disjResult = charBasedMatrix.disjunctionAllRows();
             cout << "Матрица:" << endl << charBasedMatrix;
@@ -125,7 +151,7 @@ int main() {
         }
 
         // Тест побитовых операций
-        cout << "10. Тест побитовых операций" << endl;
+        cout << "12. Тест побитовых операций" << endl;
         const char* matrixA_data[] = { "101", "010", "110" };
         const char* matrixB_data[] = { "110", "011", "101" };
 
@@ -171,8 +197,8 @@ int main() {
             cout << "Ошибка операции ~: " << e.what() << endl;
         }
 
-        // Составные присваивания
-        cout << "11. Тест составных присваиваний" << endl;
+        // присваивания
+        cout << "13. Тест присваиваний" << endl;
         BooleanMatrix tempA = matrixA;
         BooleanMatrix tempB = matrixB;
 
@@ -203,7 +229,7 @@ int main() {
         }
 
         // Тест сравнения
-        cout << "12. Тест сравнения матриц" << endl;
+        cout << "14. Тест сравнения матриц" << endl;
         BooleanMatrix matrixA_copy = matrixA;
         BooleanMatrix matrixC(matrixB_data, 3);
 
@@ -213,7 +239,7 @@ int main() {
         cout << "B == C: " << (matrixB == matrixC) << " (ожидается: 1)" << endl << endl;
 
         // Тест оператора присваивания
-        cout << "13. Тест оператора присваивания" << endl;
+        cout << "15. Тест оператора присваивания" << endl;
         BooleanMatrix assignedMatrix;
         assignedMatrix = matrixA;
         cout << "После присваивания A:" << endl << assignedMatrix;
