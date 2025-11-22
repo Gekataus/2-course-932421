@@ -17,21 +17,12 @@ public:
     BooleanMatrix(const char** charMatrix, const uint32_t numRows);
     BooleanMatrix(const BooleanMatrix& other);
 
-    // Присваивание
-    BooleanMatrix& operator=(const BooleanMatrix& other);
-
-    // Вес j-ой строки
-    uint32_t getRowWeight(uint32_t row) const;
-
-    // Инверсия в i-ой компоненты j-ой строки
-    void invertBit(uint32_t row, uint32_t col);
+    // Деструктор
+    ~BooleanMatrix() = default;
 
     // Получение числа строк и столбцов
     uint32_t getRows() const;
     uint32_t getCols() const;
-
-    // Установка в 0/1 i-ой компоненты j-ой строки
-    void setBit(uint32_t row, uint32_t col, bool value);
 
     // Обмен содержимого с другой матрицей (swap)
     void swap(BooleanMatrix& other);
@@ -44,6 +35,18 @@ public:
 
     // Дизъюнкция всех строк (возвращает булев вектор)
     BooleanVector disjunctionAllRows() const;
+
+    // Вес j-ой строки
+    uint32_t getRowWeight(uint32_t row) const;
+
+    // Инверсия в i-ой компоненты j-ой строки
+    void invertBit(uint32_t row, uint32_t col);
+
+    // Установка в 0/1 i-ой компоненты j-ой строки
+    void setBit(uint32_t row, uint32_t col, bool value);
+
+    // Присваивание
+    BooleanMatrix& operator=(const BooleanMatrix& other);
 
     // Получение строки
     BooleanVector& operator[](uint32_t row);
@@ -68,7 +71,6 @@ public:
     bool operator==(const BooleanMatrix& other) const;
     bool operator!=(const BooleanMatrix& other) const;
     
-
 
     // Потоковый ввод/вывод
     friend std::istream& operator>>(std::istream& is, BooleanMatrix& bm);
