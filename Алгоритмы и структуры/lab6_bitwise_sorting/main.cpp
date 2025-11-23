@@ -1,4 +1,4 @@
-#include <vector>
+п»ї#include <vector>
 #include <random>
 #include <fstream>
 #include <chrono>
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-//создание массива случайных чисел (Библиотека random)
+//СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° СЃР»СѓС‡Р°Р№РЅС‹С… С‡РёСЃРµР» (Р‘РёР±Р»РёРѕС‚РµРєР° random)
 vector<int> generateRandomArray(int size, int min_val, int max_val) {
 	random_device rd;
 	mt19937 gen(rd());
@@ -20,7 +20,7 @@ vector<int> generateRandomArray(int size, int min_val, int max_val) {
 	return arr;
 }
 
-// Вывод массива
+// Р’С‹РІРѕРґ РјР°СЃСЃРёРІР°
 void outputArray(const vector<int>& arr) {
 	for (int num : arr) {
 		cout << num << " ";
@@ -28,7 +28,7 @@ void outputArray(const vector<int>& arr) {
 	cout << endl;
 }
 
-// Проверка на отсортированность
+// РџСЂРѕРІРµСЂРєР° РЅР° РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅРѕСЃС‚СЊ
 bool isSorted(vector<int>& arr) {
 	for (int i = 1; i < arr.size(); i++) {
 		if (arr[i] < arr[i - 1]) {
@@ -38,7 +38,7 @@ bool isSorted(vector<int>& arr) {
 	return true;
 }
 
-// Загрузка массива из файла
+// Р—Р°РіСЂСѓР·РєР° РјР°СЃСЃРёРІР° РёР· С„Р°Р№Р»Р°
 std::vector<int> loadArrayFromFile(const std::string& filename) {
 	std::vector<int> arr;
 	std::ifstream file(filename);
