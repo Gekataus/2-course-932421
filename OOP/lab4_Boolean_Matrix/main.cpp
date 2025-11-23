@@ -9,12 +9,7 @@ int main() {
         BooleanMatrix defaultMatrix;
         BooleanMatrix sizedMatrix(3, 4, true);
 
-        const char* charMatrix[] = {
-            "101",
-            "010",
-            "111",
-            "001"
-        };
+        const char* charMatrix[] = {"101", "010", "111", "001"};
         BooleanMatrix charBasedMatrix(charMatrix, 4);
         BooleanMatrix copiedMatrix(charBasedMatrix);
 
@@ -28,17 +23,20 @@ int main() {
         cout << copiedMatrix << endl;
 
         // Тест получения размеров и веса
-        cout << "2. Тест методов получения размеров и веса матрицы" << endl;
-        cout << "Матрица из char: " << charBasedMatrix.getRows() << "x" << charBasedMatrix.getCols() << endl;
-        cout << "Вес матрицы: " << charBasedMatrix.getWeight() << endl << endl;
+        cout << "2. Тест методов получения размеров и веса матрицы." << endl;
+        BooleanMatrix test1;
+        cin >> test1;
+        cout << "Матрица из char: " << test1.getRows() << "x" << test1.getCols() << endl;
+        cout << "Вес матрицы: " << test1.getWeight() << endl << endl;
 
         // Тест веса строки
         cout << "3. Тест веса строки" << endl;
         try {
-            cout << "Вес строки 0: " << charBasedMatrix.getRowWeight(0) << " (ожидается: 2)" << endl;
-            cout << "Вес строки 1: " << charBasedMatrix.getRowWeight(1) << " (ожидается: 1)" << endl;
-            cout << "Вес строки 2: " << charBasedMatrix.getRowWeight(2) << " (ожидается: 3)" << endl;
-            cout << "Вес строки 3: " << charBasedMatrix.getRowWeight(3) << " (ожидается: 1)" << endl;
+            BooleanMatrix test2;
+            cin >> test2;
+            int x;
+            cout << "У какой строки посчитать вес? (от 0 до " << test2.getCols() - 1 << "): "; cin >> x;
+            cout << "Вес строки " << x << ": " << test2.getRowWeight(x) << endl << endl;
         }
         catch (const out_of_range& e) {
             cout << "Ошибка получения веса строки: " << e.what() << endl;
@@ -46,17 +44,20 @@ int main() {
 
         // Обмен содержимого с другой матрицей (swap)
         cout << "4. Тест обмена с другой матрицей (swap)" << endl;
-        BooleanMatrix swap1(2, 3, true);
-        BooleanMatrix swap2(3, 2, false);
-
-        cout << "Матрица 1 (2x3):" << endl << swap1;
-        cout << "Матрица 2 (3x2):" << endl << swap2;
+        BooleanMatrix swap1;
+        BooleanMatrix swap2;
+        cout << "Введите матрицу 1:" << endl;
+        cin >> swap1;
+        cout << "Введите матрицу 2:" << endl;
+        cin >> swap2;
+        cout << "Матрица 1:" << endl << swap1;
+        cout << "Матрица 2:" << endl << swap2;
 
         swap1.swap(swap2);
 
         cout << "После обмена матриц:" << endl;
         cout << "Матрица 1:" << endl << swap1;
-        cout << "Матрица 2:" << endl << swap2 << endl;
+        cout << "Матрица 2:" << endl << swap2 << endl << endl;
 
         // Установка битов
         cout << "5. Тест установки битов" << endl;
@@ -64,9 +65,11 @@ int main() {
         cout << "Исходная матрица:" << endl << testSetBit;
 
         try {
-            testSetBit.setBit(0, 0, true);
-            testSetBit.setBit(1, 1, true);
-            cout << "Матрица после установки битов:" << endl << testSetBit << endl;
+            cout << "Введите в какой строке и столбце поменять бит: ";
+            int x, y;
+            cin >> x >> y;
+            testSetBit.setBit(x, y, true);
+            cout << "Матрица после установки бита:" << endl << testSetBit << endl;
         }
         catch (const out_of_range& e) {
             cout << "Ошибка установки бита: " << e.what() << endl << endl;
@@ -78,9 +81,11 @@ int main() {
         cout << "Исходная матрица:" << endl << testInvertBit;
 
         try {
-            testInvertBit.invertBit(0, 1);
-            testInvertBit.invertBit(1, 0);
-            cout << "Матрица после инверсии битов [0,1] и [1,0]:" << endl << testInvertBit << endl;
+            cout << "Введите в какой строке и столбце инвертировать бит: ";
+            int x, y;
+            cin >> x >> y;
+            testInvertBit.invertBit(x, y);
+            cout << "Матрица после инверсии битов:" << endl << testInvertBit << endl;
         }
         catch (const out_of_range& e) {
             cout << "Ошибка инверсии бита: " << e.what() << endl << endl;
@@ -88,12 +93,17 @@ int main() {
 
         // Инверсия k компонент
         cout << "7. Тест инверсии k компонент" << endl;
-        BooleanMatrix testInvertK(2, 5, true);
-        cout << "Исходная матрица:" << endl << testInvertK;
+        BooleanMatrix testInvertK;
+        cout << "Введите исходную матрицу:" << endl;
+        cin >> testInvertK;
+        cout << "Исходная матрица: " << endl << testInvertK << endl;
 
         try {
-            testInvertK.invertBits(0, 1, 3); // Инвертировать 3 бита в строке 0, начиная с позиции 1
-            cout << "После инверсии 3 битов в строке 0:" << endl << testInvertK;
+            int x, y, k;
+            cout << "Введите строку, с какой позиции инвертировать и сколько: ";
+            cin >> x >> y >> k;
+            testInvertK.invertBits(x, y, k);
+            cout << "После инверсии:" << endl << testInvertK;
         }
         catch (const out_of_range& e) {
             cout << "Ошибка инверсии k битов: " << e.what() << endl;
@@ -101,11 +111,16 @@ int main() {
 
         // Установка k компонент
         cout << "8. Тест установки k компонент" << endl;
-        BooleanMatrix testSetK(2, 5, false);
-        cout << "Исходная матрица:" << endl << testSetK;
+        BooleanMatrix testSetK;
+        cout << "Введите исходную матрицу:" << endl;
+        cin >> testSetK;
+        cout << "Исходная матрица: " << endl << testSetK << endl;
 
         try {
-            testSetK.setBits(1, 0, 4, true); // Установить 4 бита в строке 1 в true
+            int x, y, z, k;
+            cout << "Введите строку, с какой позиции установить, сколько битов и во сколько (0 или 1): ";
+            cin >> x >> y >> z >> k;
+            testSetK.setBits(x, y, z, k);
             cout << "После установки 4 битов в строке 1:" << endl << testSetK;
         }
         catch (const out_of_range& e) {
@@ -114,12 +129,14 @@ int main() {
 
         // Тест оператора []
         cout << "9. Тест оператора []" << endl;
+        BooleanMatrix testop;
+        cout << "Введите матрицу: " << endl;
+        cin >> testop;
         try {
-            cout << "Строка 0: " << charBasedMatrix[0] << endl;
-            cout << "Строка 1: " << charBasedMatrix[1] << endl;
+            cout << "Строка 0: " << testop[0] << endl;
 
             // Тест изменения через оператор []
-            BooleanMatrix testIndex = charBasedMatrix;
+            BooleanMatrix testIndex = testop;
             testIndex[0].setBit(0, false);
             testIndex[1].setBit(1, true);
             cout << "Матрица после изменения через оператор []:" << endl << testIndex << endl;
@@ -131,8 +148,8 @@ int main() {
         // Конъюнкция всех строк
         cout << "10. Тест конъюнкции всех строк" << endl;
         try {
-            BooleanVector conjResult = charBasedMatrix.conjunctionAllRows();
-            cout << "Матрица:" << endl << charBasedMatrix;
+            BooleanVector conjResult = testop.conjunctionAllRows();
+            cout << "Матрица:" << endl << testop;
             cout << "Конъюнкция всех строк: " << conjResult << endl << endl;
         }
         catch (const exception& e) {
@@ -142,8 +159,8 @@ int main() {
         // Дизъюнкция всех строк
         cout << "11. Тест дизъюнкции всех строк" << endl;
         try {
-            BooleanVector disjResult = charBasedMatrix.disjunctionAllRows();
-            cout << "Матрица:" << endl << charBasedMatrix;
+            BooleanVector disjResult = testop.disjunctionAllRows();
+            cout << "Матрица:" << endl << testop;
             cout << "Дизъюнкция всех строк: " << disjResult << endl << endl;
         }
         catch (const exception& e) {
@@ -227,16 +244,6 @@ int main() {
         catch (const exception& e) {
             cout << "Ошибка операции ^=: " << e.what() << endl;
         }
-
-        // Тест сравнения
-        cout << "14. Тест сравнения матриц" << endl;
-        BooleanMatrix matrixA_copy = matrixA;
-        BooleanMatrix matrixC(matrixB_data, 3);
-
-        cout << "A == A_copy: " << (matrixA == matrixA_copy) << " (ожидается: 1)" << endl;
-        cout << "A == B: " << (matrixA == matrixB) << " (ожидается: 0)" << endl;
-        cout << "A != B: " << (matrixA != matrixB) << " (ожидается: 1)" << endl;
-        cout << "B == C: " << (matrixB == matrixC) << " (ожидается: 1)" << endl << endl;
 
         // Тест оператора присваивания
         cout << "15. Тест оператора присваивания" << endl;

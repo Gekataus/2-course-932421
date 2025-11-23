@@ -6,10 +6,6 @@
 #include <cassert>
 
 class BooleanMatrix {
-
-private:
-    DynamicArray<BooleanVector> matrixData_;
-
 public:
     // Конструкторы
     BooleanMatrix();
@@ -77,6 +73,10 @@ public:
     // Сравнение матриц
     bool operator==(const BooleanMatrix&) const;
     bool operator!=(const BooleanMatrix&) const;
+
+
+private:
+    DynamicArray<BooleanVector> matrixData_;
     
 };
 
