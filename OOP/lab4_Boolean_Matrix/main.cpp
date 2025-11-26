@@ -121,7 +121,7 @@ int main() {
             cout << "Введите строку, с какой позиции установить, сколько битов и во сколько (0 или 1): ";
             cin >> x >> y >> z >> k;
             testSetK.setBits(x, y, z, k);
-            cout << "После установки 4 битов в строке 1:" << endl << testSetK;
+            cout << "После установки: " << endl << testSetK;
         }
         catch (const out_of_range& e) {
             cout << "Ошибка установки k битов: " << e.what() << endl;
@@ -132,6 +132,7 @@ int main() {
         BooleanMatrix testop;
         cout << "Введите матрицу: " << endl;
         cin >> testop;
+       
         try {
             cout << "Строка 0: " << testop[0] << endl;
 
@@ -250,7 +251,7 @@ int main() {
         BooleanMatrix assignedMatrix;
         assignedMatrix = matrixA;
         cout << "После присваивания A:" << endl << assignedMatrix;
-        cout << "A == assignedMatrix: " << (matrixA == assignedMatrix) << " (ожидается: 1)" << endl << endl;
+        cout << "A == assignedMatrix: " << (matrixA == assignedMatrix) << endl << endl;
 
     }
     catch (const exception& e) {
