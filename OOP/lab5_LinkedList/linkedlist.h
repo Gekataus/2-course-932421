@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <iostream>
+#include <stdexcept>
 
 template<typename ItemType>
 class LinkedList
@@ -32,13 +33,24 @@ public:
 	ListNode* find(const ItemType& key);
 	const ListNode* find(const ItemType& key) const;
 
-	//добавление элемента (в голову, хвост)
+	//добавление элемента (в голову, хвост, на позицию, после ключа (после первого вхождения),)
 	void addToHead(const ItemType& value);
 	void addToTail(const ItemType& value);
+	bool addAtPosition(const ItemType& value, uint32_t position);
+	bool addAfterKey(const ItemType& value, const ItemType& key);
 
-	//удаление элемента (из головы, хвоста)
+	//удаление элемента (из головы, хвоста, позиции, по ключу (первое вхождение))
 	bool removeFromHead();
 	bool removeFromTail();
+	bool removeAtPosition(uint32_t position);
+	bool removeByKey(const ItemType& key);
+
+	// -поиск максимального / минимального элемента;
+	ItemType findMax() const;
+	ItemType findMin() const;
+
+	// - isEmpty() - возвращает true, если список пуст;
+	bool isEmpty() const;
 
 	//-очистка списка;
 	void clear();
@@ -54,8 +66,14 @@ public:
 	bool operator==(const LinkedList<ItemType>& other) const;
 	bool operator!=(const LinkedList<ItemType>& other) const;
 
+	//сложение (конкатенация) списков (+, +=)
+	LinkedList<ItemType> operator+(const LinkedList<ItemType>& other) const;
+	LinkedList<ItemType>& operator+=(const LinkedList<ItemType>& other);
+
 	// Ввод/вывод в консоль
+	template<typename ItemType>
 	friend std::ostream& operator<<(std::ostream&, const LinkedList<ItemType>&);
+	template<typename ItemType>
 	friend std::istream& operator>>(std::istream&, LinkedList<ItemType>&);
 };
 
@@ -168,6 +186,66 @@ void LinkedList<ItemType>::addToTail(const ItemType& value)
 	++size_;
 }
 
+// Добавление элемента на указанную позицию
+template<typename ItemType>
+bool LinkedList<ItemType>::addAtPosition(const ItemType& value, uint32_t position)
+{
+	if (position > size_) {
+		return false; // Недопустимая позиция
+	}
+
+	if (position == 0) {
+		addToHead(value);
+		return true;
+	}
+
+	if (position == size_) {
+		addToTail(value);
+		return true;
+	}
+
+	// Ищем узел перед позицией вставки
+	ListNode* current = headPtr_;
+	for (uint32_t i = 0; i < position - 1; ++i) {
+		current = current->getLinkToNextNode();
+	}
+
+	// Создаем новый узел
+	ListNode* newNode = new ListNode(value, current->getLinkToNextNode(), current);
+
+	// Обновляем связи
+	current->getLinkToNextNode()->setLinkToPrevNode(newNode);
+	current->setLinkToNextNode(newNode);
+
+	++size_;
+	return true;
+}
+
+// Добавление элемента после первого вхождения ключа
+template<typename ItemType>
+bool LinkedList<ItemType>::addAfterKey(const ItemType& value, const ItemType& key)
+{
+	ListNode* keyNode = find(key);
+	if (keyNode == nullptr) {
+		return false; // Ключ не найден
+	}
+
+	if (keyNode == tailPtr_) {
+		// Если ключ в хвосте, просто добавляем в конец
+		addToTail(value);
+		return true;
+	}
+
+	// Создаем новый узел
+	ListNode* newNode = new ListNode(value, keyNode->getLinkToNextNode(), keyNode);
+
+	// Обновляем связи
+	keyNode->getLinkToNextNode()->setLinkToPrevNode(newNode);
+	keyNode->setLinkToNextNode(newNode);
+
+	++size_;
+	return true;
+}
 // Удаление элемента из головы
 template<typename ItemType>
 bool LinkedList<ItemType>::removeFromHead()
@@ -214,6 +292,114 @@ bool LinkedList<ItemType>::removeFromTail()
 	delete nodeToDelete;
 	--size_;
 	return true;
+}
+
+// Удаление элемента из указанной позиции
+template<typename ItemType>
+bool LinkedList<ItemType>::removeAtPosition(uint32_t position)
+{
+	if (position >= size_) {
+		return false; // Недопустимая позиция
+	}
+
+	if (position == 0) {
+		return removeFromHead();
+	}
+
+	if (position == size_ - 1) {
+		return removeFromTail();
+	}
+
+	// Ищем узел для удаления
+	ListNode* current = headPtr_;
+	for (uint32_t i = 0; i < position; ++i) {
+		current = current->getLinkToNextNode();
+	}
+
+	// Обновляем связи соседних узлов
+	current->getLinkToPrevNode()->setLinkToNextNode(current->getLinkToNextNode());
+	current->getLinkToNextNode()->setLinkToPrevNode(current->getLinkToPrevNode());
+
+	delete current;
+	--size_;
+	return true;
+}
+
+// Удаление первого вхождения элемента по ключу
+template<typename ItemType>
+bool LinkedList<ItemType>::removeByKey(const ItemType& key)
+{
+	ListNode* nodeToDelete = find(key);
+	if (nodeToDelete == nullptr) {
+		return false; // Ключ не найден
+	}
+
+	if (nodeToDelete == headPtr_) {
+		return removeFromHead();
+	}
+
+	if (nodeToDelete == tailPtr_) {
+		return removeFromTail();
+	}
+
+	// Обновляем связи
+	nodeToDelete->getLinkToPrevNode()->setLinkToNextNode(nodeToDelete->getLinkToNextNode());
+	nodeToDelete->getLinkToNextNode()->setLinkToPrevNode(nodeToDelete->getLinkToPrevNode());
+
+	delete nodeToDelete;
+	--size_;
+	return true;
+}
+
+// Поиск максимального элемента
+template<typename ItemType>
+ItemType LinkedList<ItemType>::findMax() const
+{
+	if (isEmpty()) {
+		throw std::runtime_error("Список пуст, невозможно найти максимальный элемент");
+	}
+
+	const ListNode* current = headPtr_;
+	ItemType maxVal = current->getValue();
+	current = current->getLinkToNextNode();
+
+	while (current != nullptr) {
+		if (current->getValue() > maxVal) {
+			maxVal = current->getValue();
+		}
+		current = current->getLinkToNextNode();
+	}
+
+	return maxVal;
+}
+
+// Поиск минимального элемента
+template<typename ItemType>
+ItemType LinkedList<ItemType>::findMin() const
+{
+	if (isEmpty()) {
+		throw std::runtime_error("Список пуст, невозможно найти минимальный элемент");
+	}
+
+	const ListNode* current = headPtr_;
+	ItemType minVal = current->getValue();
+	current = current->getLinkToNextNode();
+
+	while (current != nullptr) {
+		if (current->getValue() < minVal) {
+			minVal = current->getValue();
+		}
+		current = current->getLinkToNextNode();
+	}
+
+	return minVal;
+}
+
+// Проверка на пустоту списка
+template<typename ItemType>
+bool LinkedList<ItemType>::isEmpty() const
+{
+	return size_ == 0;
 }
 
 // Очистка списка
@@ -303,6 +489,65 @@ bool LinkedList<ItemType>::operator!=(const LinkedList<ItemType>& other) const
 	return !(*this == other);
 }
 
+// Оператор сложения (конкатенация)
+template<typename ItemType>
+LinkedList<ItemType> LinkedList<ItemType>::operator+(const LinkedList<ItemType>& other) const
+{
+	LinkedList<ItemType> result(*this);
+	result += other;
+	return result;
+}
+
+// Оператор сложения с присваиванием (конкатенация)
+template<typename ItemType>
+LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType>& other)
+{
+	const ListNode* current = other.headPtr_;
+	while (current != nullptr) {
+		addToTail(current->getValue());
+		current = current->getLinkToNextNode();
+	}
+	return *this;
+}
+
+// Реализация оператора вывода
+template<typename ItemType>
+std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
+{
+	typename LinkedList<ItemType>::ListNode* current = list.headPtr_;
+	while (current != nullptr) {
+		os << current->getValue();
+		if (current->getLinkToNextNode() != nullptr) {
+			os << " ";
+		}
+		current = current->getLinkToNextNode();
+	}
+	return os;
+}
+
+// Реализация оператора ввода
+template<typename ItemType>
+std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list)
+{
+	list.clear(); // Очищаем список перед вводом
+
+	ItemType value;
+	while (is >> value) {
+		list.addToTail(value);
+		// Проверяем следующий символ, если это конец строки - выходим
+		if (is.peek() == '\n' || is.peek() == EOF) {
+			break;
+		}
+	}
+
+	// Сбрасываем флаги ошибок, если мы достигли конца ввода
+	if (is.eof()) {
+		is.clear();
+	}
+
+	return is;
+}
+
 template<typename ItemType>
 class LinkedList<ItemType>::ListNode
 {
@@ -333,26 +578,9 @@ private:
 	ListNode* linkToPrevNode_;
 };
 
-template<typename ItemType>
-std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list) {
-	ListNode* current = list.headPtr_;
-	while (current) {
-		os << current->getValue() << " ";
-		current = current->getLinkToNextNode();
-	}
-	return os;
-}
-template<typename ItemType>
-std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list) {
-	ItemType value;
-	list.clear(); // Очищаем список перед вводом
-	while (is >> value) {
-		list.addToTail(value);
-	}
-	return is;
-}
-//ListNode
 
+
+//ListNode
 template<typename ItemType>
 LinkedList<ItemType>::ListNode::ListNode(ItemType value, ListNode* next, ListNode* prev)
 	: value_(value), linkToNextNode_(next), linkToPrevNode_(prev) {
