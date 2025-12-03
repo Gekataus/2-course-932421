@@ -1,46 +1,407 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdint.h>
+#include <iostream>
 
 template<typename ItemType>
 class LinkedList
 {
 private:
 	class ListNode;
+
+	ListNode* headPtr_ = nullptr;
+	ListNode* tailPtr_ = nullptr;
+	uint32_t size_ = 0;
 public:
-	class iterator;
-	//Конструкторы: по умолчанию, конструктор из обычного массивая, конструктор копирования)
+	
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹: РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РѕР±С‹С‡РЅРѕРіРѕ РјР°СЃСЃРёРІР°СЏ, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ)
 	LinkedList() = default;
+	LinkedList(const ItemType* array, uint32_t size);
 	LinkedList(const LinkedList<ItemType>&);
 
-	//Деструктор
+	//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 	~LinkedList();
 
-	//Получение размера списка
+	//РџРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
+	uint32_t getSize() const;
 
-	//Обмен содержимого с другим списком
+	//РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј СЃРїРёСЃРєРѕРј
+	void swap(LinkedList<ItemType>& other) noexcept;
 
-	//Ввод/вывод в консоль (потоковый)
+	//РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РІРѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЌР»РµРјРµРЅС‚ РёР»Рё nullptr, РµСЃР»Рё СЌР»РµРјРµРЅС‚Р° РЅРµС‚ РІ СЃРїРёСЃРєРµ);
+	ListNode* find(const ItemType& key);
+	const ListNode* find(const ItemType& key) const;
 
-	//получение итераторов на начало/конец списка
+	//РґРѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° (РІ РіРѕР»РѕРІСѓ, С…РІРѕСЃС‚)
+	void addToHead(const ItemType& value);
+	void addToTail(const ItemType& value);
 
-	//поиск элемента по ключу
+	//СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° (РёР· РіРѕР»РѕРІС‹, С…РІРѕСЃС‚Р°)
+	bool removeFromHead();
+	bool removeFromTail();
 
-	//добавление элемента (в голову, хвост, на позицию, после ключа (после первого вхождения), по итератору)
+	//-РѕС‡РёСЃС‚РєР° СЃРїРёСЃРєР°;
+	void clear();
 
-	//удаление элемента (из головы, хвоста, позиции, по ключу (первое вхождение), по итератору)
-
-	//-удаление диапазона элементов с помощью итераторов;
-	//-поиск максимального / минимального элемента;
-	//-isEmpty() - возвращает true, если список пуст;
-	//-очистка списка;
-	//-сортировка списка;
-
-
-	//Перегрузки
-	//- присваивание (=);
-	//-получение ссылки на ключ элемента([]);
-	//-сравнение(== , != );
-	//-сложение(конкатенация) списков(+, +=)
+	//РџРµСЂРµРіСЂСѓР·РєРё
+	//- РїСЂРёСЃРІР°РёРІР°РЅРёРµ (=);
 	LinkedList<ItemType>& operator=(const LinkedList<ItemType>&);
+
+	//-РїРѕР»СѓС‡РµРЅРёРµ СЃСЃС‹Р»РєРё РЅР° РєР»СЋС‡ СЌР»РµРјРµРЅС‚Р°([]);
+	ItemType& operator[](uint32_t index);
+	const ItemType& operator[](uint32_t index) const;
+	//-СЃСЂР°РІРЅРµРЅРёРµ(== , != );
+	bool operator==(const LinkedList<ItemType>& other) const;
+	bool operator!=(const LinkedList<ItemType>& other) const;
+
+	// Р’РІРѕРґ/РІС‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ
+	friend std::ostream& operator<<(std::ostream&, const LinkedList<ItemType>&);
+	friend std::istream& operator>>(std::istream&, LinkedList<ItemType>&);
 };
+
+//LinkedList
+
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР°
+template<typename ItemType>
+LinkedList<ItemType>::LinkedList(const ItemType* array, uint32_t size)
+{
+	for (uint32_t i = 0; i < size; ++i) {
+		addToTail(array[i]);
+	}
+}
+
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+template<typename ItemType>
+LinkedList<ItemType>::LinkedList(const LinkedList<ItemType>& other)
+{
+	const ListNode* current = other.headPtr_;
+	while (current != nullptr) {
+		addToTail(current->getValue());
+		current = current->getLinkToNextNode();
+	}
+}
+
+// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
+template<typename ItemType>
+LinkedList<ItemType>::~LinkedList()
+{
+	clear();
+}
+
+// РџРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
+template<typename ItemType>
+uint32_t LinkedList<ItemType>::getSize() const
+{
+	return size_;
+}
+
+// РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј СЃРїРёСЃРєРѕРј
+template<typename ItemType>
+void LinkedList<ItemType>::swap(LinkedList<ItemType>& other) noexcept
+{
+	std::swap(headPtr_, other.headPtr_);
+	std::swap(tailPtr_, other.tailPtr_);
+	std::swap(size_, other.size_);
+}
+
+// РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const ItemType& key)
+{
+	ListNode* current = headPtr_;
+	while (current != nullptr) {
+		if (current->getValue() == key) {
+			return current;
+		}
+		current = current->getLinkToNextNode();
+	}
+	return nullptr;
+}
+
+// РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
+template<typename ItemType>
+const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const ItemType& key) const
+{
+	const ListNode* current = headPtr_;
+	while (current != nullptr) {
+		if (current->getValue() == key) {
+			return current;
+		}
+		current = current->getLinkToNextNode();
+	}
+	return nullptr;
+}
+
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РіРѕР»РѕРІСѓ
+template<typename ItemType>
+void LinkedList<ItemType>::addToHead(const ItemType& value)
+{
+	ListNode* newNode = new ListNode(value, headPtr_, nullptr);
+
+	if (headPtr_ != nullptr) {
+		headPtr_->setLinkToPrevNode(newNode);
+	}
+	else {
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє Р±С‹Р» РїСѓСЃС‚, РЅРѕРІС‹Р№ СѓР·РµР» - С…РІРѕСЃС‚
+		tailPtr_ = newNode;
+	}
+
+	headPtr_ = newNode;
+	++size_;
+}
+
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ С…РІРѕСЃС‚
+template<typename ItemType>
+void LinkedList<ItemType>::addToTail(const ItemType& value)
+{
+	ListNode* newNode = new ListNode(value, nullptr, tailPtr_);
+
+	if (tailPtr_ != nullptr) {
+		tailPtr_->setLinkToNextNode(newNode);
+	}
+	else {
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє Р±С‹Р» РїСѓСЃС‚, РЅРѕРІС‹Р№ СѓР·РµР» - РіРѕР»РѕРІР°
+		headPtr_ = newNode;
+	}
+
+	tailPtr_ = newNode;
+	++size_;
+}
+
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· РіРѕР»РѕРІС‹
+template<typename ItemType>
+bool LinkedList<ItemType>::removeFromHead()
+{
+	if (headPtr_ == nullptr) {
+		return false; // РЎРїРёСЃРѕРє РїСѓСЃС‚
+	}
+
+	ListNode* nodeToDelete = headPtr_;
+	headPtr_ = headPtr_->getLinkToNextNode();
+
+	if (headPtr_ != nullptr) {
+		headPtr_->setLinkToPrevNode(nullptr);
+	}
+	else {
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє СЃС‚Р°Р» РїСѓСЃС‚С‹Рј
+		tailPtr_ = nullptr;
+	}
+
+	delete nodeToDelete;
+	--size_;
+	return true;
+}
+
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· С…РІРѕСЃС‚Р°
+template<typename ItemType>
+bool LinkedList<ItemType>::removeFromTail()
+{
+	if (tailPtr_ == nullptr) {
+		return false; // РЎРїРёСЃРѕРє РїСѓСЃС‚
+	}
+
+	ListNode* nodeToDelete = tailPtr_;
+	tailPtr_ = tailPtr_->getLinkToPrevNode();
+
+	if (tailPtr_ != nullptr) {
+		tailPtr_->setLinkToNextNode(nullptr);
+	}
+	else {
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє СЃС‚Р°Р» РїСѓСЃС‚С‹Рј
+		headPtr_ = nullptr;
+	}
+
+	delete nodeToDelete;
+	--size_;
+	return true;
+}
+
+// РћС‡РёСЃС‚РєР° СЃРїРёСЃРєР°
+template<typename ItemType>
+void LinkedList<ItemType>::clear()
+{
+	while (headPtr_ != nullptr) {
+		ListNode* temp = headPtr_;
+		headPtr_ = headPtr_->getLinkToNextNode();
+		delete temp;
+	}
+	tailPtr_ = nullptr;
+	size_ = 0;
+}
+
+// РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+template<typename ItemType>
+LinkedList<ItemType>& LinkedList<ItemType>::operator=(const LinkedList<ItemType>& other)
+{
+	if (this != &other) {
+		LinkedList<ItemType> temp(other);
+		swap(temp);
+	}
+	return *this;
+}
+
+
+// РћРїРµСЂР°С‚РѕСЂ РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ (РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
+template<typename ItemType>
+ItemType& LinkedList<ItemType>::operator[](uint32_t index)
+{
+	if (index >= size_) {
+		throw std::out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
+	}
+
+	ListNode* current = headPtr_;
+	for (uint32_t i = 0; i < index; ++i) {
+		current = current->getLinkToNextNode();
+	}
+
+	return current->getValue();
+}
+
+// РћРїРµСЂР°С‚РѕСЂ РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ (РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
+template<typename ItemType>
+const ItemType& LinkedList<ItemType>::operator[](uint32_t index) const
+{
+	if (index >= size_) {
+		throw std::out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
+	}
+
+	const ListNode* current = headPtr_;
+	for (uint32_t i = 0; i < index; ++i) {
+		current = current->getLinkToNextNode();
+	}
+
+	return current->getValue();
+}
+
+
+// РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ РЅР° СЂР°РІРµРЅСЃС‚РІРѕ
+template<typename ItemType>
+bool LinkedList<ItemType>::operator==(const LinkedList<ItemType>& other) const
+{
+	if (size_ != other.size_) {
+		return false;
+	}
+
+	const ListNode* current1 = headPtr_;
+	const ListNode* current2 = other.headPtr_;
+
+	while (current1 != nullptr && current2 != nullptr) {
+		if (current1->getValue() != current2->getValue()) {
+			return false;
+		}
+		current1 = current1->getLinkToNextNode();
+		current2 = current2->getLinkToNextNode();
+	}
+
+	return true;
+}
+
+// РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ РЅР° РЅРµСЂР°РІРµРЅСЃС‚РІРѕ
+template<typename ItemType>
+bool LinkedList<ItemType>::operator!=(const LinkedList<ItemType>& other) const
+{
+	return !(*this == other);
+}
+
+template<typename ItemType>
+class LinkedList<ItemType>::ListNode
+{
+public:
+	ListNode(ItemType value = ItemType(), ListNode* next = nullptr, ListNode* prev = nullptr);
+
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ СѓР·Р»Р°
+	ItemType& getValue();
+	const ItemType& getValue() const;
+
+	// РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СѓР·РµР»
+	ListNode* getLinkToNextNode();
+	const ListNode* getLinkToNextNode() const;
+
+	// РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР»
+	ListNode* getLinkToPrevNode();
+	const ListNode* getLinkToPrevNode() const;
+
+	// РЈСЃС‚Р°РЅРѕРІРєР° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СѓР·РµР»
+	void setLinkToNextNode(ListNode* next);
+
+	// РЈСЃС‚Р°РЅРѕРІРєР° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР»
+	void setLinkToPrevNode(ListNode* prev);
+
+private:
+	ItemType value_;
+	ListNode* linkToNextNode_;
+	ListNode* linkToPrevNode_;
+};
+
+template<typename ItemType>
+std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list) {
+	ListNode* current = list.headPtr_;
+	while (current) {
+		os << current->getValue() << " ";
+		current = current->getLinkToNextNode();
+	}
+	return os;
+}
+template<typename ItemType>
+std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list) {
+	ItemType value;
+	list.clear(); // РћС‡РёС‰Р°РµРј СЃРїРёСЃРѕРє РїРµСЂРµРґ РІРІРѕРґРѕРј
+	while (is >> value) {
+		list.addToTail(value);
+	}
+	return is;
+}
+//ListNode
+
+template<typename ItemType>
+LinkedList<ItemType>::ListNode::ListNode(ItemType value, ListNode* next, ListNode* prev)
+	: value_(value), linkToNextNode_(next), linkToPrevNode_(prev) {
+}
+
+template<typename ItemType>
+ItemType& LinkedList<ItemType>::ListNode::getValue()
+{
+	return value_;
+}
+
+template<typename ItemType>
+const ItemType& LinkedList<ItemType>::ListNode::getValue() const
+{
+	return value_;
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToNextNode()
+{
+	return linkToNextNode_;
+}
+
+template<typename ItemType>
+const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToNextNode() const
+{
+	return linkToNextNode_;
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToPrevNode()
+{
+	return linkToPrevNode_;
+}
+
+template<typename ItemType>
+const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToPrevNode() const
+{
+	return linkToPrevNode_;
+}
+
+template<typename ItemType>
+void LinkedList<ItemType>::ListNode::setLinkToNextNode(ListNode* next)
+{
+	linkToNextNode_ = next;
+}
+
+template<typename ItemType>
+void LinkedList<ItemType>::ListNode::setLinkToPrevNode(ListNode* prev)
+{
+	linkToPrevNode_ = prev;
+}
