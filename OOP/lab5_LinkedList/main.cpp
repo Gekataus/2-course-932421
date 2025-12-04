@@ -214,11 +214,16 @@ int main() {
         cout << "original: " << original << endl;
         cout << "assigned: " << assigned << endl << endl;
 
-        // Тест ввода/вывода
-        cout << "10. Тест ввода/вывода" << endl;
+       // Тест ввода/вывода
+        cout << "\n10. Тест ввода/вывода" << endl;
         LinkedList<int> inputList;
         cout << "Введите элементы списка (разделенные пробелами, Enter для завершения): ";
-
+        cin.clear(); // Очищаем флаги ошибок
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Очищаем буфер до новой строки
+        
+        cin >> inputList;
+        cout << "Введенный список: " << inputList << endl;
+        cout << "Размер: " << inputList.getSize() << endl << endl;
         // Очищаем буфер
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
