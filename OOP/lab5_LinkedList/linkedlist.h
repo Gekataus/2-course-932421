@@ -529,23 +529,33 @@ std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 template<typename ItemType>
 std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list)
 {
-	list.clear(); // Очищаем список перед вводом
-
-	ItemType value;
-	while (is >> value) {
-		list.addToTail(value);
-		// Проверяем следующий символ, если это конец строки - выходим
-		if (is.peek() == '\n' || is.peek() == EOF) {
-			break;
-		}
-	}
-
-	// Сбрасываем флаги ошибок, если мы достигли конца ввода
-	if (is.eof()) {
-		is.clear();
-	}
-
-	return is;
+    list.clear(); // Очищаем список перед вводом
+    
+    ItemType value;
+    
+    // Читаем первое значение
+    if (is >> value) {
+        list.addToTail(value);
+        
+        // Читаем остальные значения до конца строки или EOF
+        while (is.peek() != '\n' && is.peek() != EOF) {
+            if (is >> value) {
+                list.addToTail(value);
+            }
+        }
+    }
+    
+    // Очищаем флаг состояния потока
+    if (is.eof()) {
+        is.clear();
+    }
+    
+    // Удаляем символ новой строки из буфера, если он есть
+    if (is.peek() == '\n') {
+        is.ignore(1);
+    }
+    
+    return is;
 }
 
 template<typename ItemType>
