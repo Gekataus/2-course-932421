@@ -515,8 +515,6 @@ LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType
 template<typename ItemType>
 std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 {
-    // Так как это не дружественная функция, у нас нет прямого доступа к private полям
-    // Мы будем использовать публичные методы
     if (list.isEmpty()) {
         os << "(пустой список)";
         return os;
