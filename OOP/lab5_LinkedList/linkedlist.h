@@ -69,14 +69,13 @@ public:
 	//сложение (конкатенация) списков (+, +=)
 	LinkedList<ItemType> operator+(const LinkedList<ItemType>& other) const;
 	LinkedList<ItemType>& operator+=(const LinkedList<ItemType>& other);
+
+	// Ввод/вывод в консоль
+	template<typename ItemType>
+	friend std::ostream& operator<<(std::ostream&, const LinkedList<ItemType>&);
+	template<typename ItemType>
+	friend std::istream& operator>>(std::istream&, LinkedList<ItemType>&);
 };
-
-// Ввод/вывод в консоль
-template<typename ItemType>
-std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list);
-
-template<typename ItemType>
-std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list);
 
 //LinkedList
 
@@ -515,41 +514,38 @@ LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType
 template<typename ItemType>
 std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 {
-    if (list.isEmpty()) {
-        os << "(пустой список)";
-        return os;
-    }
-
-    for (uint32_t i = 0; i < list.getSize(); ++i) {
-        os << list[i];
-        if (i < list.getSize() - 1) {
-            os << " ";
-        }
-    }
-    return os;
+	typename LinkedList<ItemType>::ListNode* current = list.headPtr_;
+	while (current != nullptr) {
+		os << current->getValue();
+		if (current->getLinkToNextNode() != nullptr) {
+			os << " ";
+		}
+		current = current->getLinkToNextNode();
+	}
+	return os;
 }
 
 // Реализация оператора ввода
 template<typename ItemType>
 std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list)
 {
-    list.clear(); // Очищаем список перед вводом
-    
-    ItemType value;
-    while (is >> value) {
-        list.addToTail(value);
-        // Проверяем следующий символ, если это конец строки - выходим
-        if (is.peek() == '\n' || is.peek() == EOF) {
-            break;
-        }
-    }
-    
-    // Сбрасываем флаги ошибок, если мы достигли конца ввода
-    if (is.eof()) {
-        is.clear();
-    }
-    
-    return is;
+	list.clear(); // Очищаем список перед вводом
+
+	ItemType value;
+	while (is >> value) {
+		list.addToTail(value);
+		// Проверяем следующий символ, если это конец строки - выходим
+		if (is.peek() == '\n' || is.peek() == EOF) {
+			break;
+		}
+	}
+
+	// Сбрасываем флаги ошибок, если мы достигли конца ввода
+	if (is.eof()) {
+		is.clear();
+	}
+
+	return is;
 }
 
 template<typename ItemType>
