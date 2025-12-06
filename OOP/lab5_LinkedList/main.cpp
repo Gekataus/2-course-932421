@@ -217,11 +217,7 @@ int main() {
         // Тест ввода/вывода
         cout << "10. Тест ввода/вывода" << endl;
         LinkedList<int> inputList;
-        cout << "Введите элементы списка (разделенные пробелами, Enter для завершения): ";
-
-        // Очищаем буфер
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
+        cout << "Введите список: " << endl;
         cin >> inputList;
         cout << "Введенный список: " << inputList << endl;
         cout << "Размер: " << inputList.getSize() << endl << endl;

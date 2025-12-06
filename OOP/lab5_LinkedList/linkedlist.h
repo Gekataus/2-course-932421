@@ -514,14 +514,16 @@ LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType
 template<typename ItemType>
 std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 {
+	os << "[";
 	typename LinkedList<ItemType>::ListNode* current = list.headPtr_;
 	while (current != nullptr) {
 		os << current->getValue();
-		if (current->getLinkToNextNode() != nullptr) {
-			os << " ";
-		}
 		current = current->getLinkToNextNode();
+		if (current != nullptr) {
+			os << ", ";
+		}
 	}
+	os << "]";
 	return os;
 }
 
@@ -529,20 +531,20 @@ std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 template<typename ItemType>
 std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list)
 {
-	list.clear(); // Очищаем список перед вводом
+	// Очищаем существующий список
+	list.clear();
 
-	ItemType value;
-	while (is >> value) {
+	// Читаем количество элементов
+	uint32_t count;
+	std::cout << "Введите количество элементов: ";
+	is >> count;
+
+	// Читаем каждый элемент
+	for (uint32_t i = 0; i < count; ++i) {
+		ItemType value;
+		std::cout << "Элемент " << i + 1 << ": ";
+		is >> value;
 		list.addToTail(value);
-		// Проверяем следующий символ, если это конец строки - выходим
-		if (is.peek() == '\n' || is.peek() == EOF) {
-			break;
-		}
-	}
-
-	// Сбрасываем флаги ошибок, если мы достигли конца ввода
-	if (is.eof()) {
-		is.clear();
 	}
 
 	return is;
