@@ -1,18 +1,18 @@
-#include "booleanmatrix.h"
+п»ї#include "booleanmatrix.h"
 
 using namespace std;
 
-// Конструктор по умолчанию
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
 BooleanMatrix::BooleanMatrix() = default;
 
-// Конструктор с параметрами (количество строк/столбцов и значения разрядов)
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё (РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє/СЃС‚РѕР»Р±С†РѕРІ Рё Р·РЅР°С‡РµРЅРёСЏ СЂР°Р·СЂСЏРґРѕРІ)
 BooleanMatrix::BooleanMatrix(uint32_t rows, uint32_t cols, bool defaultValue) {
     for (uint32_t i = 0; i < rows; ++i) {
         matrixData_.insertAt(i, BooleanVector(cols, defaultValue));
     }
 }
 
-// Конструктор из матрицы char
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°С‚СЂРёС†С‹ char
 BooleanMatrix::BooleanMatrix(const char** charMatrix, const uint32_t numRows)
 {
     for (uint32_t rowIndex = 0; rowIndex < numRows; ++rowIndex)
@@ -21,26 +21,26 @@ BooleanMatrix::BooleanMatrix(const char** charMatrix, const uint32_t numRows)
     }
 }
 
-// Конструктор копирования
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 BooleanMatrix::BooleanMatrix(const BooleanMatrix& other) : matrixData_(other.matrixData_) {}
 
-// Получение числа строк
+// РџРѕР»СѓС‡РµРЅРёРµ С‡РёСЃР»Р° СЃС‚СЂРѕРє
 uint32_t BooleanMatrix::getRows() const {
     return matrixData_.getArrayLength();
 }
 
-// Получение числа столбцов
+// РџРѕР»СѓС‡РµРЅРёРµ С‡РёСЃР»Р° СЃС‚РѕР»Р±С†РѕРІ
 uint32_t BooleanMatrix::getCols() const {
     if (getRows() == 0) return 0;
     return matrixData_[0].getLength();
 }
 
-// Обмен содержимого с другой матрицей (swap)
+// РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРѕР№ РјР°С‚СЂРёС†РµР№ (swap)
 void BooleanMatrix::swap(BooleanMatrix& other) {
     matrixData_.ArraysSwap(other.matrixData_);
 }
 
-// Вес матрицы (количество единичных компонент)
+// Р’РµСЃ РјР°С‚СЂРёС†С‹ (РєРѕР»РёС‡РµСЃС‚РІРѕ РµРґРёРЅРёС‡РЅС‹С… РєРѕРјРїРѕРЅРµРЅС‚)
 uint32_t BooleanMatrix::getWeight() const {
     uint32_t totalWeight = 0;
     for (uint32_t i = 0; i < getRows(); ++i) {
@@ -49,7 +49,7 @@ uint32_t BooleanMatrix::getWeight() const {
     return totalWeight;
 }
 
-// Конъюнкция всех строк (возвращает булев вектор)
+// РљРѕРЅСЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє (РІРѕР·РІСЂР°С‰Р°РµС‚ Р±СѓР»РµРІ РІРµРєС‚РѕСЂ)
 BooleanVector BooleanMatrix::conjunctionAllRows() const {
     if (getRows() == 0) return BooleanVector();
 
@@ -60,7 +60,7 @@ BooleanVector BooleanMatrix::conjunctionAllRows() const {
     return result;
 }
 
-// Дизъюнкция всех строк (возвращает булев вектор)
+// Р”РёР·СЉСЋРЅРєС†РёСЏ РІСЃРµС… СЃС‚СЂРѕРє (РІРѕР·РІСЂР°С‰Р°РµС‚ Р±СѓР»РµРІ РІРµРєС‚РѕСЂ)
 BooleanVector BooleanMatrix::disjunctionAllRows() const {
     if (getRows() == 0) return BooleanVector();
 
@@ -70,29 +70,29 @@ BooleanVector BooleanMatrix::disjunctionAllRows() const {
     }
     return result;
 }
-// Вес j-ой строки
+// Р’РµСЃ j-РѕР№ СЃС‚СЂРѕРєРё
 uint32_t BooleanMatrix::getRowWeight(uint32_t row) const {
     if (row >= getRows()) {
-        throw out_of_range("Индекс столбца выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     return matrixData_[row].getWeight();
 }
 
-// Инверсия в i-ой компоненты j-ой строки
+// РРЅРІРµСЂСЃРёСЏ РІ i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹ j-РѕР№ СЃС‚СЂРѕРєРё
 void BooleanMatrix::invertBit(uint32_t row, uint32_t col) {
     if (row >= getRows() || col >= getCols()) {
-        throw out_of_range("Индекс выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     matrixData_[row].invertBit(col);
 }
 
-// Инверсия k компонент j-ой строки, начиная с i-ой компоненты
+// РРЅРІРµСЂСЃРёСЏ k РєРѕРјРїРѕРЅРµРЅС‚ j-РѕР№ СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЏ СЃ i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
 void BooleanMatrix::invertBits(uint32_t row, uint32_t startCol, uint32_t k) {
     if (row >= getRows() || startCol >= getCols()) {
-        throw out_of_range("Индекс выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     if (startCol + k > getCols()) {
-        throw out_of_range("Слишком много битов для установки");
+        throw out_of_range("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ Р±РёС‚РѕРІ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё");
     }
 
     for (uint32_t i = 0; i < k; ++i) {
@@ -100,21 +100,21 @@ void BooleanMatrix::invertBits(uint32_t row, uint32_t startCol, uint32_t k) {
     }
 }
 
-// Установка в 0/1 i-ой компоненты j-ой строки
+// РЈСЃС‚Р°РЅРѕРІРєР° РІ 0/1 i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹ j-РѕР№ СЃС‚СЂРѕРєРё
 void BooleanMatrix::setBit(uint32_t row, uint32_t col, bool value) {
     if (row >= getRows() || col >= getCols()) {
-        throw out_of_range("Индекс выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     matrixData_[row].setBit(col, value);
 }
 
-// Установка в 0/1 k компонент j-ой строки, начиная с i-ой компоненты
+// РЈСЃС‚Р°РЅРѕРІРєР° РІ 0/1 k РєРѕРјРїРѕРЅРµРЅС‚ j-РѕР№ СЃС‚СЂРѕРєРё, РЅР°С‡РёРЅР°СЏ СЃ i-РѕР№ РєРѕРјРїРѕРЅРµРЅС‚С‹
 void BooleanMatrix::setBits(uint32_t row, uint32_t startCol, uint32_t k, bool value) {
     if (row >= getRows() || startCol >= getCols()) {
-        throw out_of_range("Индекс выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     if (startCol + k > getCols()) {
-        throw out_of_range("Слишком много битов для установки");
+        throw out_of_range("РЎР»РёС€РєРѕРј РјРЅРѕРіРѕ Р±РёС‚РѕРІ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё");
     }
 
     for (uint32_t i = 0; i < k; ++i) {
@@ -122,7 +122,7 @@ void BooleanMatrix::setBits(uint32_t row, uint32_t startCol, uint32_t k, bool va
     }
 }
 
-// Присваивание
+// РџСЂРёСЃРІР°РёРІР°РЅРёРµ
 BooleanMatrix& BooleanMatrix::operator=(const BooleanMatrix& other) {
     if (this != &other) {
         matrixData_ = other.matrixData_;
@@ -131,25 +131,25 @@ BooleanMatrix& BooleanMatrix::operator=(const BooleanMatrix& other) {
 }
 
 
-// Получение строки
+// РџРѕР»СѓС‡РµРЅРёРµ СЃС‚СЂРѕРєРё
 BooleanVector& BooleanMatrix::operator[](uint32_t row) {
     if (row >= getRows()) {
-        throw out_of_range("Индекс столбца выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     return matrixData_[row];
 }
 
 const BooleanVector& BooleanMatrix::operator[](uint32_t row) const {
     if (row >= getRows()) {
-        throw out_of_range("Индекс столбца выходит за границы");
+        throw out_of_range("РРЅРґРµРєСЃ СЃС‚РѕР»Р±С†Р° РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
     }
     return matrixData_[row];
 }
 
-// Построчное побитовое умножение (&, &=)
+// РџРѕСЃС‚СЂРѕС‡РЅРѕРµ РїРѕР±РёС‚РѕРІРѕРµ СѓРјРЅРѕР¶РµРЅРёРµ (&, &=)
 BooleanMatrix BooleanMatrix::operator&(const BooleanMatrix& other) const {
     if (getRows() != other.getRows() || getCols() != other.getCols()) {
-        throw invalid_argument("Матрицы имеют разный размер");
+        throw invalid_argument("РњР°С‚СЂРёС†С‹ РёРјРµСЋС‚ СЂР°Р·РЅС‹Р№ СЂР°Р·РјРµСЂ");
     }
 
     BooleanMatrix result(getRows(), getCols());
@@ -164,10 +164,10 @@ BooleanMatrix& BooleanMatrix::operator&=(const BooleanMatrix& other) {
     return *this;
 }
 
-// Построчное побитовое сложение (|, |=)
+// РџРѕСЃС‚СЂРѕС‡РЅРѕРµ РїРѕР±РёС‚РѕРІРѕРµ СЃР»РѕР¶РµРЅРёРµ (|, |=)
 BooleanMatrix BooleanMatrix::operator|(const BooleanMatrix& other) const {
     if (getRows() != other.getRows() || getCols() != other.getCols()) {
-        throw invalid_argument("Матрицы имеют разный размер");
+        throw invalid_argument("РњР°С‚СЂРёС†С‹ РёРјРµСЋС‚ СЂР°Р·РЅС‹Р№ СЂР°Р·РјРµСЂ");
     }
 
     BooleanMatrix result(getRows(), getCols());
@@ -182,10 +182,10 @@ BooleanMatrix& BooleanMatrix::operator|=(const BooleanMatrix& other) {
     return *this;
 }
 
-// Построчное побитовое исключающее ИЛИ (^, ^=)
+// РџРѕСЃС‚СЂРѕС‡РЅРѕРµ РїРѕР±РёС‚РѕРІРѕРµ РёСЃРєР»СЋС‡Р°СЋС‰РµРµ РР›Р (^, ^=)
 BooleanMatrix BooleanMatrix::operator^(const BooleanMatrix& other) const {
     if (getRows() != other.getRows() || getCols() != other.getCols()) {
-        throw invalid_argument("Матрицы имеют разный размер");
+        throw invalid_argument("РњР°С‚СЂРёС†С‹ РёРјРµСЋС‚ СЂР°Р·РЅС‹Р№ СЂР°Р·РјРµСЂ");
     }
 
     BooleanMatrix result(getRows(), getCols());
@@ -200,7 +200,7 @@ BooleanMatrix& BooleanMatrix::operator^=(const BooleanMatrix& other) {
     return *this;
 }
 
-// Построчная побитовая инверсия (~)
+// РџРѕСЃС‚СЂРѕС‡РЅР°СЏ РїРѕР±РёС‚РѕРІР°СЏ РёРЅРІРµСЂСЃРёСЏ (~)
 BooleanMatrix BooleanMatrix::operator~() const {
     BooleanMatrix result(getRows(), getCols());
     for (uint32_t i = 0; i < getRows(); ++i) {
@@ -209,7 +209,7 @@ BooleanMatrix BooleanMatrix::operator~() const {
     return result;
 }
 
-// Сравнение матриц
+// РЎСЂР°РІРЅРµРЅРёРµ РјР°С‚СЂРёС†
 bool BooleanMatrix::operator==(const BooleanMatrix& other) const {
     if (getRows() != other.getRows() || getCols() != other.getCols()) {
         return false;
@@ -233,24 +233,24 @@ bool BooleanMatrix::operator!=(const BooleanMatrix& other) const {
 }
 
 
-// Потоковый ввод
+// РџРѕС‚РѕРєРѕРІС‹Р№ РІРІРѕРґ
 istream& operator>>(istream& is, BooleanMatrix& bm) {
     uint32_t rows, cols;
-    cout << "Введите количество строк: ";
+    cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє: ";
     is >> rows;
-    cout << "Введите количество столбцов: ";
+    cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ: ";
     is >> cols;
 
-    // Создаем временную матрицу
+    // РЎРѕР·РґР°РµРј РІСЂРµРјРµРЅРЅСѓСЋ РјР°С‚СЂРёС†Сѓ
     BooleanMatrix temp(rows, cols);
 
-    cout << "Введите матрицу (0/1 построчно, " << cols << " символов в строке):" << endl;
+    cout << "Р’РІРµРґРёС‚Рµ РјР°С‚СЂРёС†Сѓ (0/1 РїРѕСЃС‚СЂРѕС‡РЅРѕ, " << cols << " СЃРёРјРІРѕР»РѕРІ РІ СЃС‚СЂРѕРєРµ):" << endl;
     for (uint32_t i = 0; i < rows; ++i) {
         string rowString;
         is >> rowString;
 
         if (rowString.length() != cols) {
-            throw runtime_error("Неверная длина строки матрицы");
+            throw runtime_error("РќРµРІРµСЂРЅР°СЏ РґР»РёРЅР° СЃС‚СЂРѕРєРё РјР°С‚СЂРёС†С‹");
         }
 
         for (uint32_t j = 0; j < cols; ++j) {
@@ -261,7 +261,7 @@ istream& operator>>(istream& is, BooleanMatrix& bm) {
                 temp.setBit(i, j, false);
             }
             else {
-                throw runtime_error("Неверный символ в матрице (должны быть только 0 или 1)");
+                throw runtime_error("РќРµРІРµСЂРЅС‹Р№ СЃРёРјРІРѕР» РІ РјР°С‚СЂРёС†Рµ (РґРѕР»Р¶РЅС‹ Р±С‹С‚СЊ С‚РѕР»СЊРєРѕ 0 РёР»Рё 1)");
             }
         }
     }
@@ -270,7 +270,7 @@ istream& operator>>(istream& is, BooleanMatrix& bm) {
     return is;
 }
 
-// Потоковый вывод
+// РџРѕС‚РѕРєРѕРІС‹Р№ РІС‹РІРѕРґ
 ostream& operator<<(ostream& os, const BooleanMatrix& bm) {
     for (uint32_t i = 0; i < bm.getRows(); ++i) {
         os << bm[i] << endl;

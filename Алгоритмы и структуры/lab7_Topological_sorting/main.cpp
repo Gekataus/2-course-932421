@@ -1,4 +1,4 @@
-#include "booleanmatrix.h"
+﻿#include "booleanmatrix.h"
 #include <stdexcept>
 #include <iostream>
 

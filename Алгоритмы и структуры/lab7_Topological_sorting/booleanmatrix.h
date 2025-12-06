@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "dynamicarray.h"
 #include "booleanvector.h"
@@ -9,70 +9,70 @@
 
 class BooleanMatrix {
 public:
-    // Êîíñòğóêòîğû
+    // ĞšĞ¾Ğ½ÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€Ñ‹
     BooleanMatrix();
     BooleanMatrix(uint32_t rows, uint32_t cols, bool defaultValue = false);
     BooleanMatrix(const char**, const uint32_t);
     BooleanMatrix(const BooleanMatrix&);
 
-    // Äåñòğóêòîğ
+    // Ğ”ĞµÑÑ‚Ñ€ÑƒĞºÑ‚Ğ¾Ñ€
     ~BooleanMatrix() = default;
 
-    // Ïîëó÷åíèå ÷èñëà ñòğîê è ñòîëáöîâ
+    // ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ñ‡Ğ¸ÑĞ»Ğ° ÑÑ‚Ñ€Ğ¾Ğº Ğ¸ ÑÑ‚Ğ¾Ğ»Ğ±Ñ†Ğ¾Ğ²
     uint32_t getRows() const;
     uint32_t getCols() const;
 
-    // Îáìåí ñîäåğæèìîãî ñ äğóãîé ìàòğèöåé (swap)
+    // ĞĞ±Ğ¼ĞµĞ½ ÑĞ¾Ğ´ĞµÑ€Ğ¶Ğ¸Ğ¼Ğ¾Ğ³Ğ¾ Ñ Ğ´Ñ€ÑƒĞ³Ğ¾Ğ¹ Ğ¼Ğ°Ñ‚Ñ€Ğ¸Ñ†ĞµĞ¹ (swap)
     void swap(BooleanMatrix&);
 
-    // Âåñ ìàòğèöû (êîëè÷åñòâî åäèíè÷íûõ êîìïîíåíò)
+    // Ğ’ĞµÑ Ğ¼Ğ°Ñ‚Ñ€Ğ¸Ñ†Ñ‹ (ĞºĞ¾Ğ»Ğ¸Ñ‡ĞµÑÑ‚Ğ²Ğ¾ ĞµĞ´Ğ¸Ğ½Ğ¸Ñ‡Ğ½Ñ‹Ñ… ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚)
     uint32_t getWeight() const;
 
-    // Êîíúşíêöèÿ âñåõ ñòğîê (âîçâğàùàåò áóëåâ âåêòîğ)
+    // ĞšĞ¾Ğ½ÑŠÑĞ½ĞºÑ†Ğ¸Ñ Ğ²ÑĞµÑ… ÑÑ‚Ñ€Ğ¾Ğº (Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµÑ‚ Ğ±ÑƒĞ»ĞµĞ² Ğ²ĞµĞºÑ‚Ğ¾Ñ€)
     BooleanVector conjunctionAllRows() const;
 
-    // Äèçúşíêöèÿ âñåõ ñòğîê (âîçâğàùàåò áóëåâ âåêòîğ)
+    // Ğ”Ğ¸Ğ·ÑŠÑĞ½ĞºÑ†Ğ¸Ñ Ğ²ÑĞµÑ… ÑÑ‚Ñ€Ğ¾Ğº (Ğ²Ğ¾Ğ·Ğ²Ñ€Ğ°Ñ‰Ğ°ĞµÑ‚ Ğ±ÑƒĞ»ĞµĞ² Ğ²ĞµĞºÑ‚Ğ¾Ñ€)
     BooleanVector disjunctionAllRows() const;
 
-    // Âåñ j-îé ñòğîêè
+    // Ğ’ĞµÑ j-Ğ¾Ğ¹ ÑÑ‚Ñ€Ğ¾ĞºĞ¸
     uint32_t getRowWeight(uint32_t) const;
 
-    // Èíâåğñèÿ â i-îé êîìïîíåíòû j-îé ñòğîêè
+    // Ğ˜Ğ½Ğ²ĞµÑ€ÑĞ¸Ñ Ğ² i-Ğ¾Ğ¹ ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚Ñ‹ j-Ğ¾Ğ¹ ÑÑ‚Ñ€Ğ¾ĞºĞ¸
     void invertBit(uint32_t, uint32_t);
 
-    //èíâåğñèÿ k êîìïîíåíò j - îé ñòğîêè, íà÷èíàÿ ñ i - îé êîìïîíåíòû
+    //Ğ¸Ğ½Ğ²ĞµÑ€ÑĞ¸Ñ k ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚ j - Ğ¾Ğ¹ ÑÑ‚Ñ€Ğ¾ĞºĞ¸, Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ Ñ i - Ğ¾Ğ¹ ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚Ñ‹
     void invertBits(uint32_t, uint32_t, uint32_t);
 
-    // Óñòàíîâêà â 0/1 i-îé êîìïîíåíòû j-îé ñòğîêè
+    // Ğ£ÑÑ‚Ğ°Ğ½Ğ¾Ğ²ĞºĞ° Ğ² 0/1 i-Ğ¾Ğ¹ ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚Ñ‹ j-Ğ¾Ğ¹ ÑÑ‚Ñ€Ğ¾ĞºĞ¸
     void setBit(uint32_t, uint32_t, bool);
 
-    //óñòàíîâêà â 0/1 k êîìïîíåíò j-îé ñòğîêè, íà÷èíàÿ ñ i-îé êîìïîíåíòû
+    //ÑƒÑÑ‚Ğ°Ğ½Ğ¾Ğ²ĞºĞ° Ğ² 0/1 k ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚ j-Ğ¾Ğ¹ ÑÑ‚Ñ€Ğ¾ĞºĞ¸, Ğ½Ğ°Ñ‡Ğ¸Ğ½Ğ°Ñ Ñ i-Ğ¾Ğ¹ ĞºĞ¾Ğ¼Ğ¿Ğ¾Ğ½ĞµĞ½Ñ‚Ñ‹
     void setBits(uint32_t, uint32_t, uint32_t, bool);
 
-    // Ïğèñâàèâàíèå
+    // ĞŸÑ€Ğ¸ÑĞ²Ğ°Ğ¸Ğ²Ğ°Ğ½Ğ¸Ğµ
     BooleanMatrix& operator=(const BooleanMatrix&);
 
-    // Ïîëó÷åíèå ñòğîêè
+    // ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ ÑÑ‚Ñ€Ğ¾ĞºĞ¸
     BooleanVector& operator[](uint32_t);
     const BooleanVector& operator[](uint32_t) const;
 
-    // Ïîñòğî÷íîå ïîáèòîâîå óìíîæåíèå (&,&=)
+    // ĞŸĞ¾ÑÑ‚Ñ€Ğ¾Ñ‡Ğ½Ğ¾Ğµ Ğ¿Ğ¾Ğ±Ğ¸Ñ‚Ğ¾Ğ²Ğ¾Ğµ ÑƒĞ¼Ğ½Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ (&,&=)
     BooleanMatrix operator&(const BooleanMatrix&) const;
     BooleanMatrix& operator&=(const BooleanMatrix&);
 
 
-    // Ïîñòğî÷íîå ïîáèòîâîå ñëîæåíèå (|,|=)
+    // ĞŸĞ¾ÑÑ‚Ñ€Ğ¾Ñ‡Ğ½Ğ¾Ğµ Ğ¿Ğ¾Ğ±Ğ¸Ñ‚Ğ¾Ğ²Ğ¾Ğµ ÑĞ»Ğ¾Ğ¶ĞµĞ½Ğ¸Ğµ (|,|=)
     BooleanMatrix operator|(const BooleanMatrix&) const;
     BooleanMatrix& operator|=(const BooleanMatrix&);
 
-    // Ïîñòğî÷íîå ïîáèòîâîå èñêëş÷àşùåå ÈËÈ (^,^=)
+    // ĞŸĞ¾ÑÑ‚Ñ€Ğ¾Ñ‡Ğ½Ğ¾Ğµ Ğ¿Ğ¾Ğ±Ğ¸Ñ‚Ğ¾Ğ²Ğ¾Ğµ Ğ¸ÑĞºĞ»ÑÑ‡Ğ°ÑÑ‰ĞµĞµ Ğ˜Ğ›Ğ˜ (^,^=)
     BooleanMatrix operator^(const BooleanMatrix&) const;
     BooleanMatrix& operator^=(const BooleanMatrix&);
 
-    // Ïîñòğî÷íàÿ ïîáèòîâàÿ èíâåğñèÿ (~)
+    // ĞŸĞ¾ÑÑ‚Ñ€Ğ¾Ñ‡Ğ½Ğ°Ñ Ğ¿Ğ¾Ğ±Ğ¸Ñ‚Ğ¾Ğ²Ğ°Ñ Ğ¸Ğ½Ğ²ĞµÑ€ÑĞ¸Ñ (~)
     BooleanMatrix operator~() const;
 
-    // Ñğàâíåíèå ìàòğèö
+    // Ğ¡Ñ€Ğ°Ğ²Ğ½ĞµĞ½Ğ¸Ğµ Ğ¼Ğ°Ñ‚Ñ€Ğ¸Ñ†
     bool operator==(const BooleanMatrix&) const;
     bool operator!=(const BooleanMatrix&) const;
 
@@ -82,6 +82,6 @@ private:
 
 };
 
-// Ïîòîêîâûé ââîä/âûâîä
+// ĞŸĞ¾Ñ‚Ğ¾ĞºĞ¾Ğ²Ñ‹Ğ¹ Ğ²Ğ²Ğ¾Ğ´/Ğ²Ñ‹Ğ²Ğ¾Ğ´
 std::istream& operator>>(std::istream& is, BooleanMatrix& bm);
 std::ostream& operator<<(std::ostream& os, const BooleanMatrix& bm);
