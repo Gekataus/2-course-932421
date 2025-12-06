@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdint.h>
 #include <iostream>
@@ -15,62 +15,62 @@ private:
 	uint32_t size_ = 0;
 public:
 
-	//Конструкторы: по умолчанию, конструктор из обычного массивая, конструктор копирования)
+	//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹: РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РѕР±С‹С‡РЅРѕРіРѕ РјР°СЃСЃРёРІР°СЏ, РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ)
 	LinkedList() = default;
 	LinkedList(const ItemType* array, uint32_t size);
 	LinkedList(const LinkedList<ItemType>&);
 
-	//Деструктор
+	//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 	~LinkedList();
 
-	//Получение размера списка
+	//РџРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
 	uint32_t getSize() const;
 
-	//Обмен содержимого с другим списком
+	//РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј СЃРїРёСЃРєРѕРј
 	void swap(LinkedList<ItemType>& other) noexcept;
 
-	//Поиск элемента по ключу (возвращает указатель на элемент или nullptr, если элемента нет в списке);
+	//РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РІРѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЌР»РµРјРµРЅС‚ РёР»Рё nullptr, РµСЃР»Рё СЌР»РµРјРµРЅС‚Р° РЅРµС‚ РІ СЃРїРёСЃРєРµ);
 	ListNode* find(const ItemType& key);
 	const ListNode* find(const ItemType& key) const;
 
-	//добавление элемента (в голову, хвост, на позицию, после ключа (после первого вхождения),)
+	//РґРѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° (РІ РіРѕР»РѕРІСѓ, С…РІРѕСЃС‚, РЅР° РїРѕР·РёС†РёСЋ, РїРѕСЃР»Рµ РєР»СЋС‡Р° (РїРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ),)
 	void addToHead(const ItemType& value);
 	void addToTail(const ItemType& value);
 	bool addAtPosition(const ItemType& value, uint32_t position);
 	bool addAfterKey(const ItemType& value, const ItemType& key);
 
-	//удаление элемента (из головы, хвоста, позиции, по ключу (первое вхождение))
+	//СѓРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° (РёР· РіРѕР»РѕРІС‹, С…РІРѕСЃС‚Р°, РїРѕР·РёС†РёРё, РїРѕ РєР»СЋС‡Сѓ (РїРµСЂРІРѕРµ РІС…РѕР¶РґРµРЅРёРµ))
 	bool removeFromHead();
 	bool removeFromTail();
 	bool removeAtPosition(uint32_t position);
 	bool removeByKey(const ItemType& key);
 
-	// -поиск максимального / минимального элемента;
+	// -РїРѕРёСЃРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ / РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°;
 	ItemType findMax() const;
 	ItemType findMin() const;
 
-	// - isEmpty() - возвращает true, если список пуст;
+	// - isEmpty() - РІРѕР·РІСЂР°С‰Р°РµС‚ true, РµСЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚;
 	bool isEmpty() const;
 
-	//-очистка списка;
+	//-РѕС‡РёСЃС‚РєР° СЃРїРёСЃРєР°;
 	void clear();
 
-	//Перегрузки
-	//- присваивание (=);
+	//РџРµСЂРµРіСЂСѓР·РєРё
+	//- РїСЂРёСЃРІР°РёРІР°РЅРёРµ (=);
 	LinkedList<ItemType>& operator=(const LinkedList<ItemType>&);
 
-	//-получение ссылки на ключ элемента([]);
+	//-РїРѕР»СѓС‡РµРЅРёРµ СЃСЃС‹Р»РєРё РЅР° РєР»СЋС‡ СЌР»РµРјРµРЅС‚Р°([]);
 	ItemType& operator[](uint32_t index);
 	const ItemType& operator[](uint32_t index) const;
-	//-сравнение(== , != );
+	//-СЃСЂР°РІРЅРµРЅРёРµ(== , != );
 	bool operator==(const LinkedList<ItemType>& other) const;
 	bool operator!=(const LinkedList<ItemType>& other) const;
 
-	//сложение (конкатенация) списков (+, +=)
+	//СЃР»РѕР¶РµРЅРёРµ (РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ) СЃРїРёСЃРєРѕРІ (+, +=)
 	LinkedList<ItemType> operator+(const LinkedList<ItemType>& other) const;
 	LinkedList<ItemType>& operator+=(const LinkedList<ItemType>& other);
 
-	// Ввод/вывод в консоль
+	// Р’РІРѕРґ/РІС‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ
 	template<typename ItemType>
 	friend std::ostream& operator<<(std::ostream&, const LinkedList<ItemType>&);
 	template<typename ItemType>
@@ -79,7 +79,7 @@ public:
 
 //LinkedList
 
-// Конструктор из массива
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР°
 template<typename ItemType>
 LinkedList<ItemType>::LinkedList(const ItemType* array, uint32_t size)
 {
@@ -88,7 +88,7 @@ LinkedList<ItemType>::LinkedList(const ItemType* array, uint32_t size)
 	}
 }
 
-// Конструктор копирования
+// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 template<typename ItemType>
 LinkedList<ItemType>::LinkedList(const LinkedList<ItemType>& other)
 {
@@ -99,21 +99,21 @@ LinkedList<ItemType>::LinkedList(const LinkedList<ItemType>& other)
 	}
 }
 
-// Деструктор
+// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 template<typename ItemType>
 LinkedList<ItemType>::~LinkedList()
 {
 	clear();
 }
 
-// Получение размера списка
+// РџРѕР»СѓС‡РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃРїРёСЃРєР°
 template<typename ItemType>
 uint32_t LinkedList<ItemType>::getSize() const
 {
 	return size_;
 }
 
-// Обмен содержимого с другим списком
+// РћР±РјРµРЅ СЃРѕРґРµСЂР¶РёРјРѕРіРѕ СЃ РґСЂСѓРіРёРј СЃРїРёСЃРєРѕРј
 template<typename ItemType>
 void LinkedList<ItemType>::swap(LinkedList<ItemType>& other) noexcept
 {
@@ -122,7 +122,7 @@ void LinkedList<ItemType>::swap(LinkedList<ItemType>& other) noexcept
 	std::swap(size_, other.size_);
 }
 
-// Поиск элемента по ключу (неконстантная версия)
+// РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
 template<typename ItemType>
 typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const ItemType& key)
 {
@@ -136,7 +136,7 @@ typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const ItemTy
 	return nullptr;
 }
 
-// Поиск элемента по ключу (константная версия)
+// РџРѕРёСЃРє СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ (РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
 template<typename ItemType>
 const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const ItemType& key) const
 {
@@ -150,7 +150,7 @@ const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::find(const 
 	return nullptr;
 }
 
-// Добавление элемента в голову
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ РіРѕР»РѕРІСѓ
 template<typename ItemType>
 void LinkedList<ItemType>::addToHead(const ItemType& value)
 {
@@ -160,7 +160,7 @@ void LinkedList<ItemType>::addToHead(const ItemType& value)
 		headPtr_->setLinkToPrevNode(newNode);
 	}
 	else {
-		// Если список был пуст, новый узел - хвост
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє Р±С‹Р» РїСѓСЃС‚, РЅРѕРІС‹Р№ СѓР·РµР» - С…РІРѕСЃС‚
 		tailPtr_ = newNode;
 	}
 
@@ -168,7 +168,7 @@ void LinkedList<ItemType>::addToHead(const ItemType& value)
 	++size_;
 }
 
-// Добавление элемента в хвост
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РІ С…РІРѕСЃС‚
 template<typename ItemType>
 void LinkedList<ItemType>::addToTail(const ItemType& value)
 {
@@ -178,7 +178,7 @@ void LinkedList<ItemType>::addToTail(const ItemType& value)
 		tailPtr_->setLinkToNextNode(newNode);
 	}
 	else {
-		// Если список был пуст, новый узел - голова
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє Р±С‹Р» РїСѓСЃС‚, РЅРѕРІС‹Р№ СѓР·РµР» - РіРѕР»РѕРІР°
 		headPtr_ = newNode;
 	}
 
@@ -186,12 +186,12 @@ void LinkedList<ItemType>::addToTail(const ItemType& value)
 	++size_;
 }
 
-// Добавление элемента на указанную позицию
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РЅР° СѓРєР°Р·Р°РЅРЅСѓСЋ РїРѕР·РёС†РёСЋ
 template<typename ItemType>
 bool LinkedList<ItemType>::addAtPosition(const ItemType& value, uint32_t position)
 {
 	if (position > size_) {
-		return false; // Недопустимая позиция
+		return false; // РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РїРѕР·РёС†РёСЏ
 	}
 
 	if (position == 0) {
@@ -204,16 +204,16 @@ bool LinkedList<ItemType>::addAtPosition(const ItemType& value, uint32_t positio
 		return true;
 	}
 
-	// Ищем узел перед позицией вставки
+	// РС‰РµРј СѓР·РµР» РїРµСЂРµРґ РїРѕР·РёС†РёРµР№ РІСЃС‚Р°РІРєРё
 	ListNode* current = headPtr_;
 	for (uint32_t i = 0; i < position - 1; ++i) {
 		current = current->getLinkToNextNode();
 	}
 
-	// Создаем новый узел
+	// РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ СѓР·РµР»
 	ListNode* newNode = new ListNode(value, current->getLinkToNextNode(), current);
 
-	// Обновляем связи
+	// РћР±РЅРѕРІР»СЏРµРј СЃРІСЏР·Рё
 	current->getLinkToNextNode()->setLinkToPrevNode(newNode);
 	current->setLinkToNextNode(newNode);
 
@@ -221,37 +221,37 @@ bool LinkedList<ItemType>::addAtPosition(const ItemType& value, uint32_t positio
 	return true;
 }
 
-// Добавление элемента после первого вхождения ключа
+// Р”РѕР±Р°РІР»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РїРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ РєР»СЋС‡Р°
 template<typename ItemType>
 bool LinkedList<ItemType>::addAfterKey(const ItemType& value, const ItemType& key)
 {
 	ListNode* keyNode = find(key);
 	if (keyNode == nullptr) {
-		return false; // Ключ не найден
+		return false; // РљР»СЋС‡ РЅРµ РЅР°Р№РґРµРЅ
 	}
 
 	if (keyNode == tailPtr_) {
-		// Если ключ в хвосте, просто добавляем в конец
+		// Р•СЃР»Рё РєР»СЋС‡ РІ С…РІРѕСЃС‚Рµ, РїСЂРѕСЃС‚Рѕ РґРѕР±Р°РІР»СЏРµРј РІ РєРѕРЅРµС†
 		addToTail(value);
 		return true;
 	}
 
-	// Создаем новый узел
+	// РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ СѓР·РµР»
 	ListNode* newNode = new ListNode(value, keyNode->getLinkToNextNode(), keyNode);
 
-	// Обновляем связи
+	// РћР±РЅРѕРІР»СЏРµРј СЃРІСЏР·Рё
 	keyNode->getLinkToNextNode()->setLinkToPrevNode(newNode);
 	keyNode->setLinkToNextNode(newNode);
 
 	++size_;
 	return true;
 }
-// Удаление элемента из головы
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· РіРѕР»РѕРІС‹
 template<typename ItemType>
 bool LinkedList<ItemType>::removeFromHead()
 {
 	if (headPtr_ == nullptr) {
-		return false; // Список пуст
+		return false; // РЎРїРёСЃРѕРє РїСѓСЃС‚
 	}
 
 	ListNode* nodeToDelete = headPtr_;
@@ -261,7 +261,7 @@ bool LinkedList<ItemType>::removeFromHead()
 		headPtr_->setLinkToPrevNode(nullptr);
 	}
 	else {
-		// Если список стал пустым
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє СЃС‚Р°Р» РїСѓСЃС‚С‹Рј
 		tailPtr_ = nullptr;
 	}
 
@@ -270,12 +270,12 @@ bool LinkedList<ItemType>::removeFromHead()
 	return true;
 }
 
-// Удаление элемента из хвоста
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· С…РІРѕСЃС‚Р°
 template<typename ItemType>
 bool LinkedList<ItemType>::removeFromTail()
 {
 	if (tailPtr_ == nullptr) {
-		return false; // Список пуст
+		return false; // РЎРїРёСЃРѕРє РїСѓСЃС‚
 	}
 
 	ListNode* nodeToDelete = tailPtr_;
@@ -285,7 +285,7 @@ bool LinkedList<ItemType>::removeFromTail()
 		tailPtr_->setLinkToNextNode(nullptr);
 	}
 	else {
-		// Если список стал пустым
+		// Р•СЃР»Рё СЃРїРёСЃРѕРє СЃС‚Р°Р» РїСѓСЃС‚С‹Рј
 		headPtr_ = nullptr;
 	}
 
@@ -294,12 +294,12 @@ bool LinkedList<ItemType>::removeFromTail()
 	return true;
 }
 
-// Удаление элемента из указанной позиции
+// РЈРґР°Р»РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РёР· СѓРєР°Р·Р°РЅРЅРѕР№ РїРѕР·РёС†РёРё
 template<typename ItemType>
 bool LinkedList<ItemType>::removeAtPosition(uint32_t position)
 {
 	if (position >= size_) {
-		return false; // Недопустимая позиция
+		return false; // РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РїРѕР·РёС†РёСЏ
 	}
 
 	if (position == 0) {
@@ -310,13 +310,13 @@ bool LinkedList<ItemType>::removeAtPosition(uint32_t position)
 		return removeFromTail();
 	}
 
-	// Ищем узел для удаления
+	// РС‰РµРј СѓР·РµР» РґР»СЏ СѓРґР°Р»РµРЅРёСЏ
 	ListNode* current = headPtr_;
 	for (uint32_t i = 0; i < position; ++i) {
 		current = current->getLinkToNextNode();
 	}
 
-	// Обновляем связи соседних узлов
+	// РћР±РЅРѕРІР»СЏРµРј СЃРІСЏР·Рё СЃРѕСЃРµРґРЅРёС… СѓР·Р»РѕРІ
 	current->getLinkToPrevNode()->setLinkToNextNode(current->getLinkToNextNode());
 	current->getLinkToNextNode()->setLinkToPrevNode(current->getLinkToPrevNode());
 
@@ -325,13 +325,13 @@ bool LinkedList<ItemType>::removeAtPosition(uint32_t position)
 	return true;
 }
 
-// Удаление первого вхождения элемента по ключу
+// РЈРґР°Р»РµРЅРёРµ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ СЌР»РµРјРµРЅС‚Р° РїРѕ РєР»СЋС‡Сѓ
 template<typename ItemType>
 bool LinkedList<ItemType>::removeByKey(const ItemType& key)
 {
 	ListNode* nodeToDelete = find(key);
 	if (nodeToDelete == nullptr) {
-		return false; // Ключ не найден
+		return false; // РљР»СЋС‡ РЅРµ РЅР°Р№РґРµРЅ
 	}
 
 	if (nodeToDelete == headPtr_) {
@@ -342,7 +342,7 @@ bool LinkedList<ItemType>::removeByKey(const ItemType& key)
 		return removeFromTail();
 	}
 
-	// Обновляем связи
+	// РћР±РЅРѕРІР»СЏРµРј СЃРІСЏР·Рё
 	nodeToDelete->getLinkToPrevNode()->setLinkToNextNode(nodeToDelete->getLinkToNextNode());
 	nodeToDelete->getLinkToNextNode()->setLinkToPrevNode(nodeToDelete->getLinkToPrevNode());
 
@@ -351,12 +351,12 @@ bool LinkedList<ItemType>::removeByKey(const ItemType& key)
 	return true;
 }
 
-// Поиск максимального элемента
+// РџРѕРёСЃРє РјР°РєСЃРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 template<typename ItemType>
 ItemType LinkedList<ItemType>::findMax() const
 {
 	if (isEmpty()) {
-		throw std::runtime_error("Список пуст, невозможно найти максимальный элемент");
+		throw std::runtime_error("РЎРїРёСЃРѕРє РїСѓСЃС‚, РЅРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё РјР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚");
 	}
 
 	const ListNode* current = headPtr_;
@@ -373,12 +373,12 @@ ItemType LinkedList<ItemType>::findMax() const
 	return maxVal;
 }
 
-// Поиск минимального элемента
+// РџРѕРёСЃРє РјРёРЅРёРјР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
 template<typename ItemType>
 ItemType LinkedList<ItemType>::findMin() const
 {
 	if (isEmpty()) {
-		throw std::runtime_error("Список пуст, невозможно найти минимальный элемент");
+		throw std::runtime_error("РЎРїРёСЃРѕРє РїСѓСЃС‚, РЅРµРІРѕР·РјРѕР¶РЅРѕ РЅР°Р№С‚Рё РјРёРЅРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚");
 	}
 
 	const ListNode* current = headPtr_;
@@ -395,14 +395,14 @@ ItemType LinkedList<ItemType>::findMin() const
 	return minVal;
 }
 
-// Проверка на пустоту списка
+// РџСЂРѕРІРµСЂРєР° РЅР° РїСѓСЃС‚РѕС‚Сѓ СЃРїРёСЃРєР°
 template<typename ItemType>
 bool LinkedList<ItemType>::isEmpty() const
 {
 	return size_ == 0;
 }
 
-// Очистка списка
+// РћС‡РёСЃС‚РєР° СЃРїРёСЃРєР°
 template<typename ItemType>
 void LinkedList<ItemType>::clear()
 {
@@ -415,7 +415,7 @@ void LinkedList<ItemType>::clear()
 	size_ = 0;
 }
 
-// Оператор присваивания
+// РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
 template<typename ItemType>
 LinkedList<ItemType>& LinkedList<ItemType>::operator=(const LinkedList<ItemType>& other)
 {
@@ -427,12 +427,12 @@ LinkedList<ItemType>& LinkedList<ItemType>::operator=(const LinkedList<ItemType>
 }
 
 
-// Оператор доступа по индексу (неконстантная версия)
+// РћРїРµСЂР°С‚РѕСЂ РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ (РЅРµРєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
 template<typename ItemType>
 ItemType& LinkedList<ItemType>::operator[](uint32_t index)
 {
 	if (index >= size_) {
-		throw std::out_of_range("Индекс выходит за границы");
+		throw std::out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
 	}
 
 	ListNode* current = headPtr_;
@@ -443,12 +443,12 @@ ItemType& LinkedList<ItemType>::operator[](uint32_t index)
 	return current->getValue();
 }
 
-// Оператор доступа по индексу (константная версия)
+// РћРїРµСЂР°С‚РѕСЂ РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ (РєРѕРЅСЃС‚Р°РЅС‚РЅР°СЏ РІРµСЂСЃРёСЏ)
 template<typename ItemType>
 const ItemType& LinkedList<ItemType>::operator[](uint32_t index) const
 {
 	if (index >= size_) {
-		throw std::out_of_range("Индекс выходит за границы");
+		throw std::out_of_range("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹");
 	}
 
 	const ListNode* current = headPtr_;
@@ -460,7 +460,7 @@ const ItemType& LinkedList<ItemType>::operator[](uint32_t index) const
 }
 
 
-// Оператор сравнения на равенство
+// РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ РЅР° СЂР°РІРµРЅСЃС‚РІРѕ
 template<typename ItemType>
 bool LinkedList<ItemType>::operator==(const LinkedList<ItemType>& other) const
 {
@@ -482,14 +482,14 @@ bool LinkedList<ItemType>::operator==(const LinkedList<ItemType>& other) const
 	return true;
 }
 
-// Оператор сравнения на неравенство
+// РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ РЅР° РЅРµСЂР°РІРµРЅСЃС‚РІРѕ
 template<typename ItemType>
 bool LinkedList<ItemType>::operator!=(const LinkedList<ItemType>& other) const
 {
 	return !(*this == other);
 }
 
-// Оператор сложения (конкатенация)
+// РћРїРµСЂР°С‚РѕСЂ СЃР»РѕР¶РµРЅРёСЏ (РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ)
 template<typename ItemType>
 LinkedList<ItemType> LinkedList<ItemType>::operator+(const LinkedList<ItemType>& other) const
 {
@@ -498,7 +498,7 @@ LinkedList<ItemType> LinkedList<ItemType>::operator+(const LinkedList<ItemType>&
 	return result;
 }
 
-// Оператор сложения с присваиванием (конкатенация)
+// РћРїРµСЂР°С‚РѕСЂ СЃР»РѕР¶РµРЅРёСЏ СЃ РїСЂРёСЃРІР°РёРІР°РЅРёРµРј (РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ)
 template<typename ItemType>
 LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType>& other)
 {
@@ -510,7 +510,7 @@ LinkedList<ItemType>& LinkedList<ItemType>::operator+=(const LinkedList<ItemType
 	return *this;
 }
 
-// Реализация оператора вывода
+// Р РµР°Р»РёР·Р°С†РёСЏ РѕРїРµСЂР°С‚РѕСЂР° РІС‹РІРѕРґР°
 template<typename ItemType>
 std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 {
@@ -527,22 +527,22 @@ std::ostream& operator<<(std::ostream& os, const LinkedList<ItemType>& list)
 	return os;
 }
 
-// Реализация оператора ввода
+// Р РµР°Р»РёР·Р°С†РёСЏ РѕРїРµСЂР°С‚РѕСЂР° РІРІРѕРґР°
 template<typename ItemType>
 std::istream& operator>>(std::istream& is, LinkedList<ItemType>& list)
 {
-	// Очищаем существующий список
+	// РћС‡РёС‰Р°РµРј СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёР№ СЃРїРёСЃРѕРє
 	list.clear();
 
-	// Читаем количество элементов
+	// Р§РёС‚Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ
 	uint32_t count;
-	std::cout << "Введите количество элементов: ";
+	std::cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЌР»РµРјРµРЅС‚РѕРІ: ";
 	is >> count;
 
-	// Читаем каждый элемент
+	// Р§РёС‚Р°РµРј РєР°Р¶РґС‹Р№ СЌР»РµРјРµРЅС‚
 	for (uint32_t i = 0; i < count; ++i) {
 		ItemType value;
-		std::cout << "Элемент " << i + 1 << ": ";
+		std::cout << "Р­Р»РµРјРµРЅС‚ " << i + 1 << ": ";
 		is >> value;
 		list.addToTail(value);
 	}
@@ -556,22 +556,22 @@ class LinkedList<ItemType>::ListNode
 public:
 	ListNode(ItemType value = ItemType(), ListNode* next = nullptr, ListNode* prev = nullptr);
 
-	// Получение значения узла
+	// РџРѕР»СѓС‡РµРЅРёРµ Р·РЅР°С‡РµРЅРёСЏ СѓР·Р»Р°
 	ItemType& getValue();
 	const ItemType& getValue() const;
 
-	// Получение указателя на следующий узел
+	// РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СѓР·РµР»
 	ListNode* getLinkToNextNode();
 	const ListNode* getLinkToNextNode() const;
 
-	// Получение указателя на предыдущий узел
+	// РџРѕР»СѓС‡РµРЅРёРµ СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР»
 	ListNode* getLinkToPrevNode();
 	const ListNode* getLinkToPrevNode() const;
 
-	// Установка указателя на следующий узел
+	// РЈСЃС‚Р°РЅРѕРІРєР° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° СЃР»РµРґСѓСЋС‰РёР№ СѓР·РµР»
 	void setLinkToNextNode(ListNode* next);
 
-	// Установка указателя на предыдущий узел
+	// РЈСЃС‚Р°РЅРѕРІРєР° СѓРєР°Р·Р°С‚РµР»СЏ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СѓР·РµР»
 	void setLinkToPrevNode(ListNode* prev);
 
 private:

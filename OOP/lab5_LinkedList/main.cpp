@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include "LinkedList.h"
 
 using namespace std;
@@ -7,101 +7,101 @@ int main() {
     setlocale(LC_ALL, "Russian");
 
     try {
-        // Тест конструкторов
-        cout << "1. Тест конструкторов LinkedList" << endl;
+        // РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ
+        cout << "1. РўРµСЃС‚ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ LinkedList" << endl;
 
-        // Конструктор по умолчанию
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
         LinkedList<int> defaultList;
-        cout << "Конструктор по умолчанию (размер: " << defaultList.getSize() << ")" << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ (СЂР°Р·РјРµСЂ: " << defaultList.getSize() << ")" << endl;
 
-        // Конструктор из массива
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР°
         int arr[] = { 1, 2, 3, 4, 5 };
         LinkedList<int> arrayList(arr, 5);
-        cout << "Конструктор из массива {1,2,3,4,5}: " << arrayList << endl;
-        cout << "Размер: " << arrayList.getSize() << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёР· РјР°СЃСЃРёРІР° {1,2,3,4,5}: " << arrayList << endl;
+        cout << "Р Р°Р·РјРµСЂ: " << arrayList.getSize() << endl;
 
-        // Конструктор копирования
+        // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
         LinkedList<int> copiedList(arrayList);
-        cout << "Конструктор копирования: " << copiedList << endl;
-        cout << "Размер: " << copiedList.getSize() << endl << endl;
+        cout << "РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ: " << copiedList << endl;
+        cout << "Р Р°Р·РјРµСЂ: " << copiedList.getSize() << endl << endl;
 
-        // Тест добавления элементов
-        cout << "2. Тест добавления элементов" << endl;
+        // РўРµСЃС‚ РґРѕР±Р°РІР»РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ
+        cout << "2. РўРµСЃС‚ РґРѕР±Р°РІР»РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ" << endl;
         LinkedList<int> testAdd;
 
-        // Добавление в голову
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РІ РіРѕР»РѕРІСѓ
         testAdd.addToHead(10);
         testAdd.addToHead(20);
         testAdd.addToHead(30);
-        cout << "После addToHead(10,20,30): " << testAdd << endl;
+        cout << "РџРѕСЃР»Рµ addToHead(10,20,30): " << testAdd << endl;
 
-        // Добавление в хвост
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РІ С…РІРѕСЃС‚
         testAdd.addToTail(40);
         testAdd.addToTail(50);
-        cout << "После addToTail(40,50): " << testAdd << endl;
+        cout << "РџРѕСЃР»Рµ addToTail(40,50): " << testAdd << endl;
 
-        // Добавление на позицию
-        testAdd.addAtPosition(25, 2); // На позицию 2 (0-based)
-        cout << "После addAtPosition(25, 2): " << testAdd << endl;
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РЅР° РїРѕР·РёС†РёСЋ
+        testAdd.addAtPosition(25, 2); // РќР° РїРѕР·РёС†РёСЋ 2 (0-based)
+        cout << "РџРѕСЃР»Рµ addAtPosition(25, 2): " << testAdd << endl;
 
-        // Добавление после ключа
-        testAdd.addAfterKey(35, 30); // После первого вхождения 30
-        cout << "После addAfterKey(35, 30): " << testAdd << endl;
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РїРѕСЃР»Рµ РєР»СЋС‡Р°
+        testAdd.addAfterKey(35, 30); // РџРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ 30
+        cout << "РџРѕСЃР»Рµ addAfterKey(35, 30): " << testAdd << endl;
 
-        testAdd.addAfterKey(45, 40); // После первого вхождения 40
-        cout << "После addAfterKey(45, 40): " << testAdd << endl << endl;
+        testAdd.addAfterKey(45, 40); // РџРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ 40
+        cout << "РџРѕСЃР»Рµ addAfterKey(45, 40): " << testAdd << endl << endl;
 
-        // Тест удаления элементов
-        cout << "3. Тест удаления элементов" << endl;
+        // РўРµСЃС‚ СѓРґР°Р»РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ
+        cout << "3. РўРµСЃС‚ СѓРґР°Р»РµРЅРёСЏ СЌР»РµРјРµРЅС‚РѕРІ" << endl;
         LinkedList<int> testRemove = testAdd;
-        cout << "Исходный список: " << testRemove << endl;
+        cout << "РСЃС…РѕРґРЅС‹Р№ СЃРїРёСЃРѕРє: " << testRemove << endl;
 
-        // Удаление из головы
+        // РЈРґР°Р»РµРЅРёРµ РёР· РіРѕР»РѕРІС‹
         testRemove.removeFromHead();
-        cout << "После removeFromHead(): " << testRemove << endl;
+        cout << "РџРѕСЃР»Рµ removeFromHead(): " << testRemove << endl;
 
-        // Удаление из хвоста
+        // РЈРґР°Р»РµРЅРёРµ РёР· С…РІРѕСЃС‚Р°
         testRemove.removeFromTail();
-        cout << "После removeFromTail(): " << testRemove << endl;
+        cout << "РџРѕСЃР»Рµ removeFromTail(): " << testRemove << endl;
 
-        // Удаление по позиции
+        // РЈРґР°Р»РµРЅРёРµ РїРѕ РїРѕР·РёС†РёРё
         testRemove.removeAtPosition(2);
-        cout << "После removeAtPosition(2): " << testRemove << endl;
+        cout << "РџРѕСЃР»Рµ removeAtPosition(2): " << testRemove << endl;
 
-        // Удаление по ключу
+        // РЈРґР°Р»РµРЅРёРµ РїРѕ РєР»СЋС‡Сѓ
         testRemove.removeByKey(25);
-        cout << "После removeByKey(25): " << testRemove << endl << endl;
+        cout << "РџРѕСЃР»Рµ removeByKey(25): " << testRemove << endl << endl;
 
-        // Тест поиска
-        cout << "4. Тест поиска элементов" << endl;
+        // РўРµСЃС‚ РїРѕРёСЃРєР°
+        cout << "4. РўРµСЃС‚ РїРѕРёСЃРєР° СЌР»РµРјРµРЅС‚РѕРІ" << endl;
         LinkedList<int> testFind;
         for (int i = 1; i <= 10; i++) {
             testFind.addToTail(i * 10);
         }
-        cout << "Список: " << testFind << endl;
+        cout << "РЎРїРёСЃРѕРє: " << testFind << endl;
 
         auto found = testFind.find(50);
         if (found) {
-            cout << "Найден элемент 50" << endl;
+            cout << "РќР°Р№РґРµРЅ СЌР»РµРјРµРЅС‚ 50" << endl;
         }
         else {
-            cout << "Элемент 50 не найден" << endl;
+            cout << "Р­Р»РµРјРµРЅС‚ 50 РЅРµ РЅР°Р№РґРµРЅ" << endl;
         }
 
         found = testFind.find(99);
         if (found) {
-            cout << "Найден элемент 99" << endl;
+            cout << "РќР°Р№РґРµРЅ СЌР»РµРјРµРЅС‚ 99" << endl;
         }
         else {
-            cout << "Элемент 99 не найден" << endl;
+            cout << "Р­Р»РµРјРµРЅС‚ 99 РЅРµ РЅР°Р№РґРµРЅ" << endl;
         }
 
-        // Поиск min/max
-        cout << "Минимальный элемент: " << testFind.findMin() << endl;
-        cout << "Максимальный элемент: " << testFind.findMax() << endl << endl;
+        // РџРѕРёСЃРє min/max
+        cout << "РњРёРЅРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚: " << testFind.findMin() << endl;
+        cout << "РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚: " << testFind.findMax() << endl << endl;
 
-        // Тест обмена (swap)
-        cout << "5. Тест обмена списков (swap)" << endl;
+        // РўРµСЃС‚ РѕР±РјРµРЅР° (swap)
+        cout << "5. РўРµСЃС‚ РѕР±РјРµРЅР° СЃРїРёСЃРєРѕРІ (swap)" << endl;
         LinkedList<int> list1;
         list1.addToTail(1);
         list1.addToTail(2);
@@ -113,44 +113,44 @@ int main() {
         list2.addToTail(30);
         list2.addToTail(40);
 
-        cout << "До swap:" << endl;
-        cout << "list1: " << list1 << " (размер: " << list1.getSize() << ")" << endl;
-        cout << "list2: " << list2 << " (размер: " << list2.getSize() << ")" << endl;
+        cout << "Р”Рѕ swap:" << endl;
+        cout << "list1: " << list1 << " (СЂР°Р·РјРµСЂ: " << list1.getSize() << ")" << endl;
+        cout << "list2: " << list2 << " (СЂР°Р·РјРµСЂ: " << list2.getSize() << ")" << endl;
 
         list1.swap(list2);
 
-        cout << "После swap:" << endl;
-        cout << "list1: " << list1 << " (размер: " << list1.getSize() << ")" << endl;
-        cout << "list2: " << list2 << " (размер: " << list2.getSize() << ")" << endl << endl;
+        cout << "РџРѕСЃР»Рµ swap:" << endl;
+        cout << "list1: " << list1 << " (СЂР°Р·РјРµСЂ: " << list1.getSize() << ")" << endl;
+        cout << "list2: " << list2 << " (СЂР°Р·РјРµСЂ: " << list2.getSize() << ")" << endl << endl;
 
-        // Тест оператора []
-        cout << "6. Тест оператора []" << endl;
+        // РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂР° []
+        cout << "6. РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂР° []" << endl;
         LinkedList<int> testIndex;
         for (int i = 0; i < 5; i++) {
             testIndex.addToTail(i * 10);
         }
-        cout << "Список: " << testIndex << endl;
+        cout << "РЎРїРёСЃРѕРє: " << testIndex << endl;
 
         try {
             cout << "testIndex[0] = " << testIndex[0] << endl;
             cout << "testIndex[2] = " << testIndex[2] << endl;
             cout << "testIndex[4] = " << testIndex[4] << endl;
 
-            // Изменение через оператор []
+            // РР·РјРµРЅРµРЅРёРµ С‡РµСЂРµР· РѕРїРµСЂР°С‚РѕСЂ []
             testIndex[1] = 999;
             testIndex[3] = 888;
-            cout << "После изменения testIndex[1]=999, testIndex[3]=888: " << testIndex << endl;
+            cout << "РџРѕСЃР»Рµ РёР·РјРµРЅРµРЅРёСЏ testIndex[1]=999, testIndex[3]=888: " << testIndex << endl;
 
-            // Попытка доступа к несуществующему индексу
-            // testIndex[10] = 100; // Бросит исключение
+            // РџРѕРїС‹С‚РєР° РґРѕСЃС‚СѓРїР° Рє РЅРµСЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРјСѓ РёРЅРґРµРєСЃСѓ
+            // testIndex[10] = 100; // Р‘СЂРѕСЃРёС‚ РёСЃРєР»СЋС‡РµРЅРёРµ
         }
         catch (const out_of_range& e) {
-            cout << "Ошибка доступа по индексу: " << e.what() << endl;
+            cout << "РћС€РёР±РєР° РґРѕСЃС‚СѓРїР° РїРѕ РёРЅРґРµРєСЃСѓ: " << e.what() << endl;
         }
         cout << endl;
 
-        // Тест операторов сравнения
-        cout << "7. Тест операторов сравнения" << endl;
+        // РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂРѕРІ СЃСЂР°РІРЅРµРЅРёСЏ
+        cout << "7. РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂРѕРІ СЃСЂР°РІРЅРµРЅРёСЏ" << endl;
         LinkedList<int> listA;
         listA.addToTail(1);
         listA.addToTail(2);
@@ -173,8 +173,8 @@ int main() {
         cout << "listA == listC: " << (listA == listC) << endl;
         cout << "listA != listC: " << (listA != listC) << endl << endl;
 
-        // Тест конкатенации
-        cout << "8. Тест конкатенации списков" << endl;
+        // РўРµСЃС‚ РєРѕРЅРєР°С‚РµРЅР°С†РёРё
+        cout << "8. РўРµСЃС‚ РєРѕРЅРєР°С‚РµРЅР°С†РёРё СЃРїРёСЃРєРѕРІ" << endl;
         LinkedList<int> concat1;
         concat1.addToTail(1);
         concat1.addToTail(2);
@@ -194,8 +194,8 @@ int main() {
         concat1 += concat2;
         cout << "concat1 += concat2: " << concat1 << endl << endl;
 
-        // Тест оператора присваивания
-        cout << "9. Тест оператора присваивания" << endl;
+        // РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+        cout << "9. РўРµСЃС‚ РѕРїРµСЂР°С‚РѕСЂР° РїСЂРёСЃРІР°РёРІР°РЅРёСЏ" << endl;
         LinkedList<int> original;
         original.addToTail(100);
         original.addToTail(200);
@@ -208,63 +208,63 @@ int main() {
         cout << "assigned: " << assigned << endl;
         cout << "original == assigned: " << (original == assigned) << endl;
 
-        // Проверка глубокого копирования
+        // РџСЂРѕРІРµСЂРєР° РіР»СѓР±РѕРєРѕРіРѕ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
         assigned.addToTail(400);
-        cout << "После добавления 400 в assigned:" << endl;
+        cout << "РџРѕСЃР»Рµ РґРѕР±Р°РІР»РµРЅРёСЏ 400 РІ assigned:" << endl;
         cout << "original: " << original << endl;
         cout << "assigned: " << assigned << endl << endl;
 
-        // Тест ввода/вывода
-        cout << "10. Тест ввода/вывода" << endl;
+        // РўРµСЃС‚ РІРІРѕРґР°/РІС‹РІРѕРґР°
+        cout << "10. РўРµСЃС‚ РІРІРѕРґР°/РІС‹РІРѕРґР°" << endl;
         LinkedList<int> inputList;
-        cout << "Введите список: " << endl;
+        cout << "Р’РІРµРґРёС‚Рµ СЃРїРёСЃРѕРє: " << endl;
         cin >> inputList;
-        cout << "Введенный список: " << inputList << endl;
-        cout << "Размер: " << inputList.getSize() << endl << endl;
+        cout << "Р’РІРµРґРµРЅРЅС‹Р№ СЃРїРёСЃРѕРє: " << inputList << endl;
+        cout << "Р Р°Р·РјРµСЂ: " << inputList.getSize() << endl << endl;
 
-        // Тест очистки списка
-        cout << "11. Тест очистки списка" << endl;
+        // РўРµСЃС‚ РѕС‡РёСЃС‚РєРё СЃРїРёСЃРєР°
+        cout << "11. РўРµСЃС‚ РѕС‡РёСЃС‚РєРё СЃРїРёСЃРєР°" << endl;
         LinkedList<int> testClear;
         testClear.addToTail(1);
         testClear.addToTail(2);
         testClear.addToTail(3);
 
-        cout << "До clear(): " << testClear << endl;
+        cout << "Р”Рѕ clear(): " << testClear << endl;
         cout << "isEmpty(): " << testClear.isEmpty() << endl;
 
         testClear.clear();
 
-        cout << "После clear(): " << testClear << endl;
+        cout << "РџРѕСЃР»Рµ clear(): " << testClear << endl;
         cout << "isEmpty(): " << testClear.isEmpty() << endl;
-        cout << "Размер: " << testClear.getSize() << endl << endl;
+        cout << "Р Р°Р·РјРµСЂ: " << testClear.getSize() << endl << endl;
 
-        // Тест на пустой список
-        cout << "12. Тест работы с пустым списком" << endl;
+        // РўРµСЃС‚ РЅР° РїСѓСЃС‚РѕР№ СЃРїРёСЃРѕРє
+        cout << "12. РўРµСЃС‚ СЂР°Р±РѕС‚С‹ СЃ РїСѓСЃС‚С‹Рј СЃРїРёСЃРєРѕРј" << endl;
         LinkedList<int> emptyList;
 
         cout << "isEmpty(): " << emptyList.isEmpty() << endl;
-        cout << "removeFromHead(): " << (emptyList.removeFromHead() ? "успешно" : "не удалось") << endl;
-        cout << "removeFromTail(): " << (emptyList.removeFromTail() ? "успешно" : "не удалось") << endl;
+        cout << "removeFromHead(): " << (emptyList.removeFromHead() ? "СѓСЃРїРµС€РЅРѕ" : "РЅРµ СѓРґР°Р»РѕСЃСЊ") << endl;
+        cout << "removeFromTail(): " << (emptyList.removeFromTail() ? "СѓСЃРїРµС€РЅРѕ" : "РЅРµ СѓРґР°Р»РѕСЃСЊ") << endl;
 
         try {
             int min = emptyList.findMin();
-            cout << "Минимальный элемент: " << min << endl;
+            cout << "РњРёРЅРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚: " << min << endl;
         }
         catch (const runtime_error& e) {
-            cout << "Исключение при поиске min: " << e.what() << endl;
+            cout << "РСЃРєР»СЋС‡РµРЅРёРµ РїСЂРё РїРѕРёСЃРєРµ min: " << e.what() << endl;
         }
 
         try {
             int max = emptyList.findMax();
-            cout << "Максимальный элемент: " << max << endl;
+            cout << "РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ СЌР»РµРјРµРЅС‚: " << max << endl;
         }
         catch (const runtime_error& e) {
-            cout << "Исключение при поиске max: " << e.what() << endl;
+            cout << "РСЃРєР»СЋС‡РµРЅРёРµ РїСЂРё РїРѕРёСЃРєРµ max: " << e.what() << endl;
         }
 
     }
     catch (const exception& e) {
-        cout << "Ошибка в программе: " << e.what() << endl;
+        cout << "РћС€РёР±РєР° РІ РїСЂРѕРіСЂР°РјРјРµ: " << e.what() << endl;
         return 1;
     }
 
