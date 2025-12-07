@@ -13,7 +13,15 @@ private:
 	ListNode* headPtr_ = nullptr;
 	ListNode* tailPtr_ = nullptr;
 	uint32_t size_ = 0;
+
+	// Вспомогательные методы для сортировки
+	ListNode* getMiddle(ListNode* head);
+	ListNode* merge(ListNode* left, ListNode* right);
+	ListNode* mergeSort(ListNode* head);
 public:
+
+	class Iterator;
+	class ConstIterator;
 
 	//Конструкторы: по умолчанию, конструктор из обычного массивая, конструктор копирования)
 	LinkedList() = default;
@@ -29,21 +37,26 @@ public:
 	//Обмен содержимого с другим списком
 	void swap(LinkedList<ItemType>& other) noexcept;
 
-	//Поиск элемента по ключу (возвращает указатель на элемент или nullptr, если элемента нет в списке);
+	//Поиск элемента по ключу (возвращает указатель/итератор на элемент или nullptr, если элемента нет в списке);
 	ListNode* find(const ItemType& key);
 	const ListNode* find(const ItemType& key) const;
+	Iterator findIter(const ItemType& key);
+	ConstIterator findIter(const ItemType& key) const;
 
-	//добавление элемента (в голову, хвост, на позицию, после ключа (после первого вхождения),)
+	//добавление элемента (в голову, хвост, на позицию, после ключа (после первого вхождения), по итератору)
 	void addToHead(const ItemType& value);
 	void addToTail(const ItemType& value);
 	bool addAtPosition(const ItemType& value, uint32_t position);
 	bool addAfterKey(const ItemType& value, const ItemType& key);
+	Iterator add(Iterator position, const ItemType& value);
 
-	//удаление элемента (из головы, хвоста, позиции, по ключу (первое вхождение))
+	//удаление элемента (из головы, хвоста, позиции, по ключу (первое вхождение), по итератору)
 	bool removeFromHead();
 	bool removeFromTail();
 	bool removeAtPosition(uint32_t position);
 	bool removeByKey(const ItemType& key);
+	Iterator remove(Iterator position);
+	Iterator remove(Iterator first, Iterator last);
 
 	// -поиск максимального / минимального элемента;
 	ItemType findMax() const;
@@ -55,6 +68,17 @@ public:
 	//-очистка списка;
 	void clear();
 
+	// Сортировка списка
+	void sort();
+
+	// Получение итераторов
+	Iterator begin();
+	ConstIterator begin() const;
+	ConstIterator cbegin() const;
+	Iterator end();
+	ConstIterator end() const;
+	ConstIterator cend() const;
+
 	//Перегрузки
 	//- присваивание (=);
 	LinkedList<ItemType>& operator=(const LinkedList<ItemType>&);
@@ -62,6 +86,7 @@ public:
 	//-получение ссылки на ключ элемента([]);
 	ItemType& operator[](uint32_t index);
 	const ItemType& operator[](uint32_t index) const;
+	
 	//-сравнение(== , != );
 	bool operator==(const LinkedList<ItemType>& other) const;
 	bool operator!=(const LinkedList<ItemType>& other) const;
@@ -76,6 +101,410 @@ public:
 	template<typename ItemType>
 	friend std::istream& operator>>(std::istream&, LinkedList<ItemType>&);
 };
+
+// Класс обычного итератора
+template<typename ItemType>
+class LinkedList<ItemType>::Iterator
+{
+private:
+	ListNode* nodePtr_;
+
+public:
+	Iterator(ListNode* node = nullptr) : nodePtr_(node) {}
+	Iterator(const Iterator& other) : nodePtr_(other.nodePtr_) {}
+
+	// Операторы сравнения
+	bool operator==(const Iterator& other) const { return nodePtr_ == other.nodePtr_; }
+	bool operator!=(const Iterator& other) const { return nodePtr_ != other.nodePtr_; }
+
+	// Префиксный инкремент
+	Iterator& operator++()
+	{
+		if (nodePtr_)
+			nodePtr_ = nodePtr_->getLinkToNextNode();
+		return *this;
+	}
+
+	// Постфиксный инкремент
+	Iterator operator++(int)
+	{
+		Iterator temp = *this;
+		++(*this);
+		return temp;
+	}
+
+	// Префиксный декремент
+	Iterator& operator--()
+	{
+		if (nodePtr_)
+			nodePtr_ = nodePtr_->getLinkToPrevNode();
+		return *this;
+	}
+
+	// Постфиксный декремент
+	Iterator operator--(int)
+	{
+		Iterator temp = *this;
+		--(*this);
+		return temp;
+	}
+
+	// Оператор разыменования
+	ItemType& operator*() const
+	{
+		if (!nodePtr_)
+			throw std::runtime_error("Попытка разыменовать нулевой итератор");
+		return nodePtr_->getValue();
+	}
+
+	// Оператор доступа к членам
+	ItemType* operator->() const
+	{
+		if (!nodePtr_)
+			throw std::runtime_error("Попытка доступа через нулевой итератор");
+		return &(nodePtr_->getValue());
+	}
+
+	// Получение указателя на узел
+	ListNode* getNode() const { return nodePtr_; }
+
+	friend class LinkedList<ItemType>;
+};
+
+// Класс константного итератора
+template<typename ItemType>
+class LinkedList<ItemType>::ConstIterator
+{
+private:
+	const ListNode* nodePtr_;
+
+public:
+	ConstIterator(const ListNode* node = nullptr) : nodePtr_(node) {}
+	ConstIterator(const Iterator& other) : nodePtr_(other.nodePtr_) {}
+	ConstIterator(const ConstIterator& other) : nodePtr_(other.nodePtr_) {}
+
+	// Операторы сравнения
+	bool operator==(const ConstIterator& other) const { return nodePtr_ == other.nodePtr_; }
+	bool operator!=(const ConstIterator& other) const { return nodePtr_ != other.nodePtr_; }
+
+	// Префиксный инкремент
+	ConstIterator& operator++()
+	{
+		if (nodePtr_)
+			nodePtr_ = nodePtr_->getLinkToNextNode();
+		return *this;
+	}
+
+	// Постфиксный инкремент
+	ConstIterator operator++(int)
+	{
+		ConstIterator temp = *this;
+		++(*this);
+		return temp;
+	}
+
+	// Префиксный декремент
+	ConstIterator& operator--()
+	{
+		if (nodePtr_)
+			nodePtr_ = nodePtr_->getLinkToPrevNode();
+		return *this;
+	}
+
+	// Постфиксный декремент
+	ConstIterator operator--(int)
+	{
+		ConstIterator temp = *this;
+		--(*this);
+		return temp;
+	}
+
+	// Оператор разыменования
+	const ItemType& operator*() const
+	{
+		if (!nodePtr_)
+			throw std::runtime_error("Попытка разыменовать нулевой итератор");
+		return nodePtr_->getValue();
+	}
+
+	// Оператор доступа к членам
+	const ItemType* operator->() const
+	{
+		if (!nodePtr_)
+			throw std::runtime_error("Попытка доступа через нулевой итератор");
+		return &(nodePtr_->getValue());
+	}
+
+	// Получение указателя на узел
+	const ListNode* getNode() const { return nodePtr_; }
+
+	friend class LinkedList<ItemType>;
+};
+
+// Получение итераторов
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::begin()
+{
+	return Iterator(headPtr_);
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ConstIterator LinkedList<ItemType>::begin() const
+{
+	return ConstIterator(headPtr_);
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ConstIterator LinkedList<ItemType>::cbegin() const
+{
+	return ConstIterator(headPtr_);
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::end()
+{
+	return Iterator(nullptr);
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ConstIterator LinkedList<ItemType>::end() const
+{
+	return ConstIterator(nullptr);
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ConstIterator LinkedList<ItemType>::cend() const
+{
+	return ConstIterator(nullptr);
+}
+
+// Поиск элемента по ключу (возвращает итератор)
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::findIter(const ItemType& key)
+{
+	ListNode* current = headPtr_;
+	while (current != nullptr) {
+		if (current->getValue() == key) {
+			return Iterator(current);
+		}
+		current = current->getLinkToNextNode();
+	}
+	return end();
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ConstIterator LinkedList<ItemType>::findIter(const ItemType& key) const
+{
+	const ListNode* current = headPtr_;
+	while (current != nullptr) {
+		if (current->getValue() == key) {
+			return ConstIterator(current);
+		}
+		current = current->getLinkToNextNode();
+	}
+	return cend();
+}
+
+// Добавление элемента по итератору
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::add(Iterator position, const ItemType& value)
+{
+	if (position == begin()) {
+		addToHead(value);
+		return begin();
+	}
+
+	if (position == end()) {
+		addToTail(value);
+		return Iterator(tailPtr_);
+	}
+
+	ListNode* posNode = position.getNode();
+	if (!posNode) {
+		throw std::invalid_argument("Недопустимый итератор");
+	}
+
+	ListNode* newNode = new ListNode(value, posNode, posNode->getLinkToPrevNode());
+
+	if (posNode->getLinkToPrevNode()) {
+		posNode->getLinkToPrevNode()->setLinkToNextNode(newNode);
+	}
+	posNode->setLinkToPrevNode(newNode);
+
+	// Если вставляем перед головой
+	if (posNode == headPtr_) {
+		headPtr_ = newNode;
+	}
+
+	++size_;
+	return Iterator(newNode);
+}
+
+// Удаление элемента по итератору
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::remove(Iterator position)
+{
+	if (position == end()) {
+		return end();
+	}
+
+	ListNode* nodeToDelete = position.getNode();
+	if (!nodeToDelete) {
+		return end();
+	}
+
+	Iterator nextIter(nodeToDelete->getLinkToNextNode());
+
+	if (nodeToDelete == headPtr_) {
+		removeFromHead();
+		return nextIter;
+	}
+
+	if (nodeToDelete == tailPtr_) {
+		removeFromTail();
+		return end();
+	}
+
+	// Обновляем связи соседних узлов
+	if (nodeToDelete->getLinkToPrevNode()) {
+		nodeToDelete->getLinkToPrevNode()->setLinkToNextNode(nodeToDelete->getLinkToNextNode());
+	}
+	if (nodeToDelete->getLinkToNextNode()) {
+		nodeToDelete->getLinkToNextNode()->setLinkToPrevNode(nodeToDelete->getLinkToPrevNode());
+	}
+
+	delete nodeToDelete;
+	--size_;
+	return nextIter;
+}
+
+// Удаление диапазона элементов
+template<typename ItemType>
+typename LinkedList<ItemType>::Iterator LinkedList<ItemType>::remove(Iterator first, Iterator last)
+{
+	if (first == last) {
+		return last;
+	}
+
+	// Находим узел после последнего удаляемого
+	ListNode* afterLast = (last == end()) ? nullptr : last.getNode();
+
+	// Находим узел перед первым удаляемым
+	ListNode* beforeFirst = (first == begin()) ? nullptr : first.getNode()->getLinkToPrevNode();
+
+	// Удаляем все узлы в диапазоне
+	ListNode* current = first.getNode();
+	while (current != afterLast && current != nullptr) {
+		ListNode* next = current->getLinkToNextNode();
+
+		// Если удаляем голову
+		if (current == headPtr_) {
+			headPtr_ = next;
+		}
+		// Если удаляем хвост
+		if (current == tailPtr_) {
+			tailPtr_ = current->getLinkToPrevNode();
+		}
+
+		delete current;
+		--size_;
+		current = next;
+	}
+
+	// Обновляем связи
+	if (beforeFirst && afterLast) {
+		beforeFirst->setLinkToNextNode(afterLast);
+		afterLast->setLinkToPrevNode(beforeFirst);
+	}
+	else if (beforeFirst) {
+		beforeFirst->setLinkToNextNode(nullptr);
+		tailPtr_ = beforeFirst;
+	}
+	else if (afterLast) {
+		afterLast->setLinkToPrevNode(nullptr);
+		headPtr_ = afterLast;
+	}
+	else {
+		headPtr_ = tailPtr_ = nullptr;
+	}
+
+	return last;
+}
+
+// Сортировка списка (сортировка слиянием)
+template<typename ItemType>
+void LinkedList<ItemType>::sort()
+{
+	if (size_ <= 1) return;
+
+	headPtr_ = mergeSort(headPtr_);
+
+	// Обновляем tailPtr_ и связи между узлами
+	ListNode* current = headPtr_;
+	ListNode* prev = nullptr;
+	while (current) {
+		current->setLinkToPrevNode(prev);
+		prev = current;
+		current = current->getLinkToNextNode();
+	}
+	tailPtr_ = prev;
+}
+
+// Вспомогательные методы для сортировки слиянием
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::getMiddle(ListNode* head)
+{
+	if (!head) return nullptr;
+
+	ListNode* slow = head;
+	ListNode* fast = head->getLinkToNextNode();
+
+	while (fast && fast->getLinkToNextNode()) {
+		slow = slow->getLinkToNextNode();
+		fast = fast->getLinkToNextNode()->getLinkToNextNode();
+	}
+
+	return slow;
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::merge(ListNode* left, ListNode* right)
+{
+	if (!left) return right;
+	if (!right) return left;
+
+	ListNode* result = nullptr;
+
+	if (left->getValue() <= right->getValue()) {
+		result = left;
+		result->setLinkToNextNode(merge(left->getLinkToNextNode(), right));
+	}
+	else {
+		result = right;
+		result->setLinkToNextNode(merge(left, right->getLinkToNextNode()));
+	}
+
+	return result;
+}
+
+template<typename ItemType>
+typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::mergeSort(ListNode* head)
+{
+	if (!head || !head->getLinkToNextNode()) {
+		return head;
+	}
+
+	ListNode* middle = getMiddle(head);
+	ListNode* nextToMiddle = middle->getLinkToNextNode();
+
+	middle->setLinkToNextNode(nullptr);
+
+	ListNode* left = mergeSort(head);
+	ListNode* right = mergeSort(nextToMiddle);
+
+	return merge(left, right);
+}
 
 //LinkedList
 

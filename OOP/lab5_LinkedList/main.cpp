@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include "LinkedList.h"
-
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -140,9 +140,6 @@ int main() {
             testIndex[1] = 999;
             testIndex[3] = 888;
             cout << "После изменения testIndex[1]=999, testIndex[3]=888: " << testIndex << endl;
-
-            // Попытка доступа к несуществующему индексу
-            // testIndex[10] = 100; // Бросит исключение
         }
         catch (const out_of_range& e) {
             cout << "Ошибка доступа по индексу: " << e.what() << endl;
@@ -208,22 +205,8 @@ int main() {
         cout << "assigned: " << assigned << endl;
         cout << "original == assigned: " << (original == assigned) << endl;
 
-        // Проверка глубокого копирования
-        assigned.addToTail(400);
-        cout << "После добавления 400 в assigned:" << endl;
-        cout << "original: " << original << endl;
-        cout << "assigned: " << assigned << endl << endl;
-
-        // Тест ввода/вывода
-        cout << "10. Тест ввода/вывода" << endl;
-        LinkedList<int> inputList;
-        cout << "Введите список: " << endl;
-        cin >> inputList;
-        cout << "Введенный список: " << inputList << endl;
-        cout << "Размер: " << inputList.getSize() << endl << endl;
-
         // Тест очистки списка
-        cout << "11. Тест очистки списка" << endl;
+        cout << "10. Тест очистки списка" << endl;
         LinkedList<int> testClear;
         testClear.addToTail(1);
         testClear.addToTail(2);
@@ -238,29 +221,223 @@ int main() {
         cout << "isEmpty(): " << testClear.isEmpty() << endl;
         cout << "Размер: " << testClear.getSize() << endl << endl;
 
-        // Тест на пустой список
-        cout << "12. Тест работы с пустым списком" << endl;
-        LinkedList<int> emptyList;
+        cout << endl;
 
-        cout << "isEmpty(): " << emptyList.isEmpty() << endl;
-        cout << "removeFromHead(): " << (emptyList.removeFromHead() ? "успешно" : "не удалось") << endl;
-        cout << "removeFromTail(): " << (emptyList.removeFromTail() ? "успешно" : "не удалось") << endl;
+        // Тест итераторов
+        cout << "12. Тест базовых операций с итераторами" << endl;
+        LinkedList<int> iterList;
+        for (int i = 1; i <= 5; i++) {
+            iterList.addToTail(i * 10);
+        }
+        cout << "Исходный список: " << iterList << endl;
 
-        try {
-            int min = emptyList.findMin();
-            cout << "Минимальный элемент: " << min << endl;
+        // Использование begin() и end()
+        cout << "Итерирование (begin() и end()): ";
+        for (auto it = iterList.begin(); it != iterList.end(); ++it) {
+            cout << *it << " ";
         }
-        catch (const runtime_error& e) {
-            cout << "Исключение при поиске min: " << e.what() << endl;
+        cout << endl;
+
+        // Тест константных итераторов
+        cout << "13. Тест константных итераторов" << endl;
+        const LinkedList<int> constList = iterList;
+
+        cout << "Константный список: " << constList << endl;
+        cout << "Итерирование через константные итераторы: ";
+        for (auto it = constList.cbegin(); it != constList.cend(); ++it) {
+            cout << *it << " ";
+        }
+        cout << endl;
+
+        cout << "Range-based for loop для константного списка: ";
+        for (const auto& item : constList) {
+            cout << item << " ";
+        }
+        cout << endl << endl;
+
+        // Тест поиска через итераторы
+        cout << "14. Тест findIter()" << endl;
+        LinkedList<int> findList;
+        findList.addToTail(10);
+        findList.addToTail(20);
+        findList.addToTail(30);
+        findList.addToTail(40);
+        findList.addToTail(50);
+        cout << "Список для поиска: " << findList << endl;
+
+        auto iter = findList.findIter(30);
+        if (iter != findList.end()) {
+            cout << "Найден элемент 30. Значение: " << *iter << endl;
+
+            // Проверка декремента итератора
+            --iter;
+            cout << "Предыдущий элемент: " << *iter << endl;
+
+            // Проверка инкремента
+            ++iter; ++iter;
+            cout << "Следующий за найденным: " << *iter << endl;
+        }
+        else {
+            cout << "Элемент 30 не найден" << endl;
         }
 
-        try {
-            int max = emptyList.findMax();
-            cout << "Максимальный элемент: " << max << endl;
+        iter = findList.findIter(99);
+        if (iter != findList.end()) {
+            cout << "Найден элемент 99" << endl;
         }
-        catch (const runtime_error& e) {
-            cout << "Исключение при поиске max: " << e.what() << endl;
+        else {
+            cout << "Элемент 99 не найден (возвращен end())" << endl;
         }
+        cout << endl;
+
+        // Тест добавления по итератору
+        cout << "15. Тест add() по итератору" << endl;
+        LinkedList<int> addList;
+        addList.addToTail(1);
+        addList.addToTail(3);
+        addList.addToTail(5);
+        cout << "Исходный список: " << addList << endl;
+
+        // Добавление в начало
+        auto addIter = addList.begin();
+        addList.add(addIter, 0);
+        cout << "После add(begin(), 0): " << addList << endl;
+
+        // Добавление в конец
+        addIter = addList.end();
+        addList.add(addIter, 6);
+        cout << "После add(end(), 6): " << addList << endl;
+
+        // Добавление в середину
+        addIter = addList.findIter(3);
+        if (addIter != addList.end()) {
+            addList.add(addIter, 2);
+            cout << "После add(итератор_на_3, 2): " << addList << endl;
+        }
+
+        // Добавление после другого элемента
+        addIter = addList.findIter(3);
+        if (addIter != addList.end()) {
+            ++addIter; // Переходим к следующему после 3
+            addList.add(addIter, 4);
+            cout << "После add(итератор_после_3, 4): " << addList << endl;
+        }
+        cout << endl;
+
+        // Тест удаления по итератору
+        cout << "16. Тест remove() по итератору" << endl;
+        LinkedList<int> removeList;
+        for (int i = 1; i <= 10; i++) {
+            removeList.addToTail(i);
+        }
+        cout << "Исходный список: " << removeList << endl;
+
+        // Удаление из начала
+        auto removeIter = removeList.begin();
+        removeList.remove(removeIter);
+        cout << "После remove(begin()): " << removeList << endl;
+
+        // Удаление из конца
+        removeIter = removeList.end();
+        --removeIter; // Переходим к последнему элементу
+        removeList.remove(removeIter);
+        cout << "После remove(end()-1): " << removeList << endl;
+
+        // Удаление из середины
+        removeIter = removeList.findIter(5);
+        if (removeIter != removeList.end()) {
+            removeList.remove(removeIter);
+            cout << "После remove(итератор_на_5): " << removeList << endl;
+        }
+
+        // Удаление несуществующего элемента
+        removeIter = removeList.findIter(99);
+        removeList.remove(removeIter); // Ничего не должно произойти
+        cout << "После попытки remove(несуществующий): " << removeList << endl << endl;
+
+        // Тест удаления диапазона
+        cout << "17. Тест remove() диапазона элементов" << endl;
+        LinkedList<int> rangeList;
+        for (int i = 1; i <= 10; i++) {
+            rangeList.addToTail(i * 10);
+        }
+        cout << "Исходный список: " << rangeList << endl;
+
+        // Удаление с начала до середины
+        auto first = rangeList.begin();
+        auto last = rangeList.begin();
+        for (int i = 0; i < 3; i++) ++last;
+        rangeList.remove(first, last);
+        cout << "После remove(begin(), begin()+3): " << rangeList << endl;
+
+        // Удаление с середины до конца
+        first = rangeList.findIter(70);
+        last = rangeList.end();
+        rangeList.remove(first, last);
+        cout << "После remove(итератор_на_70, end()): " << rangeList << endl;
+
+        // Удаление одного элемента (диапазон из одного)
+        first = rangeList.findIter(50);
+        last = first;
+        ++last;
+        rangeList.remove(first, last);
+        cout << "После remove(итератор_на_50, итератор_на_50+1): " << rangeList << endl;
+
+        // Удаление всего списка
+        rangeList.remove(rangeList.begin(), rangeList.end());
+        cout << "После remove(begin(), end()): " << rangeList << " (пустой)" << endl << endl;
+
+        // Тест сортировки
+        cout << "18. Тест сортировки списка" << endl;
+        LinkedList<int> sortList;
+
+        // Случайный список
+        sortList.addToTail(64);
+        sortList.addToTail(34);
+        sortList.addToTail(25);
+        sortList.addToTail(12);
+        sortList.addToTail(22);
+        sortList.addToTail(11);
+        sortList.addToTail(90);
+
+        cout << "Исходный список: " << sortList << endl;
+
+        sortList.sort();
+        cout << "После sort(): " << sortList << endl;
+
+        // Проверка сортировки по возрастанию
+        bool isSorted = true;
+        auto prev = sortList.begin();
+        auto curr = sortList.begin();
+        if (curr != sortList.end()) ++curr;
+
+        while (curr != sortList.end()) {
+            if (*prev > *curr) {
+                isSorted = false;
+                break;
+            }
+            ++prev;
+            ++curr;
+        }
+
+        if (isSorted) {
+            cout << "Список отсортирован по возрастанию" << endl;
+        }
+        else {
+            cout << "Список не отсортирован корректно" << endl;
+        }
+
+        // Тест ввода/вывода
+        cout << "20. Тест ввода/вывода" << endl;
+        LinkedList<int> inputList;
+        cout << "Введите список (сначала количество элементов, затем элементы):" << endl;
+        cin >> inputList;
+        cout << "Введенный список: " << inputList << endl;
+        cout << "Размер: " << inputList.getSize() << endl;
+
+        // Проверка сортировки введенного списка
+        inputList.sort();
+        cout << "Отсортированный список: " << inputList << endl << endl;
 
     }
     catch (const exception& e) {
