@@ -75,16 +75,16 @@ class LinkedList<ItemType>::ListNode
 public:
     ListNode(ItemType = ItemType(), ListNode* = nullptr, ListNode* = nullptr);
 
-    ItemType& getValue(); //Получение значения
-    const ItemType& getValue() const; //Получение значения (конст)
+    ItemType& getValue(); //Получение значения узла
+    const ItemType& getValue() const; //Получение значения узла (конст)
 
-    ListNode* getLinkToNextNode(); //Указатель на следующий элемент
-    const ListNode* getLinkToNextNode() const; //Указатель на следующий элемент (конст) 
-    ListNode* getLinkToPrevNode(); //Указатель на предыдущий элемент
-    const ListNode* getLinkToPrevNode() const; //Указатель на предыдущий элемент (конст)
+    ListNode* getLinkToNextNode(); //Указатель на следующий узел
+    const ListNode* getLinkToNextNode() const; //Указатель на следующий узел (конст) 
+    ListNode* getLinkToPrevNode(); //Указатель на предыдущий узел
+    const ListNode* getLinkToPrevNode() const; //Указатель на предыдущий узел (конст)
 
-    void setLinkToNextNode(ListNode*);
-    void setLinkToPrevNode(ListNode*);
+    void setLinkToNextNode(ListNode*); // Установка указателя на следующий узел
+    void setLinkToPrevNode(ListNode*); // Установка указатедя на предыдущий узел
 
 private:
     ItemType value_;
@@ -217,6 +217,7 @@ typename LinkedList<ItemType>::iterator LinkedList<ItemType>::findIter(const Ite
     }
     return end();
 }
+
 //Константный поиск по ключу через итераторы
 template<typename ItemType>
 typename LinkedList<ItemType>::const_iterator LinkedList<ItemType>::findIter(const ItemType& key) const
@@ -775,35 +776,35 @@ LinkedList<ItemType>::ListNode::ListNode(ItemType value, ListNode* linkToNextNod
     value_(value), linkToNextNode_(linkToNextNode), linkToPrevNode_(linkToPrevNode) {
 }
 
-//Получение значения
+//Получение значения узла
 template<typename ItemType>
 ItemType& LinkedList<ItemType>::ListNode::getValue() { return value_; }
 
-//Получение значения (конст)
+//Получение значения узла (конст)
 template<typename ItemType>
 const ItemType& LinkedList<ItemType>::ListNode::getValue() const { return value_; }
 
-//Ссылка на следующий элемент
+//Ссылка на следующий узел
 template<typename ItemType>
 typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToNextNode() { return linkToNextNode_; }
 
-//Ссылка на следующий элемент (конст)
+//Ссылка на следующий узел (конст)
 template<typename ItemType>
 const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToNextNode() const { return linkToNextNode_; }
 
-//Ссылка на предыдущий элемент
+//Ссылка на предыдущий узел
 template<typename ItemType>
 typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToPrevNode() { return linkToPrevNode_; }
 
-//Ссылка на предыдущий элемент (конст)
+//Ссылка на предыдущий узел (конст)
 template<typename ItemType>
 const typename LinkedList<ItemType>::ListNode* LinkedList<ItemType>::ListNode::getLinkToPrevNode() const { return linkToPrevNode_; }
 
-//Установить указатель на следующий элемент
+//Установить указатель на следующий узел
 template<typename ItemType>
 void LinkedList<ItemType>::ListNode::setLinkToNextNode(ListNode* newLink) { linkToNextNode_ = newLink; }
 
-//Установить указатель на предыдущий элемент
+//Установить указатель на предыдущий узел
 template<typename ItemType>
 void LinkedList<ItemType>::ListNode::setLinkToPrevNode(ListNode* newLink) { linkToPrevNode_ = newLink; }
 
@@ -896,6 +897,7 @@ typename LinkedList<ItemType>::const_iterator LinkedList<ItemType>::const_iterat
     return oldIterator;
 }
 
+//Разыменование (конст)
 template<typename ItemType>
 const ItemType& LinkedList<ItemType>::const_iterator::operator*()
 {
@@ -911,7 +913,6 @@ std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
 {
     os << "[";
 
-    // Используем публичные методы для доступа к данным
     for (typename LinkedList<T>::const_iterator it = list.begin(); it != list.end(); ++it) {
         os << *it;
         typename LinkedList<T>::const_iterator next = it;
