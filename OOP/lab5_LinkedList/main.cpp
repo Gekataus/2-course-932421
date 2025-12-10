@@ -44,10 +44,26 @@ int main() {
         // Добавление на позицию
         list4.addAtPosition(25, 2);
         cout << "После addAtPosition(25, 2): " << list4 << endl;
+        list4.addAtPosition(30, 0);
+        cout << "После addAtPosition(30, 0): " << list4 << endl;
+        list4.addAtPosition(15, list4.getSize());
+        cout << "После addAtPosition(15, list4.getSize()): " << list4 << endl;
+        list4.addAtPosition(55, list4.getSize() + 1);
+        cout << "После addAtPosition(55, list4.getSize() + 1): " << list4 << endl;
+        list4.addAtPosition(9, -2);
+        cout << "После addAtPosition(9, -2): " << list4 << endl << endl;
+
+
 
         // Добавление после ключа
-        list4.addAfterKey(35, 30);
-        cout << "После addAfterKey(35, 30): " << list4 << endl << endl;
+        int arr2[] = { 5, 3, 8, 1, 4 };
+        LinkedList<int> listT(arr, 5);
+        listT.addAfterKey(35, 30);
+        cout << "После addAfterKey(35, 30): " << listT << endl;
+        listT.addAfterKey(35, listT.getSize());
+        cout << "После addAfterKey(35, listT.getSize()): " << listT << endl;
+        listT.addAfterKey(35, -3);
+        cout << "После addAfterKey(35, -3): " << listT << endl << endl;
 
 
         cout << "3. Тест удаления элементов:" << endl << endl;
@@ -67,9 +83,27 @@ int main() {
         list5.removeAtPosition(2);
         cout << "После removeAtPosition(2): " << list5 << endl;
 
+        list5.removeAtPosition(list5.getSize());
+        cout << "После removeAtPosition(list5.getSize()): " << list5 << endl;
+
+        list5.removeAtPosition(0);
+        cout << "После removeAtPosition(0): " << list5 << endl;
+
+        list5.removeAtPosition(list5.getSize() - 1);
+        cout << "После removeAtPosition(list5.getSize() - 1): " << list5 << endl;
+
+        list5.removeAtPosition(-5);
+        cout << "После removeAtPosition(-5): " << list5 << endl << endl;
+
         // Удаление по ключу
-        list5.removeByKey(25);
-        cout << "После removeByKey(25): " << list5 << endl << endl;
+        list5.removeByKey(10);
+        cout << "После removeByKey(10): " << list5 << endl;
+        list5.removeByKey(100);
+        cout << "После removeByKey(100): " << list5 << endl;
+        list5.removeByKey(20);
+        cout << "После removeByKey(20): " << list5 << endl;
+        list5.removeByKey(40);
+        cout << "После removeByKey(40): " << list5 << endl << endl;
 
 
         cout << "4. Тест поиска:" << endl << endl;
