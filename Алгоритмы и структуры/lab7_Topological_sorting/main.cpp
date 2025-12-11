@@ -9,143 +9,135 @@
 using namespace std;
 using namespace std::chrono;
 
-class TopologicalSorter {
-private:
-    BooleanMatrix matrix_;
-    vector<int> order_; // Здесь храним правильный порядок вершин
+// Функция для поиска столбцов без единиц (вершин без входящих рёбер)
+BooleanVector findEmptyColumns(const BooleanMatrix& matrix, const BooleanVector& unprocessedVertices) {
+    int n = matrix.getRows();
+    BooleanVector result(n, false);
 
-public:
-    TopologicalSorter(const BooleanMatrix& adjacencyMatrix) : matrix_(adjacencyMatrix) {
-        if (matrix_.getRows() != matrix_.getCols()) {
-            throw invalid_argument("Матрица смежности должна быть квадратной");
-        }
-    }
+    for (int col = 0; col < n; ++col) {
+        if (!unprocessedVertices[col]) continue; // Если вершина уже обработана - пропускаем
 
-    // Топологическая сортировка - возвращает вектор с порядком вершин
-    vector<int> topologicalSort() {
-        order_.clear();
-        int n = matrix_.getRows();
-
-        BooleanMatrix workMatrix = matrix_;
-        BooleanVector unprocessedVertices(n, true);
-
-        while (unprocessedVertices.getWeight() > 0) {
-            BooleanVector columnsWithoutOnes = findEmptyColumns(workMatrix, unprocessedVertices);
-
-            if (columnsWithoutOnes.getWeight() == 0) {
-                throw runtime_error("Граф содержит цикл, топологическая сортировка невозможна");
-            }
-
-            // Добавляем найденные вершины в правильном порядке
-            for (int i = 0; i < n; ++i) {
-                if (columnsWithoutOnes[i]) {
-                    order_.push_back(i + 1); // Сохраняем номер вершины (начиная с 1)
-                    unprocessedVertices.setBit(i, false);
-                }
-            }
-
-            clearRows(workMatrix, columnsWithoutOnes);
-        }
-
-        return order_;
-    }
-
-private:
-    BooleanVector findEmptyColumns(const BooleanMatrix& matrix, const BooleanVector& unprocessedVertices) {
-        int n = matrix.getRows();
-        BooleanVector result(n, false);
-
-        for (int col = 0; col < n; ++col) {
-            if (!unprocessedVertices[col]) continue; // Если вершина уже обработана - пропускаем
-
-            bool hasOnes = false;
-            for (int row = 0; row < n; ++row) {
-                if (matrix[row][col]) {
-                    hasOnes = true;
-                    break;
-                }
-            }
-
-            if (!hasOnes) {
-                result.setBit(col, true); // Не нашли единиц в столбце
+        bool hasOnes = false;
+        for (int row = 0; row < n; ++row) {
+            if (matrix[row][col]) {
+                hasOnes = true;
+                break;
             }
         }
 
-        return result;
+        if (!hasOnes) {
+            result.setBit(col, true); // Не нашли единиц в столбце
+        }
     }
 
-    void clearRows(BooleanMatrix& matrix, const BooleanVector& rowsToClear) {
-        int n = matrix.getRows();
+    return result;
+}
 
+// Функция для очистки строк (удаление исходящих рёбер обработанных вершин)
+void clearRows(BooleanMatrix& matrix, const BooleanVector& rowsToClear) {
+    int n = matrix.getRows();
+
+    for (int i = 0; i < n; ++i) {
+        if (rowsToClear[i]) {
+            for (int j = 0; j < n; ++j) {
+                matrix.setBit(i, j, false);
+            }
+        }
+    }
+}
+
+// Топологическая сортировка
+vector<int> topologicalSort(const BooleanMatrix& Matrix) {
+    if (Matrix.getRows() != Matrix.getCols()) {
+        throw invalid_argument("Матрица смежности должна быть квадратной");
+    }
+
+    vector<int> order;
+    int n = Matrix.getRows();
+
+    BooleanMatrix workMatrix = Matrix;
+    BooleanVector unprocessedVertices(n, true);
+
+    while (unprocessedVertices.getWeight() > 0) {
+        BooleanVector columnsWithoutOnes = findEmptyColumns(workMatrix, unprocessedVertices);
+
+        if (columnsWithoutOnes.getWeight() == 0) {
+            throw runtime_error("Граф содержит цикл, топологическая сортировка невозможна");
+        }
+
+        // Добавляем найденные вершины в правильном порядке
         for (int i = 0; i < n; ++i) {
-            if (rowsToClear[i]) {
-                for (int j = 0; j < n; ++j) {
-                    matrix.setBit(i, j, false);
-                }
+            if (columnsWithoutOnes[i]) {
+                order.push_back(i + 1); // Сохраняем номер вершины (начиная с 1)
+                unprocessedVertices.setBit(i, false);
             }
         }
+
+        clearRows(workMatrix, columnsWithoutOnes);
     }
+
+    return order;
+}
+
+// Структура для хранения дуги графа
+struct Edge {
+    int from;
+    int to;
 };
 
 // Построение матрицы из файла
-BooleanMatrix buildAdjacencyMatrixFromFile(const string& filename) {
+BooleanMatrix buildMatrixFromFile(const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) {
         throw runtime_error("Не удалось открыть файл: " + filename);
     }
 
-    // Сначала находим максимальный номер вершины
+    // Вектор для хранения рёбер
+    vector<Edge> edges;
     int maxVertex = 0;
     int u, v;
 
+    // Читаем все рёбра из файла
     while (file >> u >> v) {
         if (u == 0 && v == 0) {
             break;
         }
+        if (u < 0 || v < 0) {
+            file.close();
+            throw runtime_error("Номера вершин должны быть положительными");
+        }
 
+        edges.push_back({ u, v });
         if (u > maxVertex) maxVertex = u;
         if (v > maxVertex) maxVertex = v;
     }
 
+    file.close();
+
     if (maxVertex == 0) {
-        file.close();
-        throw runtime_error("Файл не содержит данных или содержит только нули");
+        throw runtime_error("Ошибка считывания данных из файла");
     }
 
     // Создаем матрицу и заполняем ее нулями
-    BooleanMatrix adjacencyMatrix(maxVertex, maxVertex, false);
+    BooleanMatrix Matrix(maxVertex, maxVertex, false);
 
-    // Возвращаемся в начало файла
-    file.clear();
-    file.seekg(0);
-
-    while (file >> u >> v) {
-        if (u == 0 && v == 0) {
-            break;
-        }
-
-        int from = u - 1;
-        int to = v - 1;
-
-        if (from >= 0 && from < maxVertex && to >= 0 && to < maxVertex) {
-            adjacencyMatrix.setBit(from, to, true);
-        }
+    // Заполняем матрицу смежности
+    for (const auto& edge : edges) {
+        int from = edge.from - 1;
+        int to = edge.to - 1;
+        Matrix.setBit(from, to, true);
     }
 
-    file.close();
-    return adjacencyMatrix;
+    return Matrix;
 }
 
 // Функция для ввода графа с клавиатуры
 BooleanMatrix inputGraph() {
     cout << "Введите рёбра графа (from to). Для завершения введите 0 0:" << endl;
 
-    // Сначала собираем информацию о максимальной вершине
-    int maxVertex = 0;
-
-    // Временное хранилище для рёбер
-    struct Edge { int from, to; };
+    // Вектор для хранения рёбер
     vector<Edge> edges;
+    int maxVertex = 0;
 
     while (true) {
         int u, v;
@@ -171,19 +163,19 @@ BooleanMatrix inputGraph() {
     }
 
     // Создаем матрицу смежности
-    BooleanMatrix adjacencyMatrix(maxVertex, maxVertex, false);
+    BooleanMatrix Matrix(maxVertex, maxVertex, false);
 
     for (const auto& edge : edges) {
         int from = edge.from - 1;
         int to = edge.to - 1;
 
         if (from >= 0 && from < maxVertex && to >= 0 && to < maxVertex) {
-            adjacencyMatrix.setBit(from, to, true);
+            Matrix.setBit(from, to, true);
         }
     }
 
     cout << "Граф создан. Количество вершин: " << maxVertex << endl;
-    return adjacencyMatrix;
+    return Matrix;
 }
 
 // Вывод результата
@@ -200,7 +192,7 @@ int main() {
     while (true) {
         cout << "\nТопологическая сортировка графов.\n" << endl;
         cout << "1. Ввести граф с клавиатуры" << endl;
-        cout << "2. Загрузить граф из файла (graph1.txt, graph2.txt или graph3.txt)" << endl;
+        cout << "2. Загрузить граф из файла" << endl;
         cout << "0. Выход" << endl;
         cout << "Выберите: ";
 
@@ -213,16 +205,21 @@ int main() {
         }
 
         try {
-            BooleanMatrix adjacencyMatrix;
+            BooleanMatrix Matrix;
             if (choice == 1) {
-                adjacencyMatrix = inputGraph();
+                Matrix = inputGraph();
             }
             else if (choice == 2) {
-                string filename;
-                cout << "Введите имя файла: ";
+                vector<string> filenames = { "graph1.txt", "graph2.txt", "graph3.txt", "graph4.txt" };
+                int filename;
+                cout << "С какого файла взять графы?: " << endl;
+                cout << "1. graph1.txt" << endl;
+                cout << "2. graph2.txt" << endl;
+                cout << "3. graph3.txt (Граф из презентации)" << endl;
+                cout << "4. graph4.txt (Граф с циклом)" << endl;
                 cin >> filename;
-                adjacencyMatrix = buildAdjacencyMatrixFromFile(filename);
-                cout << "Граф загружен из файла." << endl;
+                Matrix = buildMatrixFromFile(filenames[filename - 1]);
+                cout << "Граф загружен из файла " << filenames[filename - 1] << endl;
             }
             else {
                 cout << "Неверный выбор!" << endl;
@@ -230,14 +227,14 @@ int main() {
             }
 
             cout << "Матрица смежности:" << endl;
-            cout << adjacencyMatrix;
+            cout << Matrix;
 
             cout << "\nСортировка: " << endl;
 
             auto start = high_resolution_clock::now();
 
-            TopologicalSorter sorter(adjacencyMatrix);
-            vector<int> result = sorter.topologicalSort();
+            // Вызываем функцию топологической сортировки
+            vector<int> result = topologicalSort(Matrix);
 
             auto end = high_resolution_clock::now();
             auto duration = duration_cast<microseconds>(end - start);
