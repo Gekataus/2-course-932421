@@ -218,6 +218,11 @@ int main() {
                 cout << "3. graph3.txt (Граф из презентации)" << endl;
                 cout << "4. graph4.txt (Граф с циклом)" << endl;
                 cin >> filename;
+                if (filename <= 0 || filename >= 4)
+                {
+                    cout << "Неверный выбор!";
+                    continue;
+                }
                 Matrix = buildMatrixFromFile(filenames[filename - 1]);
                 cout << "Граф загружен из файла " << filenames[filename - 1] << endl;
             }
