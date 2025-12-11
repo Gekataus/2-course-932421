@@ -3,10 +3,9 @@
 
 CharSet::CharSet() : BooleanVector(256, false) {}
 
+// Конструктор из массива
 CharSet::CharSet(const char* str) : BooleanVector(256, false)
 {
-    if (str == nullptr) return;
-
     size_t strLength = strlen(str);
 
     for (size_t idx = 0; idx < strLength; ++idx)
@@ -15,18 +14,22 @@ CharSet::CharSet(const char* str) : BooleanVector(256, false)
     }
 }
 
+// Конструктор копирования
 CharSet::CharSet(const CharSet& other) : BooleanVector(other) {}
 
+//проверка наличия элемента в множестве
 bool CharSet::contains(const char element) const
 {
     return (*this)[element];
 }
 
+//Получение мощности множества
 uint32 CharSet::getCardinality() const
 {
     return getWeight();
 }
 
+// Присваивание
 CharSet& CharSet::operator=(const CharSet& other)
 {
     if (this != &other)
@@ -36,6 +39,7 @@ CharSet& CharSet::operator=(const CharSet& other)
     return *this;
 }
 
+// Объединение
 CharSet CharSet::operator|(const CharSet& other) const
 {
     CharSet result;
@@ -48,6 +52,7 @@ CharSet CharSet::operator|(const CharSet& other) const
     return result;
 }
 
+// Пересечение
 CharSet CharSet::operator&(const CharSet& other) const
 {
     CharSet result;
@@ -60,6 +65,7 @@ CharSet CharSet::operator&(const CharSet& other) const
     return result;
 }
 
+// Разность
 CharSet CharSet::operator/(const CharSet& other) const
 {
     CharSet result;
@@ -72,6 +78,7 @@ CharSet CharSet::operator/(const CharSet& other) const
     return result;
 }
 
+// Дополнение
 CharSet CharSet::operator~() const
 {
     CharSet result;
@@ -84,6 +91,7 @@ CharSet CharSet::operator~() const
     return result;
 }
 
+// Добавить элемент в множество
 CharSet CharSet::operator+(const char element) const
 {
     CharSet result(*this);
@@ -92,6 +100,7 @@ CharSet CharSet::operator+(const char element) const
     return result;
 }
 
+// Удалить элемент из множества
 CharSet CharSet::operator-(const char element) const
 {
     CharSet result(*this);
@@ -100,6 +109,7 @@ CharSet CharSet::operator-(const char element) const
     return result;
 }
 
+// Сравнение на равенство
 bool CharSet::operator==(const CharSet& other) const
 {
     for (uint32 idx = 0; idx < 256; ++idx)
@@ -110,11 +120,13 @@ bool CharSet::operator==(const CharSet& other) const
     return true;
 }
 
+// Сравнение на неравенство
 bool CharSet::operator!=(const CharSet& other) const
 {
     return !(*this == other);
 }
 
+// Индексация
 BooleanVector::BitReference CharSet::operator[](const uint32 index)
 {
     return BooleanVector::operator[](index);
@@ -125,26 +137,46 @@ bool CharSet::operator[](const uint32 index) const
     return BooleanVector::operator[](index);
 }
 
-std::ostream& operator<<(std::ostream& outputStream, const CharSet& charset)
+// Вывод
+std::ostream& operator<<(std::ostream& outputStream, const CharSet& charSet)
 {
+    outputStream << "[ ";
+    bool firstElement = true;
+
     for (uint32 idx = 0; idx < 256; ++idx)
     {
-        if (charset[idx])
+        if (charSet[idx])
         {
-            outputStream << "'" << char(idx) << "', ";
+            if (!firstElement)
+            {
+                outputStream << ", ";
+            }
+            outputStream << "'" << char(idx) << "'";
+            firstElement = false;
         }
     }
+    outputStream << " ]";
 
     return outputStream;
 }
 
+// Ввод
 std::istream& operator>>(std::istream& inputStream, CharSet& charset)
 {
     std::string input;
-    std::cout << "Введите строку символов для множества: ";
     if (inputStream >> input)
     {
-        charset = CharSet(input.c_str());
+        // Создаем временный объект CharSet
+        CharSet temp;
+
+        // Добавляем каждый символ строки
+        for (char ch : input)
+        {
+            temp[ch] = true;
+        }
+
+        // Присваиваем результат
+        charset = temp;
     }
     return inputStream;
 }
