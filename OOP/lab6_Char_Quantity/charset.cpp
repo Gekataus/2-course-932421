@@ -1,5 +1,6 @@
 ﻿#include <string.h>
 #include "charset.h"
+#include <string>
 
 CharSet::CharSet() : BooleanVector(256, false) {}
 
@@ -160,23 +161,18 @@ std::ostream& operator<<(std::ostream& outputStream, const CharSet& charSet)
     return outputStream;
 }
 
-// Ввод
 std::istream& operator>>(std::istream& inputStream, CharSet& charset)
 {
     std::string input;
-    if (inputStream >> input)
+    if (std::getline(inputStream, input))
     {
-        // Создаем временный объект CharSet
         CharSet temp;
-
-        // Добавляем каждый символ строки
         for (char ch : input)
         {
             temp[ch] = true;
         }
-
-        // Присваиваем результат
         charset = temp;
     }
+
     return inputStream;
 }
