@@ -211,20 +211,21 @@ int main() {
             }
             else if (choice == 2) {
                 vector<string> filenames = { "graph1.txt", "graph2.txt", "graph3.txt", "graph4.txt" };
-                int filename;
+                int filenameChoice;
                 cout << "С какого файла взять графы?: " << endl;
                 cout << "1. graph1.txt" << endl;
                 cout << "2. graph2.txt" << endl;
                 cout << "3. graph3.txt (Граф из презентации)" << endl;
                 cout << "4. graph4.txt (Граф с циклом)" << endl;
-                cin >> filename;
-                if (filename <= 0 || filename >= 4)
-                {
-                    cout << "Неверный выбор!";
-                    continue;
+                cout << "Выберите номер файла: ";
+                cin >> filenameChoice;
+
+                if (filenameChoice < 1 || filenameChoice > static_cast<int>(filenames.size())) {
+                    throw out_of_range("Неверный выбор! Доступные номера: 1- 4");
                 }
-                Matrix = buildMatrixFromFile(filenames[filename - 1]);
-                cout << "Граф загружен из файла " << filenames[filename - 1] << endl;
+
+                Matrix = buildMatrixFromFile(filenames[filenameChoice - 1]);
+                cout << "Граф загружен из файла " << filenames[filenameChoice - 1] << endl;
             }
             else {
                 cout << "Неверный выбор!" << endl;
@@ -238,17 +239,18 @@ int main() {
 
             auto start = high_resolution_clock::now();
 
-            // Вызываем функцию топологической сортировки
             vector<int> result = topologicalSort(Matrix);
 
             auto end = high_resolution_clock::now();
             auto duration = duration_cast<microseconds>(end - start);
 
-            // Выводим результат
             cout << "Результат сортировки: ";
             resultOutput(result);
             cout << "Время сортировки: " << duration.count() / 1000000.0 << " секунд" << endl;
 
+        }
+        catch (const out_of_range& e) {
+            cout << "\nОШИБКА ВЫБОРА: " << e.what() << endl;
         }
         catch (const exception& e) {
             cout << "\nОШИБКА: " << e.what() << endl;
