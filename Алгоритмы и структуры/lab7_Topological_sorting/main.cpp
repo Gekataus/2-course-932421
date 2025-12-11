@@ -10,12 +10,12 @@ using namespace std;
 using namespace std::chrono;
 
 // Функция для поиска столбцов без единиц (вершин без входящих рёбер)
-BooleanVector findEmptyColumns(const BooleanMatrix& matrix, const BooleanVector& unprocessedVertices) {
+BooleanVector findEmptyColumns(const BooleanMatrix& matrix, const BooleanVector& processedVertices) {
     int n = matrix.getRows();
     BooleanVector result(n, false);
 
     for (int col = 0; col < n; ++col) {
-        if (!unprocessedVertices[col]) continue; // Если вершина уже обработана - пропускаем
+        if (processedVertices[col]) continue; // Если вершина уже обработана - пропускаем
 
         bool hasOnes = false;
         for (int row = 0; row < n; ++row) {
@@ -48,18 +48,14 @@ void clearRows(BooleanMatrix& matrix, const BooleanVector& rowsToClear) {
 
 // Топологическая сортировка
 vector<int> topologicalSort(const BooleanMatrix& Matrix) {
-    if (Matrix.getRows() != Matrix.getCols()) {
-        throw invalid_argument("Матрица смежности должна быть квадратной");
-    }
-
     vector<int> order;
     int n = Matrix.getRows();
 
     BooleanMatrix workMatrix = Matrix;
-    BooleanVector unprocessedVertices(n, true);
+    BooleanVector processedVertices(n, false);
 
-    while (unprocessedVertices.getWeight() > 0) {
-        BooleanVector columnsWithoutOnes = findEmptyColumns(workMatrix, unprocessedVertices);
+    while (order.size() < static_cast<size_t>(n)) {
+        BooleanVector columnsWithoutOnes = findEmptyColumns(workMatrix, processedVertices);
 
         if (columnsWithoutOnes.getWeight() == 0) {
             throw runtime_error("Граф содержит цикл, топологическая сортировка невозможна");
@@ -69,7 +65,7 @@ vector<int> topologicalSort(const BooleanMatrix& Matrix) {
         for (int i = 0; i < n; ++i) {
             if (columnsWithoutOnes[i]) {
                 order.push_back(i + 1); // Сохраняем номер вершины (начиная с 1)
-                unprocessedVertices.setBit(i, false);
+                processedVertices.setBit(i, true); // Помечаем вершину как пройденную
             }
         }
 
