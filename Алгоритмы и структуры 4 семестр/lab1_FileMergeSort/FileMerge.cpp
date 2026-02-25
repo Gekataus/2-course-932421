@@ -4,24 +4,55 @@
 
 using namespace std;
 
-//Создание файла с рандомными числами
-/*bool createFileWithRandomNumbers(const std::string& fileName, const int numbersCount, const int maxNumberValue)
-{
-};
 
 //Проверка файла на упорядоченность
 bool isFileContainsSortedArray(const std::string& fileName)
 {
-};*/
+	std::fstream outputFile(fileName);
+	int value1 = 0, value2 = 0;
+
+	outputFile >> value1;
+	while (outputFile >> value2) {
+		if (value1 > value2)
+			return false;
+		value1 = value2;
+	}
+	return true;
+};
 
 //Прямая сортировка
-void StraightMergeSort()
+void StraightMergeSort(const std::string& fileName)
 {
+	std::fstream f(fileName, ios::out);
+	std::fstream fa("fa.txt");
+	std::fstream fb("fb.txt");
+	std::fstream fc("fc.txt");
+	std::fstream fd("fd.txt");
+	int p = 1;
+	int value = 0;
+	while(f >> value)
+	for (int i = 0; i < p; i++)
+	{
+
+	}
 };
 
 //Естественная сортировка
 void NaturalMergeSort()
 {
+};
+
+//Сортировка слиянием
+void MergeSort(const std::string& fileName, const int numbersCount, const int maxNumberValue, const int x) {
+	switch (x)
+	{
+	case 1:
+		StraightMergeSort(fileName);
+		break;
+	case 2:
+		NaturalMergeSort();
+		break;
+	}
 };
 
 int main()
@@ -42,59 +73,12 @@ int main()
 	};
 
 	std::cout << "Сортировка слиянием на четырех файлах" << endl;
-
-	while (true)
+	/*while (true)
 	{
 		std::cout << "\nКакую сортировку выполнить?" << endl;
 		std::cout << "1. Прямая сортировка" << endl;
 		std::cout << "2. Естественная сортировка" << endl;
 		std::cout << "0. Завершить работу" << endl;
 		std::cout << "Введите цифру: "; std::cin >> x;
-		
-		switch (x) 
-		{
-			case 1:
-				std::cout << "\nПрямая сортировка. Выберите, на каком файле выполнять сортировку:" << endl << endl;
-				std::cout << "1. Создать файл со случайными числами" << endl;
-				std::cout << "2. Выбрать существующий файл" << endl;
-				std::cout << "Введите цифру: "; std::cin >> y;
-
-				switch (y)
-				{
-					case 1:
-
-						break;
-					case 2:
-
-						break;
-					default:
-
-						break;
-				}
-				break;
-			case 2:
-				std::cout << "\nЕстественная сортировка. Выберите, на каком файле выполнять сортировку:" << endl << endl;
-				std::cout << "1. Создать файл со случайными числами" << endl;
-				std::cout << "2. Выбрать существующий файл" << endl;
-				std::cout << "Введите цифру: "; std::cin >> y;
-
-				switch (y)
-				{
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				default:
-
-					break;
-				}
-				break;
-			case 0:
-				exit(0);
-			default:
-				std::cout << "Некорректный выбор!" << endl;
-		}
-	}
+	}*/
 }
