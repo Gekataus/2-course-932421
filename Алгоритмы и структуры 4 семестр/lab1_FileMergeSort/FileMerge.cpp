@@ -25,52 +25,154 @@ int isFileContainsSortedArray(const std::string& fileName)
 	return 1;
 };
 
-//Разбиение
-void split(const std::string& readingFile, const std::string& firstFile, const std::string& secondFile, const int p) {
-	std::ifstream outputFile(readingFile);
-	std::ofstream fileA(firstFile), fileB(secondFile);
-	
-	if (!outputFile.is_open() || !fileA.is_open() || !fileB.is_open()) {
-		std::cout << "Error: couldn't read from files in function 'split'." << std::endl;
-		return;
-	}
-	int value;
-	bool writeToA = true;
+// Функция слияния двух файлов в два выходных файла
+void MergeFiles(const std::string & input1, const std::string & input2, const std::string & output1, const std::string & output2, int p) {
+    std::ifstream fin1(input1);
+    std::ifstream fin2(input2);
+    std::ofstream fout1(output1);
+    std::ofstream fout2(output2);
 
-	while (outputFile >> value) {
-		for (int i = 0; i < p && outputFile; i++) {
-			if (writeToA) fileA << value << " ";
-			else fileB << value << " ";
-			writeToA = !writeToA;
-			if (i < p - 1)
-				if (!(outputFile >> value)) 
-					break;
-		}
-	}
+    if (!fin1.is_open() || !fin2.is_open() || !fout1.is_open() || !fout2.is_open()) {
+        std::cout << "Error: couldn't open files for merging" << std::endl;
+        return;
+    }
+
+    bool writeToFirst = true;
+    std::vector<int> buffer;
+
+    // Пока есть данные хотя бы в одном файле
+    while (!fin1.eof() || !fin2.eof()) {
+        buffer.clear();
+
+        // Читаем p чисел из первого файла
+        int val;
+        int count = 0;
+        while (count < p && fin1 >> val) {
+            buffer.push_back(val);
+            count++;
+        }
+
+        // Читаем p чисел из второго файла
+        count = 0;
+        while (count < p && fin2 >> val) {
+            buffer.push_back(val);
+            count++;
+        }
+
+        // Если буфер пуст, выходим
+        if (buffer.empty()) {
+            break;
+        }
+
+        // Сортируем буфер (2*p элементов или меньше в конце)
+        std::sort(buffer.begin(), buffer.end());
+
+        // Записываем в соответствующий выходной файл
+        if (writeToFirst) {
+            for (int num : buffer) {
+                fout1 << num << " ";
+            }
+        }
+        else {
+            for (int num : buffer) {
+                fout2 << num << " ";
+            }
+        }
+
+        // Переключаем выходной файл для следующей серии
+        writeToFirst = !writeToFirst;
+    }
+
+    fin1.close();
+    fin2.close();
+    fout1.close();
+    fout2.close();
 }
 
-//Слияние
-void merge(const std::string& readingFile1, const std::string& readingFile2, const std::string& writingFile1, const std::string& writingFile2, const int p) {
-	std::ifstream file1(readingFile1), file2(readingFile2);
-	std::ofstream file3(writingFile1), file4(writingFile2);
+// Пустой ли файл
+bool IsFileEmpty(const std::string& filename) {
+    std::ifstream file(filename);
+    bool empty = file.peek() == std::ifstream::traits_type::eof();
+    file.close();
+    return empty;
+}
 
-	int value1, value2;
-	while (file1 >> value1 && file2 >> value2) {
-		std::vector<int> mas;
-		for (int i = 0; i < p; i++)
-		{
-			mas.push_back(value1);
-			mas.push_back(value2);
-		}
-		sort(mas.begin(), mas.end());
-
-	}
+// Копирование файла
+void CopyFile(const std::string& source, const std::string& destination) {
+    std::ifstream src(source);
+    std::ofstream dst(destination);
+    int val;
+    while (src >> val) {
+        dst << val << " ";
+    }
+    src.close();
+    dst.close();
 }
 
 //Прямая сортировка
-void StraightMergeSort(const std::string& fileName)
-{
-};
+void StraightMergeSort(const std::string& fileName) {
+    std::ifstream fin(fileName);
+    std::ofstream foutA("fa.txt");
+    std::ofstream foutB("fb.txt");
+
+    if (!fin.is_open()) {
+        std::cout << "Error: couldn't read from file" << std::endl;
+        return;
+    }
+    if (!foutA.is_open() || !foutB.is_open()) {
+        std::cout << "Error: couldn't open files" << std::endl;
+        return;
+    }
+
+    // 1. Разбиение
+    int value = 0;
+    bool writeInA = true;
+    while (fin >> value) {
+        if (writeInA) {
+            foutA << value << " ";
+            writeInA = !writeInA;
+        }
+        else {
+            foutB << value << " ";
+            writeInA = !writeInA;
+        }
+    }
+    fin.close();
+    foutA.close();
+    foutB.close();
+
+    // Слияние
+    int p = 1;
+    bool useAB = true;
+
+    while (true) {
+        if (useAB) {
+            // 2. Слияние из fa и fb в fc и fd
+            MergeFiles("fa.txt", "fb.txt", "fc.txt", "fd.txt", p);
+
+            // Проверяем, закончили ли сортировку (пустой ли fb.txt?)
+            if (IsFileEmpty("fb.txt")) {
+                // Результат в fa.txt - копируем из fc.txt
+                CopyFile("fc.txt", "fa.txt");
+                break;
+            }
+        }
+        else {
+            // 3. Слияние из fc и fd в fa и fb
+            MergeFiles("fc.txt", "fd.txt", "fa.txt", "fb.txt", p);
+
+            // Проверяем, закончили ли сортировку (пустой ли fd.txt?)
+            if (IsFileEmpty("fd.txt")) {
+                // Результат в fc.txt - копируем в fa.txt
+                CopyFile("fc.txt", "fa.txt");
+                break;
+            }
+        }
+
+        p *= 2;
+        useAB = !useAB; // Переключаем пары файлов
+    }
+}
 
 //Естественная сортировка
 void NaturalMergeSort()
@@ -78,7 +180,7 @@ void NaturalMergeSort()
 };
 
 //Сортировка слиянием
-void MergeSort(const std::string& fileName, const int numbersCount, const int maxNumberValue, const int x) {
+void MergeSort(const std::string& fileName, const int x) {
 	switch (x)
 	{
 	case 1:
@@ -107,6 +209,7 @@ int main()
 		"array_1000000_-100000_100000.txt"
 	};
 
+    MergeSort(filenames[1], 1);
 	std::cout << "Сортировка слиянием на четырех файлах" << endl;
 	/*while (true)
 	{
