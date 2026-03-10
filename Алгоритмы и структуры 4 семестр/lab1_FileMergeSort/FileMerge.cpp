@@ -153,8 +153,6 @@ void StraightMergeSort(const std::string& fileName) {
 
             // Проверяем, закончили ли сортировку (пустой ли fb.txt?)
             if (IsFileEmpty("fb.txt")) {
-                // Результат в fa.txt - копируем из fc.txt
-                CopyFile("fc.txt", "fa.txt");
                 break;
             }
         }
@@ -353,7 +351,6 @@ void NaturalMergeSort(const std::string& inputFile) {
 
             // Если fb оказался пустым — сортировка завершена, результат в fa
             if (IsFileEmpty(fb)) {
-                CopyFile(fc, fa);
                 break;
             }
         }
