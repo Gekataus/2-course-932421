@@ -3,9 +3,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
-
-using namespace std;
 
 //Проверка файла на упорядоченность
 int isFileContainsSortedArray(const std::string& fileName)
@@ -25,70 +22,6 @@ int isFileContainsSortedArray(const std::string& fileName)
 	}
 	return 1;
 };
-
-// Функция слияния двух файлов в два выходных файла
-void MergeFiles(const std::string & input1, const std::string & input2, const std::string & output1, const std::string & output2, int p) {
-    std::ifstream fin1(input1);
-    std::ifstream fin2(input2);
-    std::ofstream fout1(output1);
-    std::ofstream fout2(output2);
-
-    if (!fin1.is_open() || !fin2.is_open() || !fout1.is_open() || !fout2.is_open()) {
-        std::cout << "Error: couldn't open files for merging" << std::endl;
-        return;
-    }
-
-    bool writeToFirst = true;
-    std::vector<int> buffer;
-
-    // Пока есть данные хотя бы в одном файле
-    while (!fin1.eof() || !fin2.eof()) {
-        buffer.clear();
-
-        // Читаем p чисел из первого файла
-        int val;
-        int count = 0;
-        while (count < p && fin1 >> val) {
-            buffer.push_back(val);
-            count++;
-        }
-
-        // Читаем p чисел из второго файла
-        count = 0;
-        while (count < p && fin2 >> val) {
-            buffer.push_back(val);
-            count++;
-        }
-
-        // Если буфер пуст, выходим
-        if (buffer.empty()) {
-            break;
-        }
-
-        // Сортируем буфер (2*p элементов или меньше в конце)
-        std::sort(buffer.begin(), buffer.end());
-
-        // Записываем в соответствующий выходной файл
-        if (writeToFirst) {
-            for (int num : buffer) {
-                fout1 << num << " ";
-            }
-        }
-        else {
-            for (int num : buffer) {
-                fout2 << num << " ";
-            }
-        }
-
-        // Переключаем выходной файл для следующей серии
-        writeToFirst = !writeToFirst;
-    }
-
-    fin1.close();
-    fin2.close();
-    fout1.close();
-    fout2.close();
-}
 
 // Пустой ли файл
 bool IsFileEmpty(const std::string& filename) {
@@ -110,261 +43,254 @@ void CopyFile(const std::string& source, const std::string& destination) {
     dst.close();
 }
 
-//Прямая сортировка
-void StraightMergeSort(const std::string& fileName) {
-    std::ifstream fin(fileName);
-    std::ofstream foutA("fa.txt");
-    std::ofstream foutB("fb.txt");
+// Разбиение файла f на fa и fb по p элементов
+void split(const std::string& f, const std::string& fa, const std::string& fb, int p) {
+    std::ifstream fin(f);
+    std::ofstream foutA(fa), foutB(fb);
 
-    if (!fin.is_open()) {
-        std::cout << "Error: couldn't read from file" << std::endl;
-        return;
-    }
-    if (!foutA.is_open() || !foutB.is_open()) {
-        std::cout << "Error: couldn't open files" << std::endl;
-        return;
-    }
+    int value;
+    bool toA = true;
+    int count = 0;
 
-    // 1. Разбиение
-    int value = 0;
-    bool writeInA = true;
     while (fin >> value) {
-        if (writeInA) {
+        if (toA) {
             foutA << value << " ";
-            writeInA = !writeInA;
         }
         else {
             foutB << value << " ";
-            writeInA = !writeInA;
         }
-    }
-    fin.close();
-    foutA.close();
-    foutB.close();
+        count++;
 
-    // Слияние
-    int p = 1;
-    bool useAB = true;
-
-    while (true) {
-        if (useAB) {
-            // 2. Слияние из fa и fb в fc и fd
-            MergeFiles("fa.txt", "fb.txt", "fc.txt", "fd.txt", p);
-
-            // Проверяем, закончили ли сортировку (пустой ли fb.txt?)
-            if (IsFileEmpty("fb.txt")) {
-                break;
-            }
+        if (count == p) {
+            toA = !toA;
+            count = 0;
         }
-        else {
-            // 3. Слияние из fc и fd в fa и fb
-            MergeFiles("fc.txt", "fd.txt", "fa.txt", "fb.txt", p);
-
-            // Проверяем, закончили ли сортировку (пустой ли fd.txt?)
-            if (IsFileEmpty("fd.txt")) {
-                // Результат в fc.txt - копируем в fa.txt
-                CopyFile("fc.txt", "fa.txt");
-                break;
-            }
-        }
-
-        p *= 2;
-        useAB = !useAB; // Переключаем пары файлов
     }
 }
 
-// Разбиение для естественного слияния
+// Слияние файлов f1 и f2 в g1 и g2 (чередуя) по p элементов
+void Merge(const std::string& f1, const std::string& f2, const std::string& g1, const std::string& g2, int p) {
+    std::ifstream in1(f1), in2(f2);
+    std::ofstream out1(g1), out2(g2);
+
+    bool toFirst = true;
+    int count1 = 0, count2 = 0;
+    int val1, val2;
+    bool has1 = false, has2 = false;
+
+    // Читаем первые элементы
+    if (in1 >> val1) has1 = true;
+    if (in2 >> val2) has2 = true;
+
+    while (has1 || has2) {
+        std::ofstream& current = toFirst ? out1 : out2;
+        count1 = 0;
+        count2 = 0;
+
+        // Сливаем одну серию из p элементов из каждого файла
+        while ((count1 < p || count2 < p) && (has1 || has2)) {
+            if (has1 && (!has2 || (count2 >= p) || (count1 < p && val1 <= val2))) {
+                current << val1 << " ";
+                count1++;
+                if (!(in1 >> val1)) has1 = false;
+            }
+            else if (has2) {
+                current << val2 << " ";
+                count2++;
+                if (!(in2 >> val2)) has2 = false;
+            }
+            else {
+                break;
+            }
+        }
+
+        toFirst = !toFirst;
+    }
+}
+
+// Прямая сортировка слиянием
+void StraightMergeSort(const std::string& input) {
+    const std::string fa = "fa.txt", fb = "fb.txt", fc = "fc.txt", fd = "fd.txt";
+
+    int p = 1;
+    bool stage2 = true; // true - шаг 2, false - шаг 3
+    split(input, fa, fb, p);
+
+    while (true) {
+        if (stage2) {
+            // Шаг 2: Слияние из fa и fb в fc и fd
+            Merge(fa, fb, fc, fd, p);
+
+            // Проверка условия окончания
+            if (IsFileEmpty(fb)) {
+                // Результат в fc
+                CopyFile(fc, fa);
+                break;
+            }
+
+            p *= 2;
+            stage2 = false;
+        }
+        else {
+            // Шаг 3: Слияние из fc и fd в fa и fb
+            Merge(fc, fd, fa, fb, p);
+
+            // Проверка условия окончания
+            if (IsFileEmpty(fd)) {
+                // Результат в fa
+                break;
+            }
+
+            p *= 2;
+            stage2 = true;
+        }
+    }
+}
+
+// Разбиение файла f на fa и fb по естественным упорядоченным отрезкам
 void NaturalSplit(const std::string& f, const std::string& fa, const std::string& fb) {
     std::ifstream fin(f);
     std::ofstream foutA(fa), foutB(fb);
 
-    if (!fin.is_open() || !foutA.is_open() || !foutB.is_open()) {
-        std::cout << "Error: cannot open files for natural split\n";
-        return;
-    }
-
-    int current, prev;
+    int curr, prev;
     bool writeToA = true;
     bool first = true;
 
-    while (fin >> current) {
-        if (first) {
-            // Первый элемент всегда идёт в текущий файл
-            first = false;
-        }
-        else {
-            // Если нарушается упорядоченность — переключаем файл
-            if (current < prev) {
-                writeToA = !writeToA;
-            }
+    if (!(fin >> curr)) return; // Пустой файл
+
+    prev = curr;
+    foutA << curr << " ";
+
+    while (fin >> curr) {
+        // Если нарушается упорядоченность - переключаем файл
+        if (curr < prev) {
+            writeToA = !writeToA;
         }
 
         if (writeToA)
-            foutA << current << " ";
+            foutA << curr << " ";
         else
-            foutB << current << " ";
+            foutB << curr << " ";
 
-        prev = current;
+        prev = curr;
     }
-
-    fin.close();
-    foutA.close();
-    foutB.close();
 }
 
-// Слияние двух файлов в два выходных естественными сериями
+// Слияние по естественным упорядоченным отрезкам
 void NaturalMerge(const std::string& in1, const std::string& in2,
     const std::string& out1, const std::string& out2) {
     std::ifstream f1(in1), f2(in2);
     std::ofstream fout1(out1), fout2(out2);
 
-    if (!f1.is_open() || !f2.is_open() || !fout1.is_open() || !fout2.is_open()) {
-        std::cout << "Error: cannot open files for natural merge\n";
-        return;
-    }
-
     bool writeToFirst = true;
     int a, b;
     bool hasA = false, hasB = false;
-    bool endA = false, endB = false; // флаги конца текущей серии
+
+    // Флаги для отслеживания концов серий
+    bool seriesEndedA = false, seriesEndedB = false;
+    int prevA, prevB;
 
     // Читаем первые элементы
-    if (f1 >> a) hasA = true;
-    if (f2 >> b) hasB = true;
+    if (f1 >> a) {
+        hasA = true;
+        prevA = a;
+    }
+    if (f2 >> b) {
+        hasB = true;
+        prevB = b;
+    }
 
     while (hasA || hasB) {
-        std::vector<int> merged;
-        int lastA, lastB;
-        bool firstA = true, firstB = true;
+        std::ofstream& current = writeToFirst ? fout1 : fout2;
 
         // Сливаем одну серию
         while (hasA || hasB) {
-            // Выбираем откуда брать элемент
-            if (hasA && (!hasB || a <= b)) {
-                // Берем из первого файла
-                merged.push_back(a);
-                lastA = a;
+            // Если оба файла закончили серии - выходим
+            if (seriesEndedA && seriesEndedB) {
+                break;
+            }
 
-                // Читаем следующий из первого файла
+            // Выбираем откуда брать элемент
+            if (hasA && !seriesEndedA && (!hasB || seriesEndedB || a <= b)) {
+                // Берем из A
+                current << a << " ";
+                prevA = a;
+
+                // Читаем следующий из A
                 if (f1 >> a) {
-                    // Проверяем, кончилась ли серия в первом файле
-                    if (a < lastA) {
-                        hasA = false;
-                        endA = true;
+                    hasA = true;
+                    // Проверяем, не закончилась ли серия
+                    if (a < prevA) {
+                        seriesEndedA = true;
                     }
                 }
                 else {
                     hasA = false;
+                    seriesEndedA = true; // Файл закончился - серия тоже
                 }
             }
-            else if (hasB) {
-                // Берем из второго файла
-                merged.push_back(b);
-                lastB = b;
+            else if (hasB && !seriesEndedB) {
+                // Берем из B
+                current << b << " ";
+                prevB = b;
 
-                // Читаем следующий из второго файла
+                // Читаем следующий из B
                 if (f2 >> b) {
-                    // Проверяем, кончилась ли серия во втором файле
-                    if (b < lastB) {
-                        hasB = false; // временно убираем второй файл из обработки
-                        endB = true;
+                    hasB = true;
+                    // Проверяем, не закончилась ли серия
+                    if (b < prevB) {
+                        seriesEndedB = true;
                     }
                 }
                 else {
                     hasB = false;
+                    seriesEndedB = true; // Файл закончился - серия тоже
                 }
             }
-
-            // Если оба файла временно недоступны (кончились серии) - выходим
-            if ((!hasA || endA) && (!hasB || endB)) {
+            else {
+                // Если не можем взять ниоткуда - выходим
                 break;
             }
         }
 
-        // Дозаписываем остатки
-        while (hasA && !endA) {
-            merged.push_back(a);
-            if (f1 >> a) {
-                if (a < merged.back()) {
-                    hasA = false;
-                    endA = true;
-                }
-            }
-            else {
-                hasA = false;
-            }
-        }
-
-        while (hasB && !endB) {
-            merged.push_back(b);
-            if (f2 >> b) {
-                if (b < merged.back()) {
-                    hasB = false;
-                    endB = true;
-                }
-            }
-            else {
-                hasB = false;
-            }
-        }
-
-        // Записываем серию в соответствующий выходной файл
-        if (writeToFirst) {
-            for (int x : merged) fout1 << x << " ";
-        }
-        else {
-            for (int x : merged) fout2 << x << " ";
-        }
-
+        // Переключаем выходной файл для следующей серии
         writeToFirst = !writeToFirst;
 
-        // Восстанавливаем флаги для следующей итерации
-        if (endA) {
-            endA = false;
-            hasA = true; // a уже считан и хранится
-        }
-        if (endB) {
-            endB = false;
-            hasB = true; // b уже считан и хранится
-        }
-    }
+        // Сбрасываем флаги концов серий (но сохраняем текущие элементы для следующей серии)
+        seriesEndedA = false;
+        seriesEndedB = false;
 
-    f1.close();
-    f2.close();
-    fout1.close();
-    fout2.close();
+        // Важно: prevA и prevB не сбрасываем, они нужны для проверки конца следующих серий
+    }
 }
 
-// Естественная сортировка слиянием
-void NaturalMergeSort(const std::string& inputFile) {
+//Сортировка естественным слиянием
+void NaturalMergeSort(const std::string& input) {
     const std::string fa = "fa.txt", fb = "fb.txt", fc = "fc.txt", fd = "fd.txt";
 
     // Шаг 1: разбиение исходного файла естественными сериями
-    NaturalSplit(inputFile, fa, fb);
+    NaturalSplit(input, fa, fb);
 
-    bool useAB = true;  // true: сливаем fa и fb в fc и fd; false: сливаем fc и fd в fa и fb
+    bool useAB = true;
 
     while (true) {
         if (useAB) {
-            // Шаг 2: слияние из fa и fb в fc и fd
             NaturalMerge(fa, fb, fc, fd);
 
-            // Если fb оказался пустым — сортировка завершена, результат в fa
             if (IsFileEmpty(fb)) {
-                break;
-            }
-        }
-        else {
-            // Шаг 3: слияние из fc и fd в fa и fb
-            NaturalMerge(fc, fd, fa, fb);
-            // Если fd пуст — результат в fc, копируем в fa
-            if (IsFileEmpty(fd)) {
                 CopyFile(fc, fa);
                 break;
             }
+            useAB = false;
         }
-        // Переключаем пары для следующего прохода
-        useAB = !useAB;
+        else {
+            NaturalMerge(fc, fd, fa, fb);
+
+            if (IsFileEmpty(fd)) {
+                break;
+            }
+            useAB = true;
+        }
     }
 }
 
@@ -383,35 +309,35 @@ void MergeSort(const std::string& fileName, const int x) {
 
 // Функция для создания файла со случайными числами (всегда с одним именем)
 void CreateRandomArrayFile() {
-    string filename = "custom_array.txt"; // Фиксированное имя файла
+    std::string filename = "custom_array.txt"; // Фиксированное имя файла
     int length, minVal, maxVal;
 
-    cout << "\n    Создание файла со случайным массивом    " << endl;
-    cout << "Файл будет сохранен как: " << filename << endl;
-    cout << "Введите длину массива: ";
-    cin >> length;
-    cout << "Введите минимальное значение: ";
-    cin >> minVal;
-    cout << "Введите максимальное значение: ";
-    cin >> maxVal;
+    std::cout << "\n    Создание файла со случайным массивом    " << std::endl;
+    std::cout << "Файл будет сохранен как: " << filename << std::endl;
+    std::cout << "Введите длину массива: ";
+    std::cin >> length;
+    std::cout << "Введите минимальное значение: ";
+    std::cin >> minVal;
+    std::cout << "Введите максимальное значение: ";
+    std::cin >> maxVal;
 
     if (length <= 0) {
-        cout << "Ошибка: длина массива должна быть положительной" << endl;
+        std::cout << "Ошибка: длина массива должна быть положительной" << std::endl;
         return;
     }
 
     if (minVal > maxVal) {
-        cout << "Ошибка: минимальное значение не может быть больше максимального" << endl;
+        std::cout << "Ошибка: минимальное значение не может быть больше максимального" << std::endl;
         return;
     }
 
-    random_device rd;
-    mt19937 gen(rd());
-    uniform_int_distribution<> dist(minVal, maxVal);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(minVal, maxVal);
 
-    ofstream fout(filename);
+    std::ofstream fout(filename);
     if (!fout.is_open()) {
-        cout << "Error: couldn't create file" << endl;
+        std::cout << "Error: couldn't create file" << std::endl;
         return;
     }
 
@@ -430,7 +356,7 @@ int main()
     setlocale(LC_ALL, "Russian");
     int x = -1, y = -1;
 
-    vector<string> filenames = {
+    std::vector<std::string> filenames = {
         "array_10000_-10_10.txt",
         "array_10000_-1000_1000.txt",
         "array_10000_-100000_100000.txt",
@@ -442,13 +368,12 @@ int main()
         "array_1000000_-100000_100000.txt"
     };
 
-    std::cout << "Сортировка слиянием на четырех файлах" << endl;
+    std::cout << "Сортировка слиянием на четырех файлах\n" << std::endl;
     while (true)
     {
-        std::cout << "\nМеню:" << endl;
-        std::cout << "1. Прямая сортировка" << endl;
-        std::cout << "2. Естественная сортировка" << endl;
-        std::cout << "0. Завершить работу" << endl;
+        std::cout << "\n1. Прямая сортировка" << std::endl;
+        std::cout << "2. Естественная сортировка" << std::endl;
+        std::cout << "0. Завершить работу" << std::endl;
         std::cout << "Введите цифру: ";
         std::cin >> x;
 
@@ -477,7 +402,7 @@ int main()
             }
             else if (y == 10) {
                 CreateRandomArrayFile();
-                string customFile = "custom_array.txt";
+                std::string customFile = "custom_array.txt";
                 MergeSort(customFile, x);
                 std::cout << (isFileContainsSortedArray("fa.txt") ?
                     "Файл отсортирован, результат в 'fa.txt'\n" :
@@ -489,7 +414,7 @@ int main()
             break;
 
         case 0:
-            cout << "Программа завершена." << endl;
+            std::cout << "Программа завершена." << std::endl;
             exit(0);
 
         default:
