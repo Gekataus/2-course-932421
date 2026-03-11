@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <chrono>
 #include <vector>
 
 //Проверка файла на упорядоченность
@@ -433,18 +434,26 @@ int main()
             std::cin >> y;
 
             if (y >= 1 && y <= 9) {
+                auto start = std::chrono::high_resolution_clock::now();
                 MergeSort(filenames[y - 1], x);
+                auto stop = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> duration = stop - start;
                 std::cout << (isFileContainsSortedArray("fa.txt") ?
                     "Файл отсортирован, результат в 'fa.txt'\n" :
                     "Файл не отсортирован, произошла ошибка\n");
+                std::cout << "Время сортировки: " << duration.count() << " сек." << std::endl;
             }
             else if (y == 10) {
                 CreateRandomArrayFile();
                 std::string customFile = "custom_array.txt";
+                auto start = std::chrono::high_resolution_clock::now();
                 MergeSort(customFile, x);
+                auto stop = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> duration = stop - start;
                 std::cout << (isFileContainsSortedArray("fa.txt") ?
                     "Файл отсортирован, результат в 'fa.txt'\n" :
                     "Файл не отсортирован, произошла ошибка\n");
+                std::cout << "Время сортировки: " << duration.count() << " сек." << std::endl;
             }
             else {
                 std::cout << "Неверный ввод" << std::endl;
