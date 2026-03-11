@@ -87,20 +87,43 @@ void Merge(const std::string& f1, const std::string& f2, const std::string& g1, 
         count1 = 0;
         count2 = 0;
 
-        // Сливаем одну серию из p элементов из каждого файла
-        while ((count1 < p || count2 < p) && (has1 || has2)) {
-            if (has1 && (!has2 || (count2 >= p) || (count1 < p && val1 <= val2))) {
-                current << val1 << " ";
-                count1++;
-                if (!(in1 >> val1)) has1 = false;
-            }
-            else if (has2) {
-                current << val2 << " ";
-                count2++;
-                if (!(in2 >> val2)) has2 = false;
-            }
-            else {
+        // Сливаем одну серию
+        while (has1 || has2) {
+            // Если обе серии закончились - выходим
+            if ((count1 >= p && count2 >= p) ||
+                (count1 >= p && !has2) ||
+                (count2 >= p && !has1)) {
                 break;
+            }
+
+            // Если из первого нельзя брать (нет данных или серия кончилась)
+            if (!has1 || count1 >= p) {
+                if (has2 && count2 < p) {
+                    current << val2 << " ";
+                    count2++;
+                    if (!(in2 >> val2)) has2 = false;
+                }
+            }
+            // Если из второго нельзя брать (нет данных или серия кончилась)
+            else if (!has2 || count2 >= p) {
+                if (has1 && count1 < p) {
+                    current << val1 << " ";
+                    count1++;
+                    if (!(in1 >> val1)) has1 = false;
+                }
+            }
+            // Если можно брать из обоих - берем меньший
+            else {
+                if (val1 <= val2) {
+                    current << val1 << " ";
+                    count1++;
+                    if (!(in1 >> val1)) has1 = false;
+                }
+                else {
+                    current << val2 << " ";
+                    count2++;
+                    if (!(in2 >> val2)) has2 = false;
+                }
             }
         }
 
@@ -186,7 +209,7 @@ void NaturalMerge(const std::string& in1, const std::string& in2,
     int a, b;
     bool hasA = false, hasB = false;
 
-    // Флаги для отслеживания концов серий
+    // Флаги: true = серия закончилась
     bool seriesEndedA = false, seriesEndedB = false;
     int prevA, prevB;
 
@@ -205,62 +228,77 @@ void NaturalMerge(const std::string& in1, const std::string& in2,
 
         // Сливаем одну серию
         while (hasA || hasB) {
-            // Если оба файла закончили серии - выходим
+            // Если обе серии закончились - выходим
             if (seriesEndedA && seriesEndedB) {
                 break;
             }
 
-            // Выбираем откуда брать элемент
-            if (hasA && !seriesEndedA && (!hasB || seriesEndedB || a <= b)) {
-                // Берем из A
+            // Случай 1: можно брать только из A
+            if (hasA && !seriesEndedA && (!hasB || seriesEndedB)) {
                 current << a << " ";
                 prevA = a;
 
-                // Читаем следующий из A
                 if (f1 >> a) {
                     hasA = true;
-                    // Проверяем, не закончилась ли серия
-                    if (a < prevA) {
+                    if (a < prevA) seriesEndedA = true;
+                }
+                else {
+                    hasA = false;
+                    seriesEndedA = true;
+                }
+            }
+            // Случай 2: можно брать только из B
+            else if (hasB && !seriesEndedB && (!hasA || seriesEndedA)) {
+                current << b << " ";
+                prevB = b;
+
+                if (f2 >> b) {
+                    hasB = true;
+                    if (b < prevB) seriesEndedB = true;
+                }
+                else {
+                    hasB = false;
+                    seriesEndedB = true;
+                }
+            }
+            // Случай 3: можно брать из обоих - берем меньший
+            else if (hasA && !seriesEndedA && hasB && !seriesEndedB) {
+                if (a <= b) {
+                    current << a << " ";
+                    prevA = a;
+
+                    if (f1 >> a) {
+                        hasA = true;
+                        if (a < prevA) seriesEndedA = true;
+                    }
+                    else {
+                        hasA = false;
                         seriesEndedA = true;
                     }
                 }
                 else {
-                    hasA = false;
-                    seriesEndedA = true; // Файл закончился - серия тоже
-                }
-            }
-            else if (hasB && !seriesEndedB) {
-                // Берем из B
-                current << b << " ";
-                prevB = b;
+                    current << b << " ";
+                    prevB = b;
 
-                // Читаем следующий из B
-                if (f2 >> b) {
-                    hasB = true;
-                    // Проверяем, не закончилась ли серия
-                    if (b < prevB) {
+                    if (f2 >> b) {
+                        hasB = true;
+                        if (b < prevB) seriesEndedB = true;
+                    }
+                    else {
+                        hasB = false;
                         seriesEndedB = true;
                     }
                 }
-                else {
-                    hasB = false;
-                    seriesEndedB = true; // Файл закончился - серия тоже
-                }
             }
             else {
-                // Если не можем взять ниоткуда - выходим
-                break;
+                break; // Не можем взять ниоткуда
             }
         }
 
         // Переключаем выходной файл для следующей серии
         writeToFirst = !writeToFirst;
-
-        // Сбрасываем флаги концов серий (но сохраняем текущие элементы для следующей серии)
         seriesEndedA = false;
         seriesEndedB = false;
-
-        // Важно: prevA и prevB не сбрасываем, они нужны для проверки конца следующих серий
     }
 }
 
