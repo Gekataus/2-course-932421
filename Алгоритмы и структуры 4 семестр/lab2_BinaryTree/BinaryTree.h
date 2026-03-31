@@ -8,27 +8,40 @@ class BinaryTree
 public:
 	class TreeNode;
 
-	//Конструкторы/деструктор
-	BinaryTree() = default;
-	~BinaryTree();
+public:
+    class TreeNode;
 
-	//Получение корня
-	TreeNode* getRoot() const;
+    // Конструкторы/деструктор
+    BinaryTree();
+    BinaryTree(const BinaryTree& other);
+    ~BinaryTree();
 
-	//Добавление узла в дерево (методом случайного выбора поддерева)
-	virtual TreeNode* addNode(const int);
+    // Получение корня дерева
+    TreeNode* getRoot() const;
 
-	//Получение вектора, содержащего все ключи дерева по возрастанию
-	std::vector<TreeNode*> getAllNodes() const;
+    // Очистка дерева (удаление всех узлов)
+    void clear();
 
-	//Получение минимального/максимального ключа дерева
-	virtual int getMinimalKey() const;
-	virtual int getMaximalKey() const;
+    // Проверка, пусто ли дерево
+    bool isEmpty() const;
 
-	void clear();
+    // Получение количества узлов дерева
+    int getNodeCount() const;
 
-	void traverseTreeLeftNodeRight();
-	void printToConsole();
+    // Добавление узла в дерево (методом случайного выбора поддерева)
+    TreeNode* addNode(const int key);
+
+    // Удаление узла из дерева по ключу
+    bool removeNode(const int key);
+
+    // Поиск узла дерева по ключу
+    TreeNode* findNode(const int key) const;
+
+    // Вывод в консоль дерева в горизонтальном виде
+    void printToConsole() const;
+
+    // Оператор присваивания
+    BinaryTree& operator=(const BinaryTree& other);
 
 
 protected:
@@ -46,30 +59,34 @@ private:
 
 };
 
-//Узел дерева
-class BinaryTree::TreeNode 
+
+class BinaryTree::TreeNode
 {
 public:
-	//Конструкторы (по умолчанию и с параметрами)/деструктор
-	TreeNode(const int = 0, TreeNode* = nullptr, TreeNode* = nullptr);
-	~TreeNode() = default;
+    // Конструкторы (по умолчанию и с параметрами)
+    TreeNode();
+    TreeNode(const int key, TreeNode* left = nullptr, TreeNode* right = nullptr);
 
-	//Получение/Изменение ключа узла
-	int getKey() const;
-	void setKey(const int);
+    // Получение ключа узла
+    int getKey() const;
 
-	//Получение/изменение потомков ущла
-	TreeNode* getLeftChild() const;
-	void setLeftChild(TreeNode* const);
+    // Установка ключа узла
+    void setKey(const int key);
 
-	TreeNode* getRightChild() const;
-	void setRightChild(TreeNode* const);
+    // Получение левого потомка
+    TreeNode* getLeftChild() const;
 
-	int getNodeDegree() const;
-	bool isLeafNode();
+    // Установка левого потомка
+    void setLeftChild(TreeNode* const left);
+
+    // Получение правого потомка
+    TreeNode* getRightChild() const;
+
+    // Установка правого потомка
+    void setRightChild(TreeNode* const right);
 
 private:
-
-	int key;
-	TreeNode* leftChild_, * rightChild;
+    int key_;
+    TreeNode* leftChild_;
+    TreeNode* rightChild_;
 };
