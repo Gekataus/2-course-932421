@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-//Реализация TreeNode
+// Реализация TreeNode
 
 BinaryTree::TreeNode::TreeNode()
     : key_(0), leftChild_(nullptr), rightChild_(nullptr)
@@ -46,7 +46,7 @@ void BinaryTree::TreeNode::setRightChild(TreeNode* const right)
     rightChild_ = right;
 }
 
-//Реализация BinaryTree
+// Реализация BinaryTree
 
 BinaryTree::BinaryTree()
     : root_(nullptr)
@@ -57,7 +57,7 @@ BinaryTree::BinaryTree()
 BinaryTree::BinaryTree(const BinaryTree& other)
     : root_(nullptr)
 {
-    copyTree(root_, other.root_);
+    root_ = copyTree(other.root_);
 }
 
 BinaryTree::~BinaryTree()
@@ -110,7 +110,7 @@ int BinaryTree::getMinimalKey() const
 {
     if (root_ == nullptr)
     {
-        throw std::runtime_error("Дерево пусто");
+        throw std::runtime_error("Tree is empty");
     }
     return getMinimalKeyInternal(root_);
 }
@@ -119,7 +119,7 @@ int BinaryTree::getMaximalKey() const
 {
     if (root_ == nullptr)
     {
-        throw std::runtime_error("Дерево пусто");
+        throw std::runtime_error("Tree is empty");
     }
     return getMaximalKeyInternal(root_);
 }
@@ -192,11 +192,11 @@ void BinaryTree::printToConsole() const
 {
     if (!root_)
     {
-        std::cout << "Дерево пусто" << std::endl;
+        std::cout << "Tree is empty" << std::endl;
         return;
     }
 
-    std::cout << "Обход дерева в ширину:" << std::endl;
+    std::cout << "Breadth-first traversal:" << std::endl;
     std::list<BinaryTree::TreeNode*> unprocessedNodes;
     unprocessedNodes.push_back(root_);
 
@@ -220,24 +220,25 @@ BinaryTree& BinaryTree::operator=(const BinaryTree& other)
     if (this != &other)
     {
         clear();
-        copyTree(root_, other.root_);
+        root_ = copyTree(other.root_);
     }
     return *this;
 }
 
 // Вспомогательные методы
 
-void BinaryTree::copyTree(TreeNode*& target, TreeNode* source)
+BinaryTree::TreeNode* BinaryTree::copyTree(const TreeNode* source)
 {
     if (source == nullptr)
     {
-        target = nullptr;
-        return;
+        return nullptr;
     }
 
-    target = new TreeNode(source->getKey());
-    copyTree(target->getLeftChild(), source->getLeftChild());
-    copyTree(target->getRightChild(), source->getRightChild());
+    TreeNode* newNode = new TreeNode(source->getKey());
+    newNode->setLeftChild(copyTree(source->getLeftChild()));
+    newNode->setRightChild(copyTree(source->getRightChild()));
+
+    return newNode;
 }
 
 void BinaryTree::destroyNode(TreeNode* node)
@@ -308,7 +309,6 @@ BinaryTree::TreeNode* BinaryTree::removeNodeInternal(TreeNode* node, const int k
 
     if (node->getKey() == key)
     {
-        // Удаление узла
         if (node->getLeftChild() == nullptr)
         {
             TreeNode* rightChild = node->getRightChild();
@@ -329,7 +329,6 @@ BinaryTree::TreeNode* BinaryTree::removeNodeInternal(TreeNode* node, const int k
         return node;
     }
 
-    // Ищем в левом и правом поддеревьях
     TreeNode* newLeft = removeNodeInternal(node->getLeftChild(), key);
     TreeNode* newRight = removeNodeInternal(node->getRightChild(), key);
 

@@ -1,8 +1,11 @@
-﻿#include <iostream>
+﻿#pragma once
+
+#include <iostream>
 #include <vector>
 #include <cstdlib>
 #include <ctime>
 #include <list>
+#include <climits>
 
 // Двоичное дерево
 class BinaryTree
@@ -59,7 +62,7 @@ protected:
 
 private:
     // Вспомогательные рекурсивные методы
-    void copyTree(TreeNode*& target, TreeNode* source);
+    TreeNode* copyTree(const TreeNode* source);
     void destroyNode(TreeNode* node);
     int getHeightInternal(TreeNode* node) const;
     int getMinimalKeyInternal(TreeNode* node) const;
@@ -73,7 +76,7 @@ private:
 // Узел дерева
 class BinaryTree::TreeNode
 {
-protected:
+public:
     // Конструкторы (по умолчанию и с параметрами)
     TreeNode();
     TreeNode(const int key, TreeNode* left = nullptr, TreeNode* right = nullptr);
