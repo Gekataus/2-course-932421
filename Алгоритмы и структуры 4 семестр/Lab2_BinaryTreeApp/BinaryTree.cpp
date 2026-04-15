@@ -83,22 +83,13 @@ bool BinaryTree::isEmpty() const
 
 int BinaryTree::getNodeCount() const
 {
-    if (root_ == nullptr) return 0;
+    return getNodeCountInternal(root_);
+}
 
-    int count = 1;
-    if (root_->getLeftChild() != nullptr)
-    {
-        BinaryTree leftTree;
-        leftTree.root_ = root_->getLeftChild();
-        count += leftTree.getNodeCount();
-    }
-    if (root_->getRightChild() != nullptr)
-    {
-        BinaryTree rightTree;
-        rightTree.root_ = root_->getRightChild();
-        count += rightTree.getNodeCount();
-    }
-    return count;
+int BinaryTree::getNodeCountInternal(TreeNode* node) const
+{
+    if (node == nullptr) return 0;
+    return 1 + getNodeCountInternal(node->getLeftChild()) + getNodeCountInternal(node->getRightChild());
 }
 
 int BinaryTree::getHeight() const
@@ -196,7 +187,6 @@ void BinaryTree::printToConsole() const
         return;
     }
 
-    std::cout << "Breadth-first traversal:" << std::endl;
     std::list<BinaryTree::TreeNode*> unprocessedNodes;
     unprocessedNodes.push_back(root_);
 
