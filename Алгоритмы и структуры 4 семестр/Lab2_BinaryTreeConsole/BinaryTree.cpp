@@ -48,11 +48,7 @@ void BinaryTree::TreeNode::setRightChild(TreeNode* const right)
 
 // Реализация BinaryTree
 
-BinaryTree::BinaryTree()
-    : root_(nullptr)
-{
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
-}
+BinaryTree::BinaryTree() : root_(nullptr) {};
 
 BinaryTree::BinaryTree(const BinaryTree& other)
     : root_(nullptr)
@@ -118,8 +114,18 @@ int BinaryTree::getMaximalKey() const
 std::vector<int> BinaryTree::getAllKeysSorted() const
 {
     std::vector<int> result;
-    inorderTraversal(root_, result);
+    getAllKeysInternal(root_, result);
+    std::sort(result.begin(), result.end());
     return result;
+}
+
+void BinaryTree::getAllKeysInternal(TreeNode* node, std::vector<int>& result) const
+{
+    if (node == nullptr) return;
+
+    result.push_back(node->getKey());
+    getAllKeysInternal(node->getLeftChild(), result);
+    getAllKeysInternal(node->getRightChild(), result);
 }
 
 BinaryTree::TreeNode* BinaryTree::addNode(const int key)
@@ -272,15 +278,6 @@ int BinaryTree::getMaximalKeyInternal(TreeNode* node) const
     return std::max(currentMax, std::max(leftMax, rightMax));
 }
 
-void BinaryTree::inorderTraversal(TreeNode* node, std::vector<int>& result) const
-{
-    if (node == nullptr) return;
-
-    inorderTraversal(node->getLeftChild(), result);
-    result.push_back(node->getKey());
-    inorderTraversal(node->getRightChild(), result);
-}
-
 BinaryTree::TreeNode* BinaryTree::findNodeInternal(TreeNode* node, const int key) const
 {
     if (node == nullptr) return nullptr;
@@ -335,4 +332,32 @@ BinaryTree::TreeNode* BinaryTree::findMinNode(TreeNode* node) const
         node = node->getLeftChild();
     }
     return node;
+}
+
+void BinaryTree::printTreeHorizontal() const
+{
+    if (!root_)
+    {
+        std::cout << "Tree is empty" << std::endl;
+        return;
+    }
+
+    printTreeHorizontalInternal(root_, 0);
+}
+
+void BinaryTree::printTreeHorizontalInternal(TreeNode* node, int level) const
+{
+    if (node == nullptr) return;
+
+    printTreeHorizontalInternal(node->getRightChild(), level + 1);
+
+    // Отступы
+    for (int i = 0; i < level; i++)
+    {
+        std::cout << "    ";
+    }
+
+    // Вывод ключа
+    std::cout << node->getKey() << std::endl;
+    printTreeHorizontalInternal(node->getLeftChild(), level + 1);
 }

@@ -147,6 +147,17 @@ int main()
     {
         std::cout << "Ошибка при получении минимума: " << e.what() << std::endl;
     }
+
+    BinaryTree horisontal;
+    horisontal.addNode(42);
+    horisontal.addNode(2);
+    horisontal.addNode(50);
+    horisontal.addNode(30);
+    horisontal.addNode(80);
+    horisontal.addNode(20);
+    horisontal.addNode(25);
+    std::cout << "Дерево: "; horisontal.printToConsole(); std::cout << std::endl;
+    std::cout << "Горизонтальный вывод дерева: " << std::endl; horisontal.printTreeHorizontal();
     
     return 0;
 }

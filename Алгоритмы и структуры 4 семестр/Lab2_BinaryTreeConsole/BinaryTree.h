@@ -53,25 +53,26 @@ public:
 
     // Вывод в консоль дерева в горизонтальном виде (обход в ширину)
     void printToConsole() const;
+    void printTreeHorizontal() const;
 
     // Оператор присваивания
     BinaryTree& operator=(const BinaryTree& other);
-
 protected:
     TreeNode* root_ = nullptr;
 
 private:
     // Вспомогательные рекурсивные методы
+    void getAllKeysInternal(TreeNode* node, std::vector<int>& result) const;
     TreeNode* copyTree(const TreeNode* source);
     void destroyNode(TreeNode* node);
     int getHeightInternal(TreeNode* node) const;
     int getMinimalKeyInternal(TreeNode* node) const;
     int getMaximalKeyInternal(TreeNode* node) const;
-    void inorderTraversal(TreeNode* node, std::vector<int>& result) const;
     TreeNode* findNodeInternal(TreeNode* node, const int key) const;
     TreeNode* removeNodeInternal(TreeNode* node, const int key);
     TreeNode* findMinNode(TreeNode* node) const;
     int getNodeCountInternal(TreeNode* node) const;
+    void printTreeHorizontalInternal(TreeNode* node, int level) const;
 };
 
 // Узел дерева
