@@ -71,6 +71,7 @@ private:
     TreeNode* findNodeInternal(TreeNode* node, const int key) const;
     TreeNode* removeNodeInternal(TreeNode* node, const int key);
     TreeNode* findMinNode(TreeNode* node) const;
+    int getNodeCountInternal(TreeNode* node) const;
 };
 
 // Узел дерева

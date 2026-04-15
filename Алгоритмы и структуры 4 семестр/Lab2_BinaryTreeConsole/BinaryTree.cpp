@@ -83,22 +83,13 @@ bool BinaryTree::isEmpty() const
 
 int BinaryTree::getNodeCount() const
 {
-    if (root_ == nullptr) return 0;
+    return getNodeCountInternal(root_);
+}
 
-    int count = 1;
-    if (root_->getLeftChild() != nullptr)
-    {
-        BinaryTree leftTree;
-        leftTree.root_ = root_->getLeftChild();
-        count += leftTree.getNodeCount();
-    }
-    if (root_->getRightChild() != nullptr)
-    {
-        BinaryTree rightTree;
-        rightTree.root_ = root_->getRightChild();
-        count += rightTree.getNodeCount();
-    }
-    return count;
+int BinaryTree::getNodeCountInternal(TreeNode* node) const
+{
+    if (node == nullptr) return 0;
+    return 1 + getNodeCountInternal(node->getLeftChild()) + getNodeCountInternal(node->getRightChild());
 }
 
 int BinaryTree::getHeight() const
@@ -190,18 +181,28 @@ BinaryTree::TreeNode* BinaryTree::findNode(const int key) const
 
 void BinaryTree::printToConsole() const
 {
-    if (!root_) return;
+    if (!root_)
+    {
+        std::cout << "Tree is empty" << std::endl;
+        return;
+    }
 
-    std::list<BinaryTree::TreeNode*> unprocessedNodes(1, root_);
+    std::list<BinaryTree::TreeNode*> unprocessedNodes;
+    unprocessedNodes.push_back(root_);
 
     while (!unprocessedNodes.empty())
     {
         BinaryTree::TreeNode* treeNode = unprocessedNodes.front();
         std::cout << treeNode->getKey() << " ";
-        if (treeNode->getLeftChild()) unprocessedNodes.push_back(treeNode->getLeftChild());
-        if (treeNode->getRightChild()) unprocessedNodes.push_back(treeNode->getRightChild());
+
+        if (treeNode->getLeftChild())
+            unprocessedNodes.push_back(treeNode->getLeftChild());
+        if (treeNode->getRightChild())
+            unprocessedNodes.push_back(treeNode->getRightChild());
+
         unprocessedNodes.pop_front();
     }
+    std::cout << std::endl;
 }
 
 BinaryTree& BinaryTree::operator=(const BinaryTree& other)
