@@ -175,3 +175,157 @@ void BinarySearchTree::inorderTraversal(TreeNode* node, std::vector<int>& result
     result.push_back(node->getKey());
     inorderTraversal(node->getRightChild(), result);
 }
+
+
+BinarySearchTree::Iterator BinarySearchTree::begin()
+{
+    return Iterator(root_);
+}
+
+BinarySearchTree::Iterator BinarySearchTree::end()
+{
+    return Iterator(root_, true);
+}
+
+BinarySearchTree::ConstIterator BinarySearchTree::begin() const
+{
+    return ConstIterator(root_);
+}
+
+BinarySearchTree::ConstIterator BinarySearchTree::end() const
+{
+    return ConstIterator(root_, true);
+}
+
+// Итератор
+
+BinarySearchTree::Iterator::Iterator(TreeNode* root, bool end)
+{
+    if (end)
+    {
+        current_ = nullptr;
+        return;
+    }
+
+    current_ = root;
+    pushLeftPath(current_);
+
+    if (!stack_.empty())
+    {
+        current_ = stack_.top();
+        stack_.pop();
+    }
+    else
+    {
+        current_ = nullptr;
+    }
+}
+
+void BinarySearchTree::Iterator::pushLeftPath(TreeNode* node)
+{
+    while (node != nullptr)
+    {
+        stack_.push(node);
+        node = node->getLeftChild();
+    }
+}
+
+bool BinarySearchTree::Iterator::operator!=(const Iterator& other) const
+{
+    return current_ != other.current_;
+}
+
+int BinarySearchTree::Iterator::operator*() const
+{
+    return current_->getKey();
+}
+
+BinarySearchTree::Iterator& BinarySearchTree::Iterator::operator++()
+{
+    if (current_ == nullptr)
+        return *this;
+
+    if (current_->getRightChild() != nullptr)
+    {
+        current_ = current_->getRightChild();
+        pushLeftPath(current_);
+    }
+
+    if (!stack_.empty())
+    {
+        current_ = stack_.top();
+        stack_.pop();
+    }
+    else
+    {
+        current_ = nullptr;
+    }
+
+    return *this;
+}
+// Константный итератор
+
+BinarySearchTree::ConstIterator::ConstIterator(const TreeNode* root, bool end)
+{
+    if (end)
+    {
+        current_ = nullptr;
+        return;
+    }
+
+    current_ = root;
+    pushLeftPath(current_);
+
+    if (!stack_.empty())
+    {
+        current_ = stack_.top();
+        stack_.pop();
+    }
+    else
+    {
+        current_ = nullptr;
+    }
+}
+
+void BinarySearchTree::ConstIterator::pushLeftPath(const TreeNode* node)
+{
+    while (node != nullptr)
+    {
+        stack_.push(node);
+        node = node->getLeftChild();
+    }
+}
+
+bool BinarySearchTree::ConstIterator::operator!=(const ConstIterator& other) const
+{
+    return current_ != other.current_;
+}
+
+int BinarySearchTree::ConstIterator::operator*() const
+{
+    return current_->getKey();
+}
+
+BinarySearchTree::ConstIterator& BinarySearchTree::ConstIterator::operator++()
+{
+    if (current_ == nullptr)
+        return *this;
+
+    if (current_->getRightChild() != nullptr)
+    {
+        current_ = current_->getRightChild();
+        pushLeftPath(current_);
+    }
+
+    if (!stack_.empty())
+    {
+        current_ = stack_.top();
+        stack_.pop();
+    }
+    else
+    {
+        current_ = nullptr;
+    }
+
+    return *this;
+}

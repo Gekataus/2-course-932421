@@ -28,26 +28,26 @@ int main()
     std::cout << "\n4. Горизонтальный вывод дерева" << std::endl;
     tree1.printTreeHorizontal();
 
-    // 3. Получение корня
+    // 4. Получение корня
     std::cout << "\n5. Получение корня" << std::endl;
     BinaryTree::TreeNode* root = tree1.getRoot();
     if (root)
         std::cout << "Корень: " << root->getKey() << std::endl;
 
-    // 4. Количество узлов
+    // 5. Количество узлов
     std::cout << "\n6. Количество узлов" << std::endl;
     std::cout << "getNodeCount() = " << tree1.getNodeCount() << std::endl;
 
-    // 5. Высота дерева
+    // 6. Высота дерева
     std::cout << "\n7. Высота дерева" << std::endl;
     std::cout << "getHeight() = " << tree1.getHeight() << std::endl;
 
-    // 6. Минимальный и максимальный ключ
+    // 7. Минимальный и максимальный ключ
     std::cout << "\n8. Минимальный и максимальный ключ" << std::endl;
     std::cout << "getMinimalKey() = " << tree1.getMinimalKey() << std::endl;
     std::cout << "getMaximalKey() = " << tree1.getMaximalKey() << std::endl;
 
-    // 7. Поиск узла
+    // 8. Поиск узла
     std::cout << "\n9. Поиск узла" << std::endl;
     int searchKey = 45;
     BinaryTree::TreeNode* found = tree1.findNode(searchKey);
@@ -57,7 +57,7 @@ int main()
     found = tree1.findNode(searchKey);
     std::cout << "Поиск ключа " << searchKey << ": " << (found ? "найден" : "не найден") << std::endl;
 
-    // 8. Получение всех ключей по возрастанию
+    // 9. Получение всех ключей по возрастанию
     std::cout << "\n10. Получение всех ключей по возрастанию" << std::endl;
     std::vector<int> sortedKeys = tree1.getAllKeysSorted();
     std::cout << "Отсортированные ключи: ";
@@ -65,42 +65,75 @@ int main()
         std::cout << val << " ";
     std::cout << std::endl;
 
-    // 9. Удаление узла (лист)
-    std::cout << "\n11. Удаление узла (лист - 35)" << std::endl;
+    // 10. Проверка итераторов (LNR обход)
+    std::cout << "\n11. Проверка итераторов" << std::endl;
+    std::cout << "Обычный итератор: ";
+    for (int key : tree1)
+        std::cout << key << " ";
+    std::cout << std::endl;
+
+    // 11. Проверка константных итераторов
+    std::cout << "Константный итератор: ";
+    const BinarySearchTree& constTree = tree1;
+    for (int key : constTree)
+        std::cout << key << " ";
+    std::cout << std::endl;
+
+    // 12. Ручная работа с итератором
+    std::cout << "Ручной обход через итератор: ";
+    BinarySearchTree::Iterator it = tree1.begin();
+    BinarySearchTree::Iterator itEnd = tree1.end();
+    while (it != itEnd)
+    {
+        std::cout << *it << " ";
+        ++it;
+    }
+    std::cout << std::endl;
+
+    // 13. Удаление узла (лист)
+    std::cout << "\n12. Удаление узла (лист - 35)" << std::endl;
     bool removed = tree1.removeNode(35);
     std::cout << "Результат удаления: " << (removed ? "true" : "false") << std::endl;
     std::cout << "Узлов после удаления: " << tree1.getNodeCount() << std::endl;
     std::cout << "Проверка: ключ 35 " << (tree1.findNode(35) ? "найден" : "удалён") << std::endl;
 
-    // 10. Удаление узла (с одним потомком)
-    std::cout << "\n12. Удаление узла (с одним потомком - 20)" << std::endl;
+    // 14. Удаление узла (с одним потомком)
+    std::cout << "\n13. Удаление узла (с одним потомком - 20)" << std::endl;
     removed = tree1.removeNode(20);
     std::cout << "Результат удаления: " << (removed ? "true" : "false") << std::endl;
     std::cout << "Узлов после удаления: " << tree1.getNodeCount() << std::endl;
 
-    // 11. Удаление узла (с двумя потомками)
-    std::cout << "\n13. Удаление узла (с двумя потомками - 50)" << std::endl;
+    // 15. Удаление узла (с двумя потомками)
+    std::cout << "\n14. Удаление узла (с двумя потомками - 50)" << std::endl;
     removed = tree1.removeNode(50);
     std::cout << "Результат удаления: " << (removed ? "true" : "false") << std::endl;
     std::cout << "Новый корень: " << tree1.getRoot()->getKey() << std::endl;
     std::cout << "Узлов после удаления: " << tree1.getNodeCount() << std::endl;
 
-    // 12. Удаление несуществующего узла
-    std::cout << "\n14. Удаление несуществующего узла (999)" << std::endl;
+    // 16. Удаление несуществующего узла
+    std::cout << "\n15. Удаление несуществующего узла (999)" << std::endl;
     removed = tree1.removeNode(999);
     std::cout << "Результат удаления: " << (removed ? "true" : "false") << std::endl;
 
-    // 14. Конструктор копирования
-    std::cout << "\n15. Конструктор копирования" << std::endl;
+    // 17. Проверка итераторов после удалений
+    std::cout << "\n16. Итераторы после удалений: ";
+    for (int key : tree1)
+        std::cout << key << " ";
+    std::cout << std::endl;
+
+    // 18. Конструктор копирования
+    std::cout << "\n17. Конструктор копирования" << std::endl;
     BinarySearchTree tree2(tree1);
     std::cout << "tree2.getNodeCount() = " << tree2.getNodeCount() << std::endl;
     std::cout << "tree2.getMinimalKey() = " << tree2.getMinimalKey() << std::endl;
     std::cout << "tree2.getMaximalKey() = " << tree2.getMaximalKey() << std::endl;
-    std::cout << "tree2: ";
-    tree2.printToConsole();
+    std::cout << "tree2 через итератор: ";
+    for (int key : tree2)
+        std::cout << key << " ";
+    std::cout << std::endl;
 
-    // 15. Оператор присваивания
-    std::cout << "\n16. Оператор присваивания" << std::endl;
+    // 19. Оператор присваивания
+    std::cout << "\n18. Оператор присваивания" << std::endl;
     BinarySearchTree tree3;
     tree3.addNode(100);
     tree3.addNode(200);
@@ -111,25 +144,33 @@ int main()
     tree3 = tree1;
     std::cout << "После присваивания tree3 = tree1" << std::endl;
     std::cout << "tree3.getNodeCount() = " << tree3.getNodeCount() << std::endl;
-    std::cout << "tree3: ";
-    tree3.printToConsole();
+    std::cout << "tree3 через итератор: ";
+    for (int key : tree3)
+        std::cout << key << " ";
+    std::cout << std::endl;
 
-    // 16. Самоприсваивание
-    std::cout << "\n17. Самоприсваивание" << std::endl;
+    // 20. Самоприсваивание
+    std::cout << "\n19. Самоприсваивание" << std::endl;
     BinarySearchTree& selfRef = tree1;
     tree1 = selfRef;
     std::cout << "Самоприсваивание выполнено, узлов: " << tree1.getNodeCount() << std::endl;
 
-    // 17. Очистка дерева
-    std::cout << "\n18. Очистка дерева" << std::endl;
+    // 21. Очистка дерева
+    std::cout << "\n20. Очистка дерева" << std::endl;
     std::cout << "До очистки узлов: " << tree1.getNodeCount() << std::endl;
     tree1.clear();
     std::cout << "После очистки узлов: " << tree1.getNodeCount() << std::endl;
     std::cout << "tree1.isEmpty() = " << (tree1.isEmpty() ? "true" : "false") << std::endl;
     tree1.printToConsole();
 
-    // 18. Работа с пустым деревом
-    std::cout << "\n19. Работа с пустым деревом" << std::endl;
+    // 22. Итераторы по пустому дереву
+    std::cout << "\n21. Итераторы по пустому дереву: ";
+    for (int key : tree1)
+        std::cout << key << " ";
+    std::cout << "(ничего не выведено)" << std::endl;
+
+    // 23. Работа с пустым деревом
+    std::cout << "\n22. Работа с пустым деревом" << std::endl;
     BinarySearchTree emptyTree;
     std::cout << "isEmpty() = " << (emptyTree.isEmpty() ? "true" : "false") << std::endl;
     std::cout << "getNodeCount() = " << emptyTree.getNodeCount() << std::endl;
@@ -137,8 +178,8 @@ int main()
     std::cout << "getMinimalKey() = " << emptyTree.getMinimalKey() << std::endl;
     std::cout << "getMaximalKey() = " << emptyTree.getMaximalKey() << std::endl;
 
-    // 19. Проверка через указатель на базовый класс
-    std::cout << "\n20. Проверка через указатель на базовый класс" << std::endl;
+    // 24. Проверка через указатель на базовый класс
+    std::cout << "\n23. Проверка через указатель на базовый класс" << std::endl;
     BinaryTree* basePtr = new BinarySearchTree();
     basePtr->addNode(50);
     basePtr->addNode(30);
