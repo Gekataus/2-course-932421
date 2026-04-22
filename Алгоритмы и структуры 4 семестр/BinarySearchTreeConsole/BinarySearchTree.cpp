@@ -68,21 +68,46 @@ int BinarySearchTree::getMaximalKey() const
 
 BinaryTree::TreeNode* BinarySearchTree::addNode(const int key)
 {
-    root_ = addNodeInternal(root_, key);
-    return findNode(key);
+    return addNodeInternal(root_, key);
 }
 
 BinaryTree::TreeNode* BinarySearchTree::addNodeInternal(TreeNode* node, const int key)
 {
-    if (node == nullptr)
-        return new TreeNode(key);
+    if (!root_)
+    {
+        root_ = new TreeNode(key);
+        return root_;
+    }
 
-    if (key < node->getKey())
-        node->setLeftChild(addNodeInternal(node->getLeftChild(), key));
-    else
-        node->setRightChild(addNodeInternal(node->getRightChild(), key));
+    TreeNode* currentNode = root_;
 
-    return node;
+    while (true)
+    {
+        if (key < currentNode->getKey())
+        {
+            if (!currentNode->getLeftChild())
+            {
+                currentNode->setLeftChild(new TreeNode(key));
+                return currentNode->getLeftChild();
+            }
+            else
+            {
+                currentNode = currentNode->getLeftChild();
+            }
+        }
+        else
+        {
+            if (!currentNode->getRightChild())
+            {
+                currentNode->setRightChild(new TreeNode(key));
+                return currentNode->getRightChild();
+            }
+            else
+            {
+                currentNode = currentNode->getRightChild();
+            }
+        }
+    }
 }
 
 //Поиск узла
