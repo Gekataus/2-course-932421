@@ -68,10 +68,10 @@ int BinarySearchTree::getMaximalKey() const
 
 BinaryTree::TreeNode* BinarySearchTree::addNode(const int key)
 {
-    return addNodeInternal(root_, key);
+    return addNodeInternal(key);
 }
 
-BinaryTree::TreeNode* BinarySearchTree::addNodeInternal(TreeNode* node, const int key)
+BinaryTree::TreeNode* BinarySearchTree::addNodeInternal( const int key)
 {
     if (!root_)
     {

@@ -71,7 +71,7 @@ public:
 
 private:
     // Вспомогательные методы
-    TreeNode* addNodeInternal(TreeNode* node, const int key);
+    TreeNode* addNodeInternal(const int key);
     TreeNode* removeNodeInternal(TreeNode* node, const int key);
     TreeNode* findMinNode(TreeNode* node) const;
     void inorderTraversal(TreeNode* node, std::vector<int>& result) const;
