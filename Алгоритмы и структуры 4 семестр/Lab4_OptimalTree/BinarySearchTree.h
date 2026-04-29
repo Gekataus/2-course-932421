@@ -87,7 +87,6 @@ private:
     TreeNode* copyTreeInternal(const TreeNode* source);
 
     TreeNode* copySubtreeInternal(const TreeNode* node) const;
-
     static TreeNode* buildTreeFromRoots(const std::vector<int>& keys,
         const std::vector<std::vector<int>>& root,
         int start, int end);
