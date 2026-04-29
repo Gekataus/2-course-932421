@@ -395,67 +395,79 @@ BinaryTree::TreeNode* BinarySearchTree::copySubtreeInternal(const TreeNode* sour
     return newNode;
 }
 
-BinarySearchTree BinarySearchTree::buildOptimalBST(const std::vector<int>& keys, const std::vector<int>& frequencies)
+BinarySearchTree BinarySearchTree::buildOptimalBST(const std::vector<int>& keys,
+    const std::vector<int>& p,
+    const std::vector<int>& q)
 {
     // Проверка на пустые входные данные
-    if (keys.empty() || frequencies.empty() || keys.size() != frequencies.size())
+    if (keys.empty() || p.size() != keys.size() || q.size() != keys.size() + 1)
     {
         return BinarySearchTree();
     }
 
     int n = keys.size();
 
-    // cost[i][j] - минимальная стоимость поиска в поддереве от i до j
-    // root[i][j] - индекс корня оптимального поддерева от i до j
-    // sumWeights[i][j] - сумма частот от i до j
-    std::vector<std::vector<int>> cost(n + 2, std::vector<int>(n + 2, 0));
-    std::vector<std::vector<int>> root(n + 2, std::vector<int>(n + 2, 0));
-    std::vector<std::vector<int>> sumWeights(n + 2, std::vector<int>(n + 2, 0));
+    // W[i][j] - вес поддерева (сумма p и q)
+    // C[i][j] - минимальная стоимость поиска в поддереве
+    // R[i][j] - индекс корня оптимального поддерева
+    std::vector<std::vector<int>> W(n + 2, std::vector<int>(n + 2, 0));
+    std::vector<std::vector<int>> C(n + 3, std::vector<int>(n + 2, 0));
+    std::vector<std::vector<int>> R(n + 2, std::vector<int>(n + 2, 0));
 
-    // Вычисляем суммы частот для всех интервалов
-    for (int i = 1; i <= n; i++)
+    // Инициализация для деревьев без вершин
+    for (int i = 0; i <= n; i++)
     {
-        sumWeights[i][i] = frequencies[i - 1];
-        for (int j = i + 1; j <= n; j++)
-        {
-            sumWeights[i][j] = sumWeights[i][j - 1] + frequencies[j - 1];
-        }
+        W[i][i] = q[i];
+        C[i][i] = q[i];
+        R[i][i] = 0;
     }
 
-    // Инициализация для поддеревьев из одного узла
-    for (int i = 1; i <= n; i++)
+    // Для деревьев, содержащих одну вершину
+    // Вычисляем W[i][i+1], C[i][i+1], R[i][i+1]
+    for (int i = 0; i < n; i++)
     {
-        cost[i][i] = frequencies[i - 1];
-        root[i][i] = i;
+        int j = i + 1;
+        W[i][j] = W[i][i] + p[i] + q[j];  // q[i] + p[i+1] + q[i+1]
+        C[i][j] = W[i][j] + C[i][i] + C[j][j];
+        R[i][j] = j;
     }
 
-    // Построение оптимального дерева для интервалов возрастающей длины
-    for (int length = 2; length <= n; length++)
+    // Для деревьев, содержащих h вершин (2 <= h <= n)
+    for (int h = 2; h <= n; h++)
     {
-        for (int i = 1; i <= n - length + 1; i++)
+        for (int i = 0; i <= n - h; i++)
         {
-            int j = i + length - 1;
-            int sum = sumWeights[i][j];
+            int j = i + h;
 
-            cost[i][j] = INT_MAX;
+            // Вычисляем вес поддерева
+            W[i][j] = W[i][j - 1] + p[j - 1] + q[j];
 
-            // Перебираем возможные корни
-            for (int k = i; k <= j; k++)
+            // Поиск корня с минимальной стоимостью
+            //k от R[i][j-1] до R[i+1][j]
+            int minCost = INT_MAX;
+            int bestK = -1;
+
+            int leftBound = (R[i][j - 1] > 0) ? R[i][j - 1] : (i + 1);
+            int rightBound = (R[i + 1][j] > 0) ? R[i + 1][j] : j;
+
+            for (int k = leftBound; k <= rightBound && k >= i + 1 && k <= j; k++)
             {
-                int currentCost = cost[i][k - 1] + cost[k + 1][j] + sum;
-
-                if (currentCost < cost[i][j])
+                int currentCost = C[i][k - 1] + C[k][j];
+                if (currentCost < minCost)
                 {
-                    cost[i][j] = currentCost;
-                    root[i][j] = k;
+                    minCost = currentCost;
+                    bestK = k;
                 }
             }
+
+            C[i][j] = W[i][j] + minCost;
+            R[i][j] = bestK;
         }
     }
 
-    // Построение дерева по таблице root
+    //Построение дерева по таблице R
     BinarySearchTree result;
-    result.root_ = buildTreeFromRoots(keys, root, 1, n);
+    result.root_ = buildTreeFromRoots(keys, R, 0, n);
 
     return result;
 }
@@ -465,17 +477,21 @@ BinaryTree::TreeNode* BinarySearchTree::buildTreeFromRoots(
     const std::vector<std::vector<int>>& root,
     int start, int end)
 {
-    if (start > end)
+    // start - индекс начала интервала (включая левую ловушку)
+    // end - индекс конца интервала (включая правую ловушку)
+    if (start >= end)
         return nullptr;
 
-    int r = root[start][end];
-    if (r == 0)
+    int k = root[start][end];
+    if (k == 0)
         return nullptr;
 
-    TreeNode* node = new TreeNode(keys[r - 1]);
+    // Создаём узел с ключом
+    TreeNode* node = new TreeNode(keys[k - 1]);
 
-    node->setLeftChild(buildTreeFromRoots(keys, root, start, r - 1));
-    node->setRightChild(buildTreeFromRoots(keys, root, r + 1, end));
+    // Рекурсивно строим левое и правое поддеревья
+    node->setLeftChild(buildTreeFromRoots(keys, root, start, k - 1));
+    node->setRightChild(buildTreeFromRoots(keys, root, k, end));
 
     return node;
 }

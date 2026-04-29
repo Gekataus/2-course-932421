@@ -66,8 +66,9 @@ public:
     BinarySearchTree& operator=(const BinarySearchTree& other);
     BinarySearchTree& operator=(BinarySearchTree&& other);  // оператор перемещения
 
-    // Построение оптимального дерева поиска
-    static BinarySearchTree buildOptimalBST(const std::vector<int>& keys, const std::vector<int>& frequencies);
+    static BinarySearchTree buildOptimalBST(const std::vector<int>& keys,
+        const std::vector<int>& p,
+        const std::vector<int>& q);
 
     // Итераторы
     Iterator begin();
