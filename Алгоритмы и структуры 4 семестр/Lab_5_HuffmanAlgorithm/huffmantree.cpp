@@ -1,8 +1,7 @@
-﻿#include "huffmantree.h"
+#include "huffmantree.h"
 #include "booleanvector.h"
 #include <algorithm>
 #include <iostream>
-#include <fstream>
 
 HuffmanTree::TreeNode::TreeNode(uint frequency, char character)
     : frequency_(frequency), character_(character)
@@ -131,62 +130,6 @@ void HuffmanTree::build(const std::string& text)
         generateCodes(root_, currentCode);
         isBuilt_ = true;
     }
-}
-
-double HuffmanTree::encode(const std::string& inputFileName, const std::string& outputFileName)
-{
-    std::ifstream inputFile(inputFileName);
-    if (!inputFile.is_open())
-    {
-        return -1.0;
-    }
-
-    std::string text;
-    char ch;
-    while (inputFile.get(ch))
-    {
-        text += ch;
-    }
-    inputFile.close();
-
-    if (text.empty())
-    {
-        return -1.0;
-    }
-
-    if (!isBuilt_)
-    {
-        build(text);
-    }
-
-    std::string encodedString;
-    for (char c : text)
-    {
-        BooleanVector code = getCode(c);
-        for (uint i = 0; i < code.getLength(); i++)
-        {
-            encodedString += (code[i] ? '1' : '0');
-        }
-    }
-
-    std::ofstream outputFile(outputFileName);
-    if (!outputFile.is_open())
-    {
-        return -1.0;
-    }
-
-    outputFile << encodedString;
-    outputFile.close();
-
-    double originalSize = text.length() * 8;
-    double compressedSize = encodedString.length();
-
-    if (originalSize > 0)
-    {
-        return (compressedSize / originalSize) * 100.0;
-    }
-
-    return 0.0;
 }
 
 void HuffmanTree::generateCodes(TreeNode* node, BooleanVector& currentCode)
