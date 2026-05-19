@@ -17,6 +17,8 @@ public:
     ~HuffmanTree();
 
     void build(const std::string& text);
+    double encode(const std::string& inputFileName, const std::string& outputFileName);
+    bool decode(const std::string& inputFileName, const std::string& outputFileName);
     BooleanVector getCode(char symbol) const;
 
 private:

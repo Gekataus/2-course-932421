@@ -2,6 +2,7 @@
 #include "booleanvector.h"
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 
 HuffmanTree::TreeNode::TreeNode(uint frequency, char character)
     : frequency_(frequency), character_(character)
@@ -130,6 +131,121 @@ void HuffmanTree::build(const std::string& text)
         generateCodes(root_, currentCode);
         isBuilt_ = true;
     }
+}
+
+double HuffmanTree::encode(const std::string& inputFileName, const std::string& outputFileName)
+{
+    std::ifstream inputFile(inputFileName);
+    if (!inputFile.is_open())
+    {
+        return -1.0;
+    }
+
+    std::string text;
+    char ch;
+    while (inputFile.get(ch))
+    {
+        text += ch;
+    }
+    inputFile.close();
+
+    if (text.empty())
+    {
+        return -1.0;
+    }
+
+    if (!isBuilt_)
+    {
+        build(text);
+    }
+
+    std::string encodedString;
+    for (char c : text)
+    {
+        BooleanVector code = getCode(c);
+        for (uint i = 0; i < code.getLength(); i++)
+        {
+            encodedString += (code[i] ? '1' : '0');
+        }
+    }
+
+    std::ofstream outputFile(outputFileName);
+    if (!outputFile.is_open())
+    {
+        return -1.0;
+    }
+
+    outputFile << encodedString;
+    outputFile.close();
+
+    double originalSize = text.length() * 8;
+    double compressedSize = encodedString.length();
+
+    if (originalSize > 0)
+    {
+        return (compressedSize / originalSize) * 100.0;
+    }
+
+    return 0.0;
+}
+
+bool HuffmanTree::decode(const std::string& inputFileName, const std::string& outputFileName)
+{
+    std::ifstream inputFile(inputFileName);
+    if (!inputFile.is_open())
+    {
+        return false;
+    }
+
+    std::string encodedString;
+    std::string line;
+    while (std::getline(inputFile, line))
+    {
+        encodedString += line;
+    }
+    inputFile.close();
+
+    if (encodedString.empty())
+    {
+        return false;
+    }
+
+    if (root_ == nullptr)
+    {
+        return false;
+    }
+
+    std::string decodedText;
+    TreeNode* currentNode = root_;
+
+    for (char bit : encodedString)
+    {
+        if (bit == '0')
+        {
+            currentNode = currentNode->getLeftChild();
+        }
+        else
+        {
+            currentNode = currentNode->getRightChild();
+        }
+
+        if (currentNode->isLeafNode())
+        {
+            decodedText += currentNode->getCharacter();
+            currentNode = root_;
+        }
+    }
+
+    std::ofstream outputFile(outputFileName);
+    if (!outputFile.is_open())
+    {
+        return false;
+    }
+
+    outputFile << decodedText;
+    outputFile.close();
+
+    return true;
 }
 
 void HuffmanTree::generateCodes(TreeNode* node, BooleanVector& currentCode)

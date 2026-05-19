@@ -5,19 +5,22 @@
 
 int main()
 {
-    std::ifstream inputFile("input.txt");
-    if (!inputFile.is_open())
-    {
-        std::cerr << "Cannot open input.txt" << std::endl;
-        return 1;
-    }
-
-    std::string text((std::istreambuf_iterator<char>(inputFile)),
-        std::istreambuf_iterator<char>());
-    inputFile.close();
-
+    setlocale(LC_ALL, "Rus");
     HuffmanTree huffman;
-    huffman.build(text);
+
+    double ratio = huffman.encode("input.txt", "encoded.txt");
+
+    if (ratio >= 0)
+    {
+        std::cout << "Коэффициент сжатия: " << ratio << std::endl;
+
+        bool success = huffman.decode("encoded.txt", "output.txt");
+
+        if (success)
+        {
+            std::cout << "Кодирование сохранено в файл encoded.txt, декодирование в output.txt";
+        }
+    }
 
     return 0;
 }
