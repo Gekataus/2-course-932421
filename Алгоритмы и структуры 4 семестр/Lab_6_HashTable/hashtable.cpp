@@ -87,6 +87,12 @@ void HashTable::clearTable()
     for (size_t i = 0; i < tableData_.size(); i++)
     {
         KeyValuePair* cur = tableData_[i].head;
+        while (cur)
+        {
+            KeyValuePair* next = cur->next;
+            delete cur;
+            cur = next;
+        }
         tableData_[i].head = nullptr;
         tableData_[i].empty = true;
     }
