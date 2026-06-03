@@ -8,7 +8,8 @@ using uint = unsigned int;
 class IHashFunction
 {
 public:
-    virtual uint hash(const uint, const uint) const = 0;
+    virtual uint hash(const uint key, const uint tableSize, const uint attempt) const = 0;
+    virtual IHashFunction* clone() const = 0;
     virtual ~IHashFunction() = default;
 };
 
@@ -16,14 +17,16 @@ public:
 class HashFunction1 : public IHashFunction
 {
 public:
-    virtual uint hash(const uint, const uint) const override;
+    virtual uint hash(const uint key, const uint tableSize, const uint attempt) const override;
+    virtual IHashFunction* clone() const override;
 };
 
 // Вторая хеш-функция: hi(K) = ((K mod N) + i × (1 + K mod (N-2))) mod N
 class HashFunction2 : public IHashFunction
 {
 public:
-    virtual uint hash(const uint, const uint) const override;
+    virtual uint hash(const uint key, const uint tableSize, const uint attempt) const override;
+    virtual IHashFunction* clone() const override;
 };
 
 class HashTable
@@ -87,8 +90,7 @@ private:
     uint keysCount_ = 0;
     IHashFunction* currentHashFunction_ = nullptr;
 
-    uint primaryHash(const uint key) const;
-    uint getStep(const uint key, const uint tableSize) const;
+    uint getHash(const uint key, const uint attempt) const;
     bool findNode(const uint key, uint& bucketIndex, KeyValuePair** prev, KeyValuePair** found) const;
     void rehashAll();
     void clearTable();

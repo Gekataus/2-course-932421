@@ -2,23 +2,42 @@
 #include <iostream>
 #include "hashtable.h"
 
-// Первая хеш-функция
-uint HashFunction1::hash(const uint key, const uint tableSize) const
+//HashFunction1
+uint HashFunction1::hash(const uint key, const uint tableSize, const uint attempt) const
 {
     const double a = (std::sqrt(5.0) - 1.0) / 2.0;
-    uint hash = key % tableSize;
-    hash = uint(std::floor(double(hash) * a * double(tableSize))) % tableSize;
-    return hash;
+
+    if (attempt == 0)
+    {
+        uint h0 = key % tableSize;
+        return uint(std::floor(double(h0) * a * double(tableSize))) % tableSize;
+    }
+    else
+    {
+        uint prevHash = hash(key, tableSize, attempt - 1);
+        return uint(std::floor(double(prevHash) * a * double(tableSize))) % tableSize;
+    }
 }
 
-// Вторая хеш-функция
-uint HashFunction2::hash(const uint key, const uint tableSize) const
+IHashFunction* HashFunction1::clone() const
+{
+    return new HashFunction1();
+}
+
+//HashFunction2
+uint HashFunction2::hash(const uint key, const uint tableSize, const uint attempt) const
 {
     uint h0 = key % tableSize;
     uint step = 1 + (key % (tableSize - 2));
-    uint hash = (h0 + step) % tableSize;
-    return hash;
+    return (h0 + attempt * step) % tableSize;
 }
+
+IHashFunction* HashFunction2::clone() const
+{
+    return new HashFunction2();
+}
+
+//HashTable
 
 // Конструктор по умолчанию
 HashTable::HashTable(const uint defaultTableSize)
@@ -68,12 +87,6 @@ void HashTable::clearTable()
     for (size_t i = 0; i < tableData_.size(); i++)
     {
         KeyValuePair* cur = tableData_[i].head;
-        while (cur)
-        {
-            KeyValuePair* next = cur->next;
-            delete cur;
-            cur = next;
-        }
         tableData_[i].head = nullptr;
         tableData_[i].empty = true;
     }
@@ -85,22 +98,14 @@ void HashTable::copyFrom(const HashTable& other)
 {
     clearTable();
     tableData_.resize(other.tableData_.size());
-    keysCount_ = other.keysCount_;
+    keysCount_ = 0;
 
-    // Копируем хеш-функцию
     if (other.currentHashFunction_)
     {
-        if (dynamic_cast<HashFunction1*>(other.currentHashFunction_))
-        {
-            currentHashFunction_ = new HashFunction1();
-        }
-        else if (dynamic_cast<HashFunction2*>(other.currentHashFunction_))
-        {
-            currentHashFunction_ = new HashFunction2();
-        }
+        currentHashFunction_ = other.currentHashFunction_->clone();
     }
 
-    // Копируем все элементы
+    // Копируем все элементы из other в текущую таблицу
     for (size_t i = 0; i < other.tableData_.size(); i++)
     {
         if (!other.tableData_[i].empty)
@@ -110,15 +115,18 @@ void HashTable::copyFrom(const HashTable& other)
 
             while (srcNode)
             {
+                // Создаём новый узел
                 KeyValuePair* newNode = new KeyValuePair(srcNode->key, srcNode->value);
 
                 if (!tableData_[i].head)
                 {
+                    // Первый узел в цепочке
                     tableData_[i].head = newNode;
                     tail = newNode;
                 }
                 else
                 {
+                    // Добавляем в конец цепочки
                     tail->next = newNode;
                     tail = newNode;
                 }
@@ -126,19 +134,20 @@ void HashTable::copyFrom(const HashTable& other)
                 srcNode = srcNode->next;
             }
             tableData_[i].empty = false;
+            // Увеличиваем счётчик на количество скопированных узлов
+            KeyValuePair* countNode = tableData_[i].head;
+            while (countNode)
+            {
+                ++keysCount_;
+                countNode = countNode->next;
+            }
         }
     }
 }
 
-uint HashTable::primaryHash(const uint key) const
+uint HashTable::getHash(const uint key, const uint attempt) const
 {
-    return currentHashFunction_->hash(key, static_cast<uint>(tableData_.size()));
-}
-
-uint HashTable::getStep(const uint key, const uint tableSize) const
-{
-    if (tableSize <= 2) return 1;
-    return 1 + (key % (tableSize - 2));
+    return currentHashFunction_->hash(key, static_cast<uint>(tableData_.size()), attempt);
 }
 
 bool HashTable::findNode(const uint key, uint& bucketIndex, KeyValuePair** prev, KeyValuePair** found) const
@@ -146,29 +155,9 @@ bool HashTable::findNode(const uint key, uint& bucketIndex, KeyValuePair** prev,
     uint N = static_cast<uint>(tableData_.size());
     if (N == 0) return false;
 
-    bool isHashFunction2 = (dynamic_cast<HashFunction2*>(currentHashFunction_) != nullptr);
-
-    uint h0 = key % N;
-    uint step = getStep(key, N);
-
-    for (uint i = 0; i < N; ++i)
+    for (uint attempt = 0; attempt < N; ++attempt)
     {
-        uint index;
-        if (isHashFunction2)
-        {
-            index = (h0 + i * step) % N;
-        }
-        else
-        {
-            if (i == 0)
-            {
-                index = primaryHash(key);
-            }
-            else
-            {
-                index = (primaryHash(key) + i) % N;
-            }
-        }
+        uint index = getHash(key, attempt);
 
         if (!tableData_[index].empty)
         {
@@ -199,31 +188,10 @@ bool HashTable::insert(const uint key, const std::string& value)
     uint N = static_cast<uint>(tableData_.size());
     if (N == 0) return false;
 
-    bool isHashFunction2 = (dynamic_cast<HashFunction2*>(currentHashFunction_) != nullptr);
-
-    uint h0 = key % N;
-    uint step = getStep(key, N);
-
-    for (uint i = 0; i < N; ++i)
+    for (uint attempt = 0; attempt < N; ++attempt)
     {
-        uint index;
-        if (isHashFunction2)
-        {
-            index = (h0 + i * step) % N;
-        }
-        else
-        {
-            if (i == 0)
-            {
-                index = primaryHash(key);
-            }
-            else
-            {
-                index = (primaryHash(key) + i) % N;
-            }
-        }
+        uint index = getHash(key, attempt);
 
-        // Проверяем, есть ли уже такой ключ
         KeyValuePair* cur = tableData_[index].head;
         while (cur)
         {
@@ -235,7 +203,6 @@ bool HashTable::insert(const uint key, const std::string& value)
             cur = cur->next;
         }
 
-        // Добавляем новый элемент в начало списка
         KeyValuePair* newNode = new KeyValuePair(key, value);
         newNode->next = tableData_[index].head;
         tableData_[index].head = newNode;
@@ -271,7 +238,6 @@ bool HashTable::erase(const uint key)
     delete found;
     --keysCount_;
 
-    // Если в ячейке больше нет элементов, помечаем её как пустую
     if (tableData_[bucketIndex].head == nullptr)
     {
         tableData_[bucketIndex].empty = true;
@@ -299,29 +265,9 @@ std::string& HashTable::operator[](const uint key)
         N = static_cast<uint>(tableData_.size());
     }
 
-    bool isHashFunction2 = (dynamic_cast<HashFunction2*>(currentHashFunction_) != nullptr);
-
-    uint h0 = key % N;
-    uint step = getStep(key, N);
-
-    for (uint i = 0; i < N; ++i)
+    for (uint attempt = 0; attempt < N; ++attempt)
     {
-        uint index;
-        if (isHashFunction2)
-        {
-            index = (h0 + i * step) % N;
-        }
-        else
-        {
-            if (i == 0)
-            {
-                index = primaryHash(key);
-            }
-            else
-            {
-                index = (primaryHash(key) + i) % N;
-            }
-        }
+        uint index = getHash(key, attempt);
 
         KeyValuePair* cur = tableData_[index].head;
         while (cur)
@@ -333,7 +279,6 @@ std::string& HashTable::operator[](const uint key)
             cur = cur->next;
         }
 
-        // Ключ не найден, добавляем новый
         KeyValuePair* newNode = new KeyValuePair(key, std::string());
         newNode->next = tableData_[index].head;
         tableData_[index].head = newNode;
